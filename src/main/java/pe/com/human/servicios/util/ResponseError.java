@@ -1,4 +1,4 @@
-package pe.com.human.servicios.model;
+package pe.com.human.servicios.util;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,12 +8,12 @@ import java.util.List;
  * @author smuroy
  *
  */
-public class Error implements Serializable{
+public class ResponseError implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String codigo;
 	private String mensaje;
-	private List<Error> errores;
+	private List<ResponseError> errores;
 	
 	public String getCodigo() {
 		return codigo;
@@ -27,10 +27,10 @@ public class Error implements Serializable{
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
-	public List<Error> getErrores() {
+	public List<ResponseError> getErrores() {
 		return errores;
 	}
-	public void setErrores(List<Error> errores) {
+	public void setErrores(List<ResponseError> errores) {
 		this.errores = errores;
 	}
 }

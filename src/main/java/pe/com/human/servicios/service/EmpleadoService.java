@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.human.servicios.dao.CompaniaDAO;
-import pe.com.human.servicios.model.ConfiguracionDataSource;
+import pe.com.human.servicios.util.ConfiguracionDataSource;
 
 /**
  * 
@@ -24,7 +24,7 @@ import pe.com.human.servicios.model.ConfiguracionDataSource;
  *
  */
 @Service
-public class UsuarioService {
+public class EmpleadoService {
 
 	@Autowired
 	CompaniaDAO companiaDAO;

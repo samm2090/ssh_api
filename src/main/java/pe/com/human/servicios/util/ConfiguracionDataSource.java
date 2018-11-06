@@ -1,4 +1,4 @@
-package pe.com.human.servicios.model;
+package pe.com.human.servicios.util;
 
 import java.io.Serializable;
 

@@ -5,8 +5,6 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import pe.com.human.servicios.model.ConfiguracionDataSource;
-
 public class ConexionBaseDatos {
 	
 	public static Connection obtenerConexion(ConfiguracionDataSource configuracion) throws SQLException {

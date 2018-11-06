@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.human.servicios.dao.CompaniaDAO;
 import pe.com.human.servicios.model.Compania;
-import pe.com.human.servicios.model.ConfiguracionDataSource;
 import pe.com.human.servicios.model.Sucursal;
 import pe.com.human.servicios.util.ConexionBaseDatos;
+import pe.com.human.servicios.util.ConfiguracionDataSource;
 
 /**
  * 

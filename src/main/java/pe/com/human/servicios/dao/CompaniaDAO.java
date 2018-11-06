@@ -3,7 +3,7 @@ package pe.com.human.servicios.dao;
 import java.util.List;
 import java.util.Map;
 
-import pe.com.human.servicios.model.ConfiguracionDataSource;
+import pe.com.human.servicios.util.ConfiguracionDataSource;
 
 /**
  * 
