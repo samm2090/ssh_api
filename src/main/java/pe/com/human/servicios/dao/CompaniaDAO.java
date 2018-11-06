@@ -1,8 +1,9 @@
 package pe.com.human.servicios.dao;
 
 import java.util.List;
+import java.util.Map;
 
-import pe.com.human.servicios.model.Compania;
+import pe.com.human.servicios.model.ConfiguracionDataSource;
 
 /**
  * 
@@ -10,5 +11,5 @@ import pe.com.human.servicios.model.Compania;
  *
  */
 public interface CompaniaDAO {
-	public List<Compania> listarCompaniasXDocumento(String documento);
+	public List<Map<String, Object>> listarCompaniasXDocumento(String documento, ConfiguracionDataSource configuracion);
 }

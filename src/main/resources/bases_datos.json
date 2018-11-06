@@ -1,0 +1,27 @@
+[
+    {
+      "nombre": "payroll_qa",
+      "driverClassName": "oracle.jdbc.driver.OracleDriver",
+      "url": "jdbc:oracle:thin:@192.168.10.117:1522:payrollqa",
+      "username": "EBBD",
+      "password": "EBBD"
+    },
+  	{
+      "nombre": "intralot_qa",
+      "driverClassName": "oracle.jdbc.driver.OracleDriver",
+      "url": "jdbc:oracle:thin:@192.168.10.116:1521:INTRALOTQA",
+      "username": "ebbd",
+      "password": "ebbd"
+    },
+   	{
+      "nombre": "planilla_facil",
+      "driverClassName": "oracle.jdbc.driver.OracleDriver",
+      "url": "jdbc:oracle:thin:@192.168.10.140:1521:ORCL",
+      "username": "ebbd",
+      "password": "ebbd"
+    }
+ ]
+
+
+
+

@@ -1,13 +1,12 @@
 package pe.com.human.servicios.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +27,7 @@ public class Autenticacion {
 
 	/**
 	 * Metodo que lista todas las companias a las que pertenece un empleado por
-	 * Documento Identificacion	.
+	 * Documento Identificacion .
 	 * 
 	 * @param params
 	 * @return
@@ -36,10 +35,8 @@ public class Autenticacion {
 	@CrossOrigin
 	@RequestMapping(value = "compania", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Map<String, Object>> listarCompanias(@RequestBody Map<String, String> parametros) {
-
-		String documento = parametros.get("documento");
-
+	public Map<String, Object> listarCompanias(@RequestParam(value = "documento") String documento) {
 		return usuarioService.listarCompaniasXDocumento(documento);
 	}
+
 }
