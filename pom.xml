@@ -77,16 +77,16 @@
 			<version>5.3.7.Final</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>11.2.0</version>
 		</dependency>
+		
 	</dependencies>
 
 	<build>
-		<finalName>ss_rest_services</finalName>
+		<finalName>api</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
