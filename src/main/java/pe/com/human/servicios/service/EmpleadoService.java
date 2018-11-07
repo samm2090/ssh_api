@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.human.servicios.dao.CompaniaDAO;
+import pe.com.human.servicios.exception.ExcepcionNoExisteEmpleado;
 import pe.com.human.servicios.util.ConfiguracionDataSource;
 
 /**
@@ -53,16 +54,28 @@ public class EmpleadoService {
 			e.printStackTrace();
 		}
 
-		List<Map<String, Object>> data = new ArrayList<>();
-		Map<String, Object> comp;
-		for (Map<String, Object> compania : companias) {
-			comp = new HashMap<>();
-			comp.put("compania", compania.get("compania"));
-			comp.put("baseDatos", compania.get("baseDatos"));
-			data.add(comp);
-		}
+		if (!companias.isEmpty()) {
 
-		respuesta.put("data", data);
+			List<Map<String, Object>> data = new ArrayList<>();
+			Map<String, Object> comp;
+			for (Map<String, Object> compania : companias) {
+				comp = new HashMap<>();
+				comp.put("compania", compania.get("compania"));
+				comp.put("baseDatos", compania.get("baseDatos"));
+				data.add(comp);
+			}
+
+			respuesta.put("data", data);
+		} else {
+			// ResponseError error = new ResponseError();
+			//
+			// error.setCodigo("422");
+			// error.setMensaje("Documento no existe");
+			//
+			// respuesta.put("error", error);
+
+			throw new ExcepcionNoExisteEmpleado();
+		}
 
 		return respuesta;
 	}

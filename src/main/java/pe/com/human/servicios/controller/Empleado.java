@@ -22,7 +22,7 @@ import pe.com.human.servicios.service.EmpleadoService;
 @RestController
 @RequestMapping("/v1/empleado/")
 public class Empleado {
-	
+
 	@Autowired
 	EmpleadoService usuarioService;
 
@@ -36,8 +36,8 @@ public class Empleado {
 	@CrossOrigin
 	@RequestMapping(value = "{documento}/compania", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> companiaLista(@PathVariable("documento") String documento){
-		return usuarioService.listarCompaniasXDocumento(documento);
+	public Map<String, Object> companiaLista(@PathVariable("documento") String documento) {
+		return usuarioService.listarCompaniasXDocumento(String.valueOf(documento));
 	}
-	
+
 }
