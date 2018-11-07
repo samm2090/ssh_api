@@ -86,4 +86,11 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 		return resultado;
 	}
 
+	@Override
+	public Compania buscarCompaniaXEmpleado(String idCompania, String idSucursal, String documento, String contrasenia,
+			ConfiguracionDataSource configuracionDataSource) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.human.servicios.dao.CompaniaDAO;
+import pe.com.human.servicios.dao.UsuarioDAO;
 import pe.com.human.servicios.exception.ExcepcionNoExisteEmpleado;
 import pe.com.human.servicios.util.ConfiguracionDataSource;
 
@@ -29,6 +30,9 @@ public class EmpleadoService {
 
 	@Autowired
 	CompaniaDAO companiaDAO;
+	
+	@Autowired
+	UsuarioDAO usuarioDAO;
 
 	public Map<String, Object> listarCompaniasXDocumento(String documento) {
 		Map<String, Object> respuesta = new HashMap<>();
@@ -67,17 +71,36 @@ public class EmpleadoService {
 
 			respuesta.put("data", data);
 		} else {
-			// ResponseError error = new ResponseError();
-			//
-			// error.setCodigo("422");
-			// error.setMensaje("Documento no existe");
-			//
-			// respuesta.put("error", error);
-
 			throw new ExcepcionNoExisteEmpleado();
 		}
 
 		return respuesta;
+	}
+
+	public Map<String, Object> authLogin(String idCompania, String idSucursal, String baseDatos, String documento,
+			String contrasenia) {
+		
+		
+		return null;
+	}
+
+	public Map<String, Object> dashboardWidgets(String idCompania, String idSucursal, String baseDatos,
+			String idEmpleado, String rol) {
+		return null;
+	}
+
+	public Map<String, Object> dashboardPendientes(String idCompania, String idSucursal, String baseDatos,
+			String idEmpleado) {
+		return null;
+	}
+
+	public Map<String, Object> dashboardBirthdays(String idCompania, String idSucursal, String baseDatos, String mes) {
+		return null;
+	}
+
+	public Map<String, Object> dashboardComunicados(String idCompania, String idSucursal, String baseDatos,
+			String idEmpleado) {
+		return null;
 	}
 
 }
