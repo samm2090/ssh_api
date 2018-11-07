@@ -31,9 +31,6 @@ public class EmpleadoService {
 	@Autowired
 	CompaniaDAO companiaDAO;
 	
-	@Autowired
-	UsuarioDAO usuarioDAO;
-
 	public Map<String, Object> listarCompaniasXDocumento(String documento) {
 		Map<String, Object> respuesta = new HashMap<>();
 
