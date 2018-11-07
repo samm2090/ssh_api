@@ -8,11 +8,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.human.api.dao.AsistenciaDAO;
+import pe.com.human.api.dao.BoletaDAO;
 import pe.com.human.api.dao.CompaniaDAO;
 import pe.com.human.api.dao.EmpleadoDAO;
+import pe.com.human.api.dao.EvaluacionDesempenioDAO;
+import pe.com.human.api.dao.PrestamoDAO;
+import pe.com.human.api.dao.VacacionesDAO;
 import pe.com.human.api.exception.ExcepcionNoExisteEmpleado;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Empleado;
+import pe.com.human.api.model.Widget;
 import pe.com.human.api.util.ConfiguracionDataSource;
 
 /**
@@ -28,6 +34,23 @@ public class EmpleadoService {
 
 	@Autowired
 	EmpleadoDAO empleadoDAO;
+
+	@Autowired
+	BoletaDAO boletaDAO;
+
+	@Autowired
+	VacacionesDAO vacacionesDAO;
+
+	@Autowired
+	EvaluacionDesempenioDAO evaluacionDesempenioDAO;
+
+	@Autowired
+	AsistenciaDAO asistenciaDAO;
+
+	@Autowired
+	PrestamoDAO prestamoDAO;
+
+	static final String ROL_JEFE = "01";
 
 	public Map<String, Object> listarCompaniasXDocumento(String documento) {
 		Map<String, Object> respuesta = new HashMap<>();
@@ -89,11 +112,32 @@ public class EmpleadoService {
 
 		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource("/bases_datos.json", baseDatos);
 
-		Map<String, Object> data = new HashMap<>();
+		List<Widget> data = new ArrayList<>();
 
+		Widget boletasWidget = boletaDAO.cantidadPagosMesActual(idCompania, idSucursal, idEmpleado, configuracionDataSource);
+		Widget vacacionesWidget = vacacionesDAO.cantidadSaldo(idCompania, idSucursal, idEmpleado,
+				configuracionDataSource);
+		Widget evdWidget = evaluacionDesempenioDAO.promedioNotaDesempenio(idCompania, idSucursal, idEmpleado,
+				configuracionDataSource);
+		Widget asistenciaWidget = asistenciaDAO.cantidadAsistenciaMesActual(idCompania, idSucursal, idEmpleado,
+				configuracionDataSource);
+		Widget prestamoWidget = prestamoDAO.cantidadCuotasPendientes(idCompania, idSucursal, idEmpleado,
+				configuracionDataSource);
 
-//		data.put("empleado", empleado);
-//		data.put("compania", compania);
+		data.add(boletasWidget);
+		data.add(vacacionesWidget);
+		data.add(evdWidget);
+		data.add(asistenciaWidget);
+		data.add(prestamoWidget);
+
+		if (rol.equals(ROL_JEFE)) {
+			Widget miEquipoWidget = empleadoDAO.cantidadSubordinados(idCompania, idSucursal, idEmpleado,
+					configuracionDataSource);
+			data.add(miEquipoWidget);
+		}
+
+		// data.put("empleado", empleado);
+		// data.put("compania", compania);
 
 		respuesta.put("data", data);
 
