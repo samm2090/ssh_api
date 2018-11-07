@@ -1,4 +1,4 @@
-package pe.com.human.servicios.model;
+package pe.com.human.api.model;
 
 import java.io.Serializable;
 import java.sql.Date;

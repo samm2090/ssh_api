@@ -1,4 +1,4 @@
-package pe.com.human.servicios.daoimpl;
+package pe.com.human.api.daoimpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,11 +11,11 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import pe.com.human.servicios.dao.CompaniaDAO;
-import pe.com.human.servicios.model.Compania;
-import pe.com.human.servicios.model.Sucursal;
-import pe.com.human.servicios.util.ConexionBaseDatos;
-import pe.com.human.servicios.util.ConfiguracionDataSource;
+import pe.com.human.api.dao.CompaniaDAO;
+import pe.com.human.api.model.Compania;
+import pe.com.human.api.model.Sucursal;
+import pe.com.human.api.util.ConexionBaseDatos;
+import pe.com.human.api.util.ConfiguracionDataSource;
 
 /**
  * 
