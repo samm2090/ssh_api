@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.EmpleadoDAO;
 import pe.com.human.api.model.Empleado;
@@ -13,6 +14,7 @@ import pe.com.human.api.util.ConexionBaseDatos;
 import pe.com.human.api.util.ConfiguracionDataSource;
 import pe.com.human.api.util.PropertiesReader;
 
+@Repository
 public class EmpleadoDAOImpl implements EmpleadoDAO {
 
 	@Autowired
@@ -42,6 +44,9 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				resultado.setId(rs.getString("EMPCODTRA"));
 				resultado.setRol(rs.getString("ROL"));
 			}
+			
+			rs.close();
+			buscarEmpleado.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();

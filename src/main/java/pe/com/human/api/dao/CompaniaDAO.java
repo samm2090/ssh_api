@@ -15,6 +15,6 @@ import pe.com.human.api.util.ConfiguracionDataSource;
 public interface CompaniaDAO {
 	public List<Map<String, Object>> listarCompaniasXDocumento(String documento, ConfiguracionDataSource configuracion);
 
-	public Compania buscarCompaniaXEmpleado(String idCompania, String idSucursal, String documento,
+	public Compania buscarCompaniaXEmpleado(String idCompania, String idSucursal, String idEmpleado,
 			String contrasenia, ConfiguracionDataSource configuracionDataSource);
 }

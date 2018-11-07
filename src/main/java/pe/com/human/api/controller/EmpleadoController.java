@@ -23,7 +23,7 @@ import pe.com.human.api.service.EmpleadoService;
  */
 @RestController
 @RequestMapping("/v1/empleado/")
-public class EmpleadoController {
+public class EmpleadoController{
 
 	@Autowired
 	EmpleadoService empleadoService;
@@ -45,7 +45,7 @@ public class EmpleadoController {
 	@SuppressWarnings("unchecked")
 	@CrossOrigin
 	@RequestMapping(value = "auth/login", method = RequestMethod.POST)
-	public Map<String, Object> authLogin(@RequestBody Map<String, Object> parametros) {
+	public ResponseEntity<Map<String, Object>> authLogin(@RequestBody Map<String, Object> parametros) {
 		Map<String, Object> base = (Map<String, Object>) parametros.get("base");
 		Map<String, Object> compania = (Map<String, Object>) base.get("compania");
 		Map<String, Object> sucursal = (Map<String, Object>) compania.get("sucursal");
@@ -56,7 +56,8 @@ public class EmpleadoController {
 		String documento = parametros.get("documento").toString();
 		String contrasenia = parametros.get("contrasenia").toString();
 
-		return empleadoService.authLogin(idCompania, idSucursal, baseDatos, documento, contrasenia);
+		return new ResponseEntity<Map<String, Object>>(
+				empleadoService.authLogin(idCompania, idSucursal, baseDatos, documento, contrasenia), HttpStatus.OK);
 	}
 
 	@SuppressWarnings("unchecked")

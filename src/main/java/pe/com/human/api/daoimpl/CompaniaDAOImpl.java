@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.CompaniaDAO;
@@ -16,6 +17,7 @@ import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Sucursal;
 import pe.com.human.api.util.ConexionBaseDatos;
 import pe.com.human.api.util.ConfiguracionDataSource;
+import pe.com.human.api.util.PropertiesReader;
 
 /**
  * 
@@ -25,8 +27,8 @@ import pe.com.human.api.util.ConfiguracionDataSource;
 @Repository
 public class CompaniaDAOImpl implements CompaniaDAO {
 
-	// @Autowired
-	// DataSource datasource;
+	@Autowired
+	PropertiesReader lector;
 
 	@Override
 	public List<Map<String, Object>> listarCompaniasXDocumento(String documento,
@@ -34,11 +36,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 		List<Map<String, Object>> resultado = null;
 		Connection conexion = null;
 
-		// *Optimizar query
-		String query = "SELECT DISTINCT C.* FROM "
-				+ "EBCOMPANIA C INNER JOIN HR_EMPLEADO E ON E.EMPCODCIA = C.EBCODCIA AND E.EMPCODSUC = C.EBCODSUC RIGHT JOIN EBUSUEMP UE "
-				+ "ON UE.EMPCODTRA = E.EMPCODTRA AND UE.EMPCODCIA = E.EMPCODCIA AND UE.EMPCODSUC = E.EMPCODSUC "
-				+ "WHERE E.EMPNRODOCID = ? AND E.EMPFLGEST = '1'";
+		String query = lector.leerPropiedad("queries/compania.query").getProperty("listarCompaniasXDocumento");
 
 		try {
 			conexion = ConexionBaseDatos.obtenerConexion(configuracion);
@@ -59,7 +57,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 				sucursal = new Sucursal();
 				sucursal.setId(rs.getString("EBCODSUC"));
-				sucursal.setNombre(rs.getString("EBDESSUCC"));
+				sucursal.setNombre(rs.getString("EBDESSUC"));
 
 				compania.setSucursal(sucursal);
 
@@ -71,6 +69,8 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				resultado.add(companiaBase);
 
 			}
+			rs.close();
+			listarCompanias.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -87,10 +87,52 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 	}
 
 	@Override
-	public Compania buscarCompaniaXEmpleado(String idCompania, String idSucursal, String documento, String contrasenia,
+	public Compania buscarCompaniaXEmpleado(String idCompania, String idSucursal, String idEmpleado, String contrasenia,
 			ConfiguracionDataSource configuracionDataSource) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Compania compania = null;
+
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/compania.query").getProperty("buscarCompaniaXEmpleado");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarCompania = conexion.prepareStatement(query);
+			buscarCompania.setString(1, idCompania);
+			buscarCompania.setString(2, idSucursal);
+			buscarCompania.setString(3, idEmpleado);
+
+			ResultSet rs = buscarCompania.executeQuery();
+
+			compania = new Compania();
+			while (rs.next()) {
+				compania = new Compania();
+				compania.setId(rs.getString("EBCODCIA"));
+				compania.setNombre(rs.getString("EBDESCIA"));
+
+				Sucursal sucursal = new Sucursal();
+				sucursal.setId(rs.getString("EBCODSUC"));
+				sucursal.setNombre(rs.getString("EBDESSUC"));
+
+				compania.setSucursal(sucursal);
+			}
+			rs.close();
+			buscarCompania.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return compania;
 	}
 
 }
