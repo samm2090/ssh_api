@@ -15,16 +15,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-<<<<<<< HEAD:src/main/java/pe/com/human/servicios/service/EmpleadoService.java
-import pe.com.human.servicios.dao.CompaniaDAO;
-import pe.com.human.servicios.dao.UsuarioDAO;
-import pe.com.human.servicios.exception.ExcepcionNoExisteEmpleado;
-import pe.com.human.servicios.util.ConfiguracionDataSource;
-=======
 import pe.com.human.api.dao.CompaniaDAO;
+import pe.com.human.api.dao.UsuarioDAO;
 import pe.com.human.api.exception.ExcepcionNoExisteEmpleado;
 import pe.com.human.api.util.ConfiguracionDataSource;
->>>>>>> 330bf0b4f117530366c1ec3e1b8295563765934a:src/main/java/pe/com/human/api/service/EmpleadoService.java
 
 /**
  * 

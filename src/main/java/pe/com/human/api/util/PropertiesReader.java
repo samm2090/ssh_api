@@ -1,4 +1,4 @@
-package pe.com.human.servicios.util;
+package pe.com.human.api.util;
 
 import java.io.IOException;
 import java.io.InputStream;

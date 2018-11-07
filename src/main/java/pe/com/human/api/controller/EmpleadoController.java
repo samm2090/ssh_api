@@ -1,4 +1,4 @@
-package pe.com.human.servicios.controller;
+package pe.com.human.api.controller;
 
 import java.util.Map;
 
@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.com.human.servicios.service.EmpleadoService;
+import pe.com.human.api.service.EmpleadoService;
 
 /**
  * Controller dedicado a las operaciones con la autenticacion del usuario para
