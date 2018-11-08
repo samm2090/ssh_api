@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Armando Angulo
  */
-public interface GeneralDAO {
+public interface NavigationDAO {
     List<Menu> getNavigationMenus(MenusRequest request);
 
     List<Tab> getNavigationMenusTabs(TabsRequest request);

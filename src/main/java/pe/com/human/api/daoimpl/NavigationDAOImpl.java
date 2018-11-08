@@ -1,7 +1,7 @@
 package pe.com.human.api.daoimpl;
 
 import org.springframework.stereotype.Repository;
-import pe.com.human.api.dao.GeneralDAO;
+import pe.com.human.api.dao.NavigationDAO;
 import pe.com.human.api.model.apirequest.MenusItemsRequest;
 import pe.com.human.api.model.apirequest.MenusRequest;
 import pe.com.human.api.model.apirequest.TabsItemsRequest;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author Armando Angulo
  */
 @Repository
-public class GeneralDAOImpl implements GeneralDAO {
+public class NavigationDAOImpl implements NavigationDAO {
     @Override
     public List<Menu> getNavigationMenus(MenusRequest request) {
         List<Menu> menuLst = new ArrayList<>();
