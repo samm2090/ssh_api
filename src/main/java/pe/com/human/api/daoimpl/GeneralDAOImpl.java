@@ -3,8 +3,10 @@ package pe.com.human.api.daoimpl;
 import org.springframework.stereotype.Repository;
 import pe.com.human.api.dao.GeneralDAO;
 import pe.com.human.api.model.apirequest.MenusRequest;
+import pe.com.human.api.model.apirequest.TabsRequest;
 import pe.com.human.api.model.apiresponse.Icon;
 import pe.com.human.api.model.apiresponse.Menu;
+import pe.com.human.api.model.apiresponse.Tab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,5 +36,17 @@ public class GeneralDAOImpl implements GeneralDAO {
                 "02");
         menuLst.add(menu2);
         return menuLst;
+    }
+
+    @Override
+    public List<Tab> getNavigationMenusTabs(TabsRequest request) {
+        List<Tab> tabLst =  new ArrayList<>();
+        Tab tab = new Tab(
+                "",
+                1,
+                new Icon("", null),
+                "");
+        tabLst.add(tab);
+        return tabLst;
     }
 }

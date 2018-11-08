@@ -1,7 +1,11 @@
 package pe.com.human.api.model.apirequest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Base {
+    @JsonProperty("baseDatos")
     private String baseDatos;
+    @JsonProperty("compania")
     private Base.Compania compania;
 
     public String getBaseDatos() {
@@ -21,8 +25,10 @@ public class Base {
     }
 
     private static class Compania {
+        @JsonProperty("id")
         private String id;
-        private Compania.Sucursal sucursal;
+        @JsonProperty("sucursal")
+        private Sucursal sucursal;
 
         public String getId() {
             return id;
@@ -41,6 +47,7 @@ public class Base {
         }
 
         private static class Sucursal {
+            @JsonProperty("id")
             private String id;
 
             public String getId() {
