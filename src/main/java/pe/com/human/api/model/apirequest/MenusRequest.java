@@ -1,7 +1,11 @@
 package pe.com.human.api.model.apirequest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class MenusRequest {
+    @JsonProperty("base")
     private Base base;
+    @JsonProperty("empleado")
     private Empleado empleado;
 
     public Base getBase() {
@@ -21,6 +25,7 @@ public class MenusRequest {
     }
 
     private static class Empleado {
+        @JsonProperty("rol")
         String rol;
 
         public String getRol() {
