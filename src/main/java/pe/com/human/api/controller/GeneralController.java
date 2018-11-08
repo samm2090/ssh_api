@@ -5,11 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.human.api.model.apirequest.MenusRequest;
+import pe.com.human.api.model.apirequest.TabsItemsRequest;
 import pe.com.human.api.model.apirequest.TabsRequest;
-import pe.com.human.api.model.apiresponse.Menu;
-import pe.com.human.api.model.apiresponse.MenusResponse;
-import pe.com.human.api.model.apiresponse.Tab;
-import pe.com.human.api.model.apiresponse.TabsResponse;
+import pe.com.human.api.model.apiresponse.*;
 import pe.com.human.api.service.GeneralService;
 
 import java.util.List;
@@ -34,6 +32,13 @@ public class GeneralController {
     public ResponseEntity<TabsResponse> navigationMenusTabs(@RequestBody TabsRequest request) {
         List<Tab> tabLst = generalService.getNavigationMenustabs(request);
         TabsResponse response = new TabsResponse(new TabsResponse.Data(tabLst));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "navigation/menus/tabs/items",  method = RequestMethod.POST)
+    public ResponseEntity<ItemsResponse> navigationMenusTabsItems(@RequestBody TabsItemsRequest request) {
+        List<Item> itemLst = generalService.getNavigationMenusTabsItems(request);
+        ItemsResponse response = new ItemsResponse(new ItemsResponse.Data(itemLst));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

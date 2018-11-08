@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.human.api.dao.GeneralDAO;
 import pe.com.human.api.model.apirequest.MenusRequest;
+import pe.com.human.api.model.apirequest.TabsItemsRequest;
 import pe.com.human.api.model.apirequest.TabsRequest;
+import pe.com.human.api.model.apiresponse.Item;
 import pe.com.human.api.model.apiresponse.Menu;
 import pe.com.human.api.model.apiresponse.Tab;
 
@@ -24,6 +26,10 @@ public class GeneralService {
 
     public List<Tab> getNavigationMenustabs(TabsRequest request) {
         return generalDAO.getNavigationMenusTabs(request);
+    }
+
+    public List<Item> getNavigationMenusTabsItems(TabsItemsRequest request) {
+        return generalDAO.getNavigationMenusTabsItems(request);
     }
 }
 
