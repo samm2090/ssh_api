@@ -1,9 +1,19 @@
 package pe.com.human.api.model.apiresponse;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
+/**
+ * @author Armando Angulo
+ */
 public class MenusResponse {
+    @JsonProperty("data")
     private Data data;
+
+    public MenusResponse(Data data) {
+        this.data = data;
+    }
 
     public Data getData() {
         return data;
@@ -13,15 +23,20 @@ public class MenusResponse {
         this.data = data;
     }
 
-    private static class Data {
-        private List<Menu> menu;
+    public static class Data {
+        @JsonProperty("menus")
+        private List<Menu> menuLst;
 
-        public List<Menu> getMenu() {
-            return menu;
+        public Data(List<Menu> menuLst) {
+            this.menuLst = menuLst;
         }
 
-        public void setMenu(List<Menu> menu) {
-            this.menu = menu;
+        public List<Menu> getMenuLst() {
+            return menuLst;
+        }
+
+        public void setMenuLst(List<Menu> menuLst) {
+            this.menuLst = menuLst;
         }
     }
 }

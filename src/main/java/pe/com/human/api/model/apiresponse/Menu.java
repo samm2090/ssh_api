@@ -1,12 +1,32 @@
 package pe.com.human.api.model.apiresponse;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * @author Armando Angulo
+ */
 public class Menu {
+    @JsonProperty("id")
     private String id;
+    @JsonProperty("order")
     private int order;
+    @JsonProperty("icon")
     private Icon icon;
+    @JsonProperty("title")
     private String title;
+    @JsonProperty("navigation")
     private String navigation;
+    @JsonProperty("show")
     private String show;
+
+    public Menu(String id, int order, Icon icon, String title, String navigation, String show) {
+        this.id = id;
+        this.order = order;
+        this.icon = icon;
+        this.title = title;
+        this.navigation = navigation;
+        this.show = show;
+    }
 
     public String getId() {
         return id;
