@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.EmpleadoDAO;
 import pe.com.human.api.model.Empleado;
+import pe.com.human.api.model.Widget;
 import pe.com.human.api.util.ConexionBaseDatos;
 import pe.com.human.api.util.ConfiguracionDataSource;
 import pe.com.human.api.util.PropertiesReader;
@@ -60,6 +61,13 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			}
 		}
 		return resultado;
+	}
+
+	@Override
+	public Widget cantidadSubordinados(String idCompania, String idSucursal, String idEmpleado,
+			ConfiguracionDataSource configuracionDataSource) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
