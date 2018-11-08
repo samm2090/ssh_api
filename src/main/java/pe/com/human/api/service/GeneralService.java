@@ -3,6 +3,7 @@ package pe.com.human.api.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.human.api.dao.GeneralDAO;
+import pe.com.human.api.model.apirequest.MenusItemsRequest;
 import pe.com.human.api.model.apirequest.MenusRequest;
 import pe.com.human.api.model.apirequest.TabsItemsRequest;
 import pe.com.human.api.model.apirequest.TabsRequest;
@@ -30,6 +31,10 @@ public class GeneralService {
 
     public List<Item> getNavigationMenusTabsItems(TabsItemsRequest request) {
         return generalDAO.getNavigationMenusTabsItems(request);
+    }
+
+    public List<Item> getNavigationMenusItems(MenusItemsRequest request) {
+        return generalDAO.getNavigationMenusItems(request);
     }
 }
 

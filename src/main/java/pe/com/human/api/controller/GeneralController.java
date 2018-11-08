@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.com.human.api.model.apirequest.MenusItemsRequest;
 import pe.com.human.api.model.apirequest.MenusRequest;
 import pe.com.human.api.model.apirequest.TabsItemsRequest;
 import pe.com.human.api.model.apirequest.TabsRequest;
@@ -39,6 +40,13 @@ public class GeneralController {
     public ResponseEntity<ItemsResponse> navigationMenusTabsItems(@RequestBody TabsItemsRequest request) {
         List<Item> itemLst = generalService.getNavigationMenusTabsItems(request);
         ItemsResponse response = new ItemsResponse(new ItemsResponse.Data(itemLst));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "navigation/menus/items",  method = RequestMethod.POST)
+    public ResponseEntity<ItemsResponse> navigationMenusItems(@RequestBody MenusItemsRequest request) {
+        List<Item> itemList = generalService.getNavigationMenusItems(request);
+        ItemsResponse response = new ItemsResponse(new ItemsResponse.Data(itemList));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
