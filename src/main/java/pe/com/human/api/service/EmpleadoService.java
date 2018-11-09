@@ -101,8 +101,12 @@ public class EmpleadoService {
 		Empleado empleado = empleadoDAO.buscarEmpleadoXUsuario(idCompania, idSucursal, documento, contrasenia,
 				configuracionDataSource);
 
-		Compania compania = companiaDAO.buscarCompaniaXEmpleado(idCompania, idSucursal, empleado.getId(), contrasenia,
-				configuracionDataSource);
+		Compania compania = null;
+
+		if (empleado != null) {
+			companiaDAO.buscarCompaniaXEmpleado(idCompania, idSucursal, empleado.getId(), contrasenia,
+					configuracionDataSource);
+		}
 
 		data.put("empleado", empleado);
 		data.put("compania", compania);
@@ -120,7 +124,8 @@ public class EmpleadoService {
 
 		List<Widget> data = new ArrayList<>();
 
-		Widget boletasWidget = boletaDAO.cantidadPagosMesActual(idCompania, idSucursal, idEmpleado, configuracionDataSource);
+		Widget boletasWidget = boletaDAO.cantidadPagosMesActual(idCompania, idSucursal, idEmpleado,
+				configuracionDataSource);
 		Widget vacacionesWidget = vacacionesDAO.cantidadSaldo(idCompania, idSucursal, idEmpleado,
 				configuracionDataSource);
 		Widget evdWidget = evaluacionDesempenioDAO.promedioNotaDesempenio(idCompania, idSucursal, idEmpleado,
