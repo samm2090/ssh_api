@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.com.human.api.model.apirequest.EmpleadoRequest;
+import pe.com.human.api.model.apiresponse.EmpleadoResumenResponse;
 import pe.com.human.api.service.EmpleadoService;
 
 /**
@@ -32,7 +34,7 @@ public class EmpleadoController{
 	 * Metodo que lista todas las companias a las que pertenece un empleado por
 	 * Documento Identificacion .
 	 * 
-	 * @param params
+	 * @param
 	 * @return
 	 */
 	@CrossOrigin
@@ -58,6 +60,12 @@ public class EmpleadoController{
 
 		return new ResponseEntity<Map<String, Object>>(
 				empleadoService.authLogin(idCompania, idSucursal, baseDatos, documento, contrasenia), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "resumen", method = RequestMethod.POST)
+	public ResponseEntity<EmpleadoResumenResponse> empleadoResumen(@RequestBody EmpleadoRequest request) {
+		EmpleadoResumenResponse response = empleadoService.getEmpleadoResument(request);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@SuppressWarnings("unchecked")

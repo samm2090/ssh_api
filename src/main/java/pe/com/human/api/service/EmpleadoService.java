@@ -19,6 +19,8 @@ import pe.com.human.api.exception.ExcepcionNoExisteEmpleado;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.Widget;
+import pe.com.human.api.model.apirequest.EmpleadoRequest;
+import pe.com.human.api.model.apiresponse.EmpleadoResumenResponse;
 import pe.com.human.api.util.ConfiguracionDataSource;
 
 /**
@@ -51,6 +53,10 @@ public class EmpleadoService {
 	PrestamoDAO prestamoDAO;
 
 	static final String ROL_JEFE = "01";
+
+	public EmpleadoResumenResponse getEmpleadoResument(EmpleadoRequest request) {
+		return empleadoDAO.getEmpleadoResumen(request);
+	}
 
 	public Map<String, Object> listarCompaniasXDocumento(String documento) {
 		Map<String, Object> respuesta = new HashMap<>();

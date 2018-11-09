@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import pe.com.human.api.dao.EmpleadoDAO;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.Widget;
+import pe.com.human.api.model.apirequest.EmpleadoRequest;
+import pe.com.human.api.model.apiresponse.*;
 import pe.com.human.api.util.ConexionBaseDatos;
 import pe.com.human.api.util.ConfiguracionDataSource;
 import pe.com.human.api.util.PropertiesReader;
@@ -20,6 +22,15 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 
 	@Autowired
 	PropertiesReader lector;
+
+	@Override
+	public EmpleadoResumenResponse getEmpleadoResumen(EmpleadoRequest request) {
+		return new EmpleadoResumenResponse(
+				new EmpleadoResumenResponse.Data(
+						new Avatar("A"),
+						new NombrePersonal("X", "Y", "Z"),
+						new CodigoTabla("A", "B", "C")));
+	}
 
 	@Override
 	public Empleado buscarEmpleadoXUsuario(String idCompania, String idSucursal, String documento, String contrasenia,
