@@ -1,12 +1,15 @@
 package pe.com.human.api.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import pe.com.human.api.service.EmpleadoService;
 
 public class ConfiguracionDataSource implements Serializable {
 
@@ -18,18 +21,23 @@ public class ConfiguracionDataSource implements Serializable {
 	private String username;
 	private String password;
 
+	private static Logger logger = Logger.getLogger(EmpleadoService.class);
+
 	public List<ConfiguracionDataSource> listarConfiguracionJson(String resource) {
 
 		ObjectMapper mapper = new ObjectMapper();
 		List<ConfiguracionDataSource> configuraciones = null;
 		try {
-			configuraciones = mapper.readValue(new File(getClass().getResource("/bases_datos.json").getPath()),
+			configuraciones = mapper.readValue(getClass().getResourceAsStream(resource),
 					new TypeReference<List<ConfiguracionDataSource>>() {
 					});
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			logger.info(e.getMessage());
 		}
+
+		logger.info(configuraciones);
 
 		return configuraciones;
 	}
@@ -37,8 +45,7 @@ public class ConfiguracionDataSource implements Serializable {
 	public ConfiguracionDataSource(String resource, String baseDatos) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			List<ConfiguracionDataSource> configuraciones = mapper.readValue(
-					new File(getClass().getResource("/bases_datos.json").getPath()),
+			List<ConfiguracionDataSource> configuraciones = mapper.readValue(getClass().getResourceAsStream(resource),
 					new TypeReference<List<ConfiguracionDataSource>>() {
 					});
 

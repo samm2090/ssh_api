@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -30,15 +31,23 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 	@Autowired
 	PropertiesReader lector;
 
+	private static Logger logger = Logger.getLogger(CompaniaDAOImpl.class);
+
 	@Override
-	public List<Map<String, Object>> listarCompaniasXDocumento(String documento,
-			ConfiguracionDataSource configuracion) {
+	public List<Map<String, Object>> listarCompaniasXDocumento(String documento) {
 		List<Map<String, Object>> resultado = null;
 		Connection conexion = null;
 
 		String query = lector.leerPropiedad("queries/compania.query").getProperty("listarCompaniasXDocumento");
 
 		try {
+			ConfiguracionDataSource configuracion = new ConfiguracionDataSource();
+			configuracion.setNombre("APP_MOVIL");
+			configuracion.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+			configuracion.setUrl("jdbc:oracle:thin:@192.168.10.137:1521:orcl");
+			configuracion.setUsername("APP_MOVIL");
+			configuracion.setPassword("APP_MOVIL");
+			
 			conexion = ConexionBaseDatos.obtenerConexion(configuracion);
 
 			PreparedStatement listarCompanias = conexion.prepareStatement(query);
@@ -48,26 +57,34 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 			Compania compania;
 			Sucursal sucursal;
+			ConfiguracionDataSource configuracionBD;
 			Map<String, Object> companiaBase;
 			resultado = new ArrayList<>();
 			while (rs.next()) {
 				compania = new Compania();
-				compania.setId(rs.getString("EBCODCIA"));
-				compania.setNombre(rs.getString("EBDESCIA"));
+				compania.setId(rs.getString("COM_C_HUMAN"));
+				compania.setNombre(rs.getString("COM_D_NOMBRE"));
 
 				sucursal = new Sucursal();
-				sucursal.setId(rs.getString("EBCODSUC"));
-				sucursal.setNombre(rs.getString("EBDESSUC"));
+				sucursal.setId(rs.getString("SUC_C_HUMAN"));
+				sucursal.setNombre(rs.getString("SUC_D_NOMBRE"));
 
 				compania.setSucursal(sucursal);
 
 				companiaBase = new HashMap<>();
 
 				companiaBase.put("compania", compania);
-				companiaBase.put("baseDatos", configuracion.getNombre());
+				
+				configuracionBD = new ConfiguracionDataSource();
+				configuracionBD.setNombre(rs.getString("BD_D_NOMBRE"));
+				configuracionBD.setDriverClassName(rs.getString("BD_D_DRIVER"));
+				configuracionBD.setUrl(rs.getString("URL"));
+				configuracionBD.setUsername(rs.getString("BD_D_USER"));
+				configuracionBD.setPassword(rs.getString("BD_D_PASS"));
+				
+				companiaBase.put("baseDatos", configuracionBD.getNombre());
 
 				resultado.add(companiaBase);
-
 			}
 			rs.close();
 			listarCompanias.close();
@@ -96,8 +113,12 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 		String query = lector.leerPropiedad("queries/compania.query").getProperty("buscarCompaniaXEmpleado");
 
+		logger.info(query);
 		try {
 			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			logger.info(configuracionDataSource.getDriverClassName());
+			logger.info(conexion);
 
 			PreparedStatement buscarCompania = conexion.prepareStatement(query);
 			buscarCompania.setString(1, idCompania);
@@ -121,8 +142,11 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 			rs.close();
 			buscarCompania.close();
 
+			logger.info(compania.getNombre());
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println(e);
 		} finally {
 			if (conexion != null) {
 				try {

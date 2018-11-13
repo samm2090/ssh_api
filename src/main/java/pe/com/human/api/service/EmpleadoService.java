@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.human.api.dao.AsistenciaDAO;
+import pe.com.human.api.dao.BaseDatosDAO;
 import pe.com.human.api.dao.BoletaDAO;
 import pe.com.human.api.dao.CompaniaDAO;
 import pe.com.human.api.dao.EmpleadoDAO;
@@ -35,6 +37,9 @@ public class EmpleadoService {
 	CompaniaDAO companiaDAO;
 
 	@Autowired
+	BaseDatosDAO baseDatosDAO;
+
+	@Autowired
 	EmpleadoDAO empleadoDAO;
 
 	@Autowired
@@ -52,6 +57,8 @@ public class EmpleadoService {
 	@Autowired
 	PrestamoDAO prestamoDAO;
 
+	private static Logger logger = Logger.getLogger(EmpleadoService.class);
+
 	static final String ROL_JEFE = "01";
 
 	public EmpleadoResumenResponse getEmpleadoResument(EmpleadoRequest request) {
@@ -60,32 +67,26 @@ public class EmpleadoService {
 
 	public Map<String, Object> listarCompaniasXDocumento(String documento) {
 		Map<String, Object> respuesta = new HashMap<>();
+		try {
+			List<Map<String, Object>> companias = companiaDAO.listarCompaniasXDocumento(documento);
+			if (!companias.isEmpty()) {
 
-		ConfiguracionDataSource conf = new ConfiguracionDataSource();
+				List<Map<String, Object>> data = new ArrayList<>();
+				Map<String, Object> comp;
+				for (Map<String, Object> compania : companias) {
+					comp = new HashMap<>();
+					comp.put("compania", compania.get("compania"));
+					comp.put("baseDatos", compania.get("baseDatos"));
+					data.add(comp);
+				}
 
-		List<Map<String, Object>> companias = new ArrayList<>();
-		List<ConfiguracionDataSource> configuraciones = conf.listarConfiguracionJson("/bases_datos.json");
-
-		for (ConfiguracionDataSource configuracion : configuraciones) {
-			companias.addAll(companiaDAO.listarCompaniasXDocumento(documento, configuracion));
-		}
-
-		if (!companias.isEmpty()) {
-
-			List<Map<String, Object>> data = new ArrayList<>();
-			Map<String, Object> comp;
-			for (Map<String, Object> compania : companias) {
-				comp = new HashMap<>();
-				comp.put("compania", compania.get("compania"));
-				comp.put("baseDatos", compania.get("baseDatos"));
-				data.add(comp);
+				respuesta.put("data", data);
+			} else {
+				throw new ExcepcionNoExisteEmpleado();
 			}
-
-			respuesta.put("data", data);
-		} else {
-			throw new ExcepcionNoExisteEmpleado();
+		} catch (Exception e) {
+			logger.info("Exception: " + e);
 		}
-
 		return respuesta;
 	}
 
@@ -94,18 +95,21 @@ public class EmpleadoService {
 
 		Map<String, Object> respuesta = new HashMap<>();
 
-		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource("/bases_datos.json", baseDatos);
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXNombre(baseDatos);
 
 		Map<String, Object> data = new HashMap<>();
 
-		Empleado empleado = empleadoDAO.buscarEmpleadoXUsuario(idCompania, idSucursal, documento, contrasenia,
-				configuracionDataSource);
-
+		Empleado empleado = null;
 		Compania compania = null;
 
-		if (empleado != null) {
-			companiaDAO.buscarCompaniaXEmpleado(idCompania, idSucursal, empleado.getId(), contrasenia,
+		if (configuracionDataSource != null) {
+			empleado = empleadoDAO.buscarEmpleadoXUsuario(idCompania, idSucursal, documento, contrasenia,
 					configuracionDataSource);
+
+			if (empleado != null) {
+				compania = companiaDAO.buscarCompaniaXEmpleado(idCompania, idSucursal, empleado.getId(), contrasenia,
+						configuracionDataSource);
+			}
 		}
 
 		data.put("empleado", empleado);
@@ -120,7 +124,7 @@ public class EmpleadoService {
 			String idEmpleado, String rol) {
 		Map<String, Object> respuesta = new HashMap<>();
 
-		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource("/bases_datos.json", baseDatos);
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXNombre(baseDatos);
 
 		List<Widget> data = new ArrayList<>();
 

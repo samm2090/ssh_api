@@ -3,7 +3,6 @@ package pe.com.human.api.dao;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
-import pe.com.human.api.model.apiresponse.EmpleadoResponse;
 import pe.com.human.api.model.apiresponse.EmpleadoResumenResponse;
 import pe.com.human.api.util.ConfiguracionDataSource;
 
