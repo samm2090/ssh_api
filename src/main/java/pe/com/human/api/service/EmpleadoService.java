@@ -90,7 +90,7 @@ public class EmpleadoService {
 		return respuesta;
 	}
 
-	public Map<String, Object> authLogin(String idCompania, String idSucursal, String baseDatos, String documento,
+	public Map<String, Object> authLogin(String idCompania, String idSucursal, int baseDatos, String documento,
 			String contrasenia) {
 
 		Map<String, Object> respuesta = new HashMap<>();
@@ -120,7 +120,7 @@ public class EmpleadoService {
 		return respuesta;
 	}
 
-	public Map<String, Object> dashboardWidgets(String idCompania, String idSucursal, String baseDatos,
+	public Map<String, Object> dashboardWidgets(String idCompania, String idSucursal, int baseDatos,
 			String idEmpleado, String rol) {
 		Map<String, Object> respuesta = new HashMap<>();
 

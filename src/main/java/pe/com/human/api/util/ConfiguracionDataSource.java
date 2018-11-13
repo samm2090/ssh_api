@@ -14,15 +14,15 @@ import pe.com.human.api.service.EmpleadoService;
 public class ConfiguracionDataSource implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	private static Logger logger = Logger.getLogger(EmpleadoService.class);
+	
+	private int id;
 	private String nombre;
 	private String driverClassName;
 	private String url;
 	private String username;
 	private String password;
-
-	private static Logger logger = Logger.getLogger(EmpleadoService.class);
-
+	
 	public List<ConfiguracionDataSource> listarConfiguracionJson(String resource) {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -67,6 +67,14 @@ public class ConfiguracionDataSource implements Serializable {
 
 	public ConfiguracionDataSource() {
 
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNombre() {

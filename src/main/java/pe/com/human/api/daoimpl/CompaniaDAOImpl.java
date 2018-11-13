@@ -57,7 +57,6 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 			Compania compania;
 			Sucursal sucursal;
-			ConfiguracionDataSource configuracionBD;
 			Map<String, Object> companiaBase;
 			resultado = new ArrayList<>();
 			while (rs.next()) {
@@ -75,14 +74,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 				companiaBase.put("compania", compania);
 				
-				configuracionBD = new ConfiguracionDataSource();
-				configuracionBD.setNombre(rs.getString("BD_D_NOMBRE"));
-				configuracionBD.setDriverClassName(rs.getString("BD_D_DRIVER"));
-				configuracionBD.setUrl(rs.getString("URL"));
-				configuracionBD.setUsername(rs.getString("BD_D_USER"));
-				configuracionBD.setPassword(rs.getString("BD_D_PASS"));
-				
-				companiaBase.put("baseDatos", configuracionBD.getNombre());
+				companiaBase.put("baseDatos", rs.getInt("BD_I_ID"));
 
 				resultado.add(companiaBase);
 			}

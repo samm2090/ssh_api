@@ -54,7 +54,7 @@ public class EmpleadoController{
 
 		String idCompania = compania.get("id").toString();
 		String idSucursal = sucursal.get("id").toString();
-		String baseDatos = base.get("baseDatos").toString();
+		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String documento = parametros.get("documento").toString();
 		String contrasenia = parametros.get("contrasenia").toString();
 
@@ -79,7 +79,7 @@ public class EmpleadoController{
 
 		String idCompania = compania.get("id").toString();
 		String idSucursal = sucursal.get("id").toString();
-		String baseDatos = base.get("baseDatos").toString();
+		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String idEmpleado = empleado.get("id").toString();
 		String rol = empleado.get("rol").toString();
 

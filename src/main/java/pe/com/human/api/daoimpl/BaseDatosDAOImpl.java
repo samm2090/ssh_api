@@ -20,7 +20,7 @@ public class BaseDatosDAOImpl implements BaseDatosDAO {
 	PropertiesReader lector;
 
 	@Override
-	public ConfiguracionDataSource buscarConfiguracionXNombre(String nombre) {
+	public ConfiguracionDataSource buscarConfiguracionXNombre(int baseDatos) {
 		ConfiguracionDataSource configuracionBD = null;
 
 		String query = lector.leerPropiedad("queries/baseDatos.query").getProperty("buscarConfiguracionXNombre");
@@ -36,7 +36,7 @@ public class BaseDatosDAOImpl implements BaseDatosDAO {
 			conexion = ConexionBaseDatos.obtenerConexion(bdConfig);
 
 			PreparedStatement buscarConexion = conexion.prepareStatement(query);
-			buscarConexion.setString(1, nombre);
+			buscarConexion.setInt(1, baseDatos);
 
 			ResultSet rs = buscarConexion.executeQuery();
 
