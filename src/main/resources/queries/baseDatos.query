@@ -1,0 +1,3 @@
+buscarConfiguracionXNombre = 	SELECT BD.*, BD.BD_D_DRIVER_URL || BD.BD_D_HOST || ':' || BD.BD_D_PORT || ':' || BD.BD_D_SID "URL" \
+								FROM SSMG_BD BD \
+								WHERE BD_E_EST = 1 AND BD_D_NOMBRE = ?
