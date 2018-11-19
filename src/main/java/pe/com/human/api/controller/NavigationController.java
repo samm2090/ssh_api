@@ -1,17 +1,20 @@
 package pe.com.human.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import pe.com.human.api.model.apirequest.MenusItemsRequest;
-import pe.com.human.api.model.apirequest.MenusRequest;
-import pe.com.human.api.model.apirequest.TabsItemsRequest;
-import pe.com.human.api.model.apirequest.TabsRequest;
-import pe.com.human.api.model.apiresponse.*;
-import pe.com.human.api.service.NavigationService;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import pe.com.human.api.model.apirequest.MenusRequest;
+import pe.com.human.api.model.apirequest.TabsRequest;
+import pe.com.human.api.model.apiresponse.Menu;
+import pe.com.human.api.model.apiresponse.MenusResponse;
+import pe.com.human.api.service.NavigationService;
 
 /**
  * @author Armando Angulo
@@ -30,23 +33,23 @@ public class NavigationController {
     }
 
     @RequestMapping(value = "menus/tabs",  method = RequestMethod.POST)
-    public ResponseEntity<TabsResponse> navigationMenusTabs(@RequestBody TabsRequest request) {
-        List<Tab> tabLst = navigationService.getNavigationMenusTabs(request);
-        TabsResponse response = new TabsResponse(new TabsResponse.Data(tabLst));
+    public ResponseEntity<MenusResponse> navigationMenusTabs(@RequestBody TabsRequest request) {
+        List<Menu> tabLst = navigationService.getNavigationMenusTabs(request);
+        MenusResponse response = new MenusResponse(new MenusResponse.Data(tabLst));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "menus/tabs/items",  method = RequestMethod.POST)
-    public ResponseEntity<ItemsResponse> navigationMenusTabsItems(@RequestBody TabsItemsRequest request) {
-        List<Item> itemLst = navigationService.getNavigationMenusTabsItems(request);
-        ItemsResponse response = new ItemsResponse(new ItemsResponse.Data(itemLst));
+    public ResponseEntity<MenusResponse> navigationMenusTabsItems(@RequestBody TabsRequest request) {
+        List<Menu> itemLst = navigationService.getNavigationMenusTabsItems(request);
+        MenusResponse response = new MenusResponse(new MenusResponse.Data(itemLst));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "menus/items",  method = RequestMethod.POST)
-    public ResponseEntity<ItemsResponse> navigationMenusItems(@RequestBody MenusItemsRequest request) {
-        List<Item> itemList = navigationService.getNavigationMenusItems(request);
-        ItemsResponse response = new ItemsResponse(new ItemsResponse.Data(itemList));
+    public ResponseEntity<MenusResponse> navigationMenusItems(@RequestBody TabsRequest request) {
+        List<Menu> itemList = navigationService.getNavigationMenusItems(request);
+        MenusResponse response = new MenusResponse(new MenusResponse.Data(itemList));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -24,7 +24,7 @@ public class Base {
         this.compania = compania;
     }
 
-    private static class Compania {
+    public static class Compania {
         @JsonProperty("id")
         private String id;
         @JsonProperty("sucursal")

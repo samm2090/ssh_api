@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +43,6 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 		try {
 			ConfiguracionDataSource configuracion = new ConfiguracionDataSource();
-			configuracion.setNombre("APP_MOVIL");
-			configuracion.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-			configuracion.setUrl("jdbc:oracle:thin:@192.168.10.137:1521:orcl");
-			configuracion.setUsername("APP_MOVIL");
-			configuracion.setPassword("APP_MOVIL");
 			
 			conexion = ConexionBaseDatos.obtenerConexion(configuracion);
 
@@ -109,9 +105,6 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 		try {
 			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
 
-			logger.info(configuracionDataSource.getDriverClassName());
-			logger.info(conexion);
-
 			PreparedStatement buscarCompania = conexion.prepareStatement(query);
 			buscarCompania.setString(1, idCompania);
 			buscarCompania.setString(2, idSucursal);
@@ -133,8 +126,6 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 			}
 			rs.close();
 			buscarCompania.close();
-
-			logger.info(compania.getNombre());
 
 		} catch (SQLException e) {
 			e.printStackTrace();

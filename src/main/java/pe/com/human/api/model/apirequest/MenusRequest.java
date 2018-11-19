@@ -24,7 +24,7 @@ public class MenusRequest {
         this.empleado = empleado;
     }
 
-    private static class Empleado {
+    public static class Empleado {
         @JsonProperty("rol")
         String rol;
 

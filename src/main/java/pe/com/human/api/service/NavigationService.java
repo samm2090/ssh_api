@@ -1,41 +1,92 @@
 package pe.com.human.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pe.com.human.api.dao.NavigationDAO;
-import pe.com.human.api.model.apirequest.MenusItemsRequest;
-import pe.com.human.api.model.apirequest.MenusRequest;
-import pe.com.human.api.model.apirequest.TabsItemsRequest;
-import pe.com.human.api.model.apirequest.TabsRequest;
-import pe.com.human.api.model.apiresponse.Item;
-import pe.com.human.api.model.apiresponse.Menu;
-import pe.com.human.api.model.apiresponse.Tab;
 
-import java.util.List;
+import pe.com.human.api.dao.BaseDatosDAO;
+import pe.com.human.api.dao.EmpleadoDAO;
+import pe.com.human.api.dao.MenuDAO;
+import pe.com.human.api.model.apirequest.MenusRequest;
+import pe.com.human.api.model.apirequest.TabsRequest;
+import pe.com.human.api.model.apiresponse.Menu;
+import pe.com.human.api.util.ConfiguracionDataSource;
 
 /**
  * @author Armando Angulo
  */
 @Service
 public class NavigationService {
-    @Autowired
-    NavigationDAO navigationDAO;
 
-    public List<Menu> getNavigationMenus(MenusRequest request) {
-        return navigationDAO.getNavigationMenus(request);
-    }
+	private static final int TIPO_MENU = 1;
+	private static final int TIPO_TAB = 2;
+	private static final int TIPO_ITEM = 3;
 
-    public List<Tab> getNavigationMenusTabs(TabsRequest request) {
-        return navigationDAO.getNavigationMenusTabs(request);
-    }
+	@Autowired
+	EmpleadoDAO empleadoDAO;
 
-    public List<Item> getNavigationMenusTabsItems(TabsItemsRequest request) {
-        return navigationDAO.getNavigationMenusTabsItems(request);
-    }
+	@Autowired
+	MenuDAO menuDAO;
 
-    public List<Item> getNavigationMenusItems(MenusItemsRequest request) {
-        return navigationDAO.getNavigationMenusItems(request);
-    }
+	@Autowired
+	BaseDatosDAO baseDatosDAO;
+
+	public List<Menu> getNavigationMenus(MenusRequest request) {
+		String codcia = request.getBase().getCompania().getId();
+		int idRol = Integer.parseInt(request.getEmpleado().getRol());
+		String rol = "%";
+
+		if (idRol == 2) {
+			rol = "2";
+		}
+		
+		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource();
+		return menuDAO.buscarMenu(codcia, TIPO_MENU, rol, configuracionDataSource);
+	}
+
+	public List<Menu> getNavigationMenusTabs(TabsRequest request) {
+		String codcia = request.getBase().getCompania().getId();
+		int idRol = Integer.parseInt(request.getEmpleado().getRol());
+		String rol = "%";
+		int idPadre = Integer.parseInt(request.getMenu().getId());
+
+		if (idRol == 2) {
+			rol = "2";
+		}
+
+		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource();
+
+		return menuDAO.buscarSubMenu(codcia, TIPO_TAB, rol, idPadre, configuracionDataSource);
+	}
+
+	public List<Menu> getNavigationMenusTabsItems(TabsRequest request) {
+		String codcia = request.getBase().getCompania().getId();
+		int idRol = Integer.parseInt(request.getEmpleado().getRol());
+		String rol = "%";
+		int idPadre = Integer.parseInt(request.getMenu().getId());
+
+		if (idRol == 2) {
+			rol = "2";
+		}
+
+		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource();
+
+		return menuDAO.buscarSubMenu(codcia, TIPO_ITEM, rol, idPadre, configuracionDataSource);
+	}
+
+	public List<Menu> getNavigationMenusItems(TabsRequest request) {
+		String codcia = request.getBase().getCompania().getId();
+		int idRol = Integer.parseInt(request.getEmpleado().getRol());
+		String rol = "%";
+		int idPadre = Integer.parseInt(request.getMenu().getId());
+
+		if (idRol == 2) {
+			rol = "2";
+		}
+
+		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource();
+
+		return menuDAO.buscarSubMenu(codcia, TIPO_ITEM, rol, idPadre, configuracionDataSource);
+	}
 }
-
-

@@ -20,7 +20,7 @@ public class BaseDatosDAOImpl implements BaseDatosDAO {
 	PropertiesReader lector;
 
 	@Override
-	public ConfiguracionDataSource buscarConfiguracionXNombre(int baseDatos) {
+	public ConfiguracionDataSource buscarConfiguracionXId(int baseDatos) {
 		ConfiguracionDataSource configuracionBD = null;
 
 		String query = lector.leerPropiedad("queries/baseDatos.query").getProperty("buscarConfiguracionXNombre");

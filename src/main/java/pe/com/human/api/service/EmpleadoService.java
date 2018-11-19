@@ -95,7 +95,7 @@ public class EmpleadoService {
 
 		Map<String, Object> respuesta = new HashMap<>();
 
-		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXNombre(baseDatos);
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
 		Map<String, Object> data = new HashMap<>();
 
@@ -124,7 +124,7 @@ public class EmpleadoService {
 			String idEmpleado, String rol) {
 		Map<String, Object> respuesta = new HashMap<>();
 
-		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXNombre(baseDatos);
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
 		List<Widget> data = new ArrayList<>();
 

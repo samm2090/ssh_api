@@ -3,6 +3,7 @@ package pe.com.human.api.util;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -15,14 +16,14 @@ public class ConfiguracionDataSource implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger(EmpleadoService.class);
-	
+
 	private int id;
 	private String nombre;
 	private String driverClassName;
 	private String url;
 	private String username;
 	private String password;
-	
+
 	public List<ConfiguracionDataSource> listarConfiguracionJson(String resource) {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -66,8 +67,17 @@ public class ConfiguracionDataSource implements Serializable {
 	}
 
 	public ConfiguracionDataSource() {
+		PropertiesReader lector = new PropertiesReader();
 
+		Properties datasource = lector.leerPropiedad("config/app_movil_datasource.properties");
+
+		this.nombre = datasource.getProperty("nombre");
+		this.driverClassName = datasource.getProperty("driverClassName");
+		this.url = datasource.getProperty("url");
+		this.username = datasource.getProperty("username");
+		this.password = datasource.getProperty("password");
 	}
+
 
 	public int getId() {
 		return id;

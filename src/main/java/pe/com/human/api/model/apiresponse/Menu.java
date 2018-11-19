@@ -6,73 +6,76 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Armando Angulo
  */
 public class Menu {
-    @JsonProperty("id")
-    private String id;
-    @JsonProperty("order")
-    private int order;
-    @JsonProperty("icon")
-    private Icon icon;
-    @JsonProperty("title")
-    private String title;
-    @JsonProperty("navigation")
-    private String navigation;
-    @JsonProperty("show")
-    private String show;
+	@JsonProperty("id")
+	private String id;
+	@JsonProperty("order")
+	private int order;
+	@JsonProperty("icon")
+	private Icon icon;
+	@JsonProperty("title")
+	private String title;
+	@JsonProperty("navigation")
+	private String navigation;
+	@JsonProperty("show")
+	private String show;
 
-    public Menu(String id, int order, Icon icon, String title, String navigation, String show) {
-        this.id = id;
-        this.order = order;
-        this.icon = icon;
-        this.title = title;
-        this.navigation = navigation;
-        this.show = show;
-    }
+	public Menu() {
+	};
 
-    public String getId() {
-        return id;
-    }
+	public Menu(String id, int order, Icon icon, String title, String navigation, String show) {
+		this.id = id;
+		this.order = order;
+		this.icon = icon;
+		this.title = title;
+		this.navigation = navigation;
+		this.show = show;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public int getOrder() {
-        return order;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
+	public int getOrder() {
+		return order;
+	}
 
-    public Icon getIcon() {
-        return icon;
-    }
+	public void setOrder(int order) {
+		this.order = order;
+	}
 
-    public void setIcon(Icon icon) {
-        this.icon = icon;
-    }
+	public Icon getIcon() {
+		return icon;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setIcon(Icon icon) {
+		this.icon = icon;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getNavigation() {
-        return navigation;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setNavigation(String navigation) {
-        this.navigation = navigation;
-    }
+	public String getNavigation() {
+		return navigation;
+	}
 
-    public String getShow() {
-        return show;
-    }
+	public void setNavigation(String navigation) {
+		this.navigation = navigation;
+	}
 
-    public void setShow(String show) {
-        this.show = show;
-    }
+	public String getShow() {
+		return show;
+	}
+
+	public void setShow(String show) {
+		this.show = show;
+	}
 }
