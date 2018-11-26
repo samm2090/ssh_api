@@ -17,8 +17,8 @@ import pe.com.human.api.util.PropertiesReader;
 @Repository
 public class EvaluacionDesempenioDAOImpl implements EvaluacionDesempenioDAO {
 	
-	static final String TITLE_BOLETAS = "EVD";
-	static final String SUBTITLE_BOLETAS = "Aceptable";
+	static final String TITTLE_EVD = "EVD";
+	static final String SUBTITLE_EVD = "Aceptable";
 
 	@Autowired
 	PropertiesReader lector;
@@ -45,8 +45,8 @@ public class EvaluacionDesempenioDAOImpl implements EvaluacionDesempenioDAO {
 			if (rs.next()) {
 				resultado = new Widget();
 
-				resultado.setTitle(TITLE_BOLETAS);
-				resultado.setSubtitle(SUBTITLE_BOLETAS);
+				resultado.setTitle(TITTLE_EVD);
+				resultado.setSubtitle(SUBTITLE_EVD);
 				resultado.setValor(rs.getString("SALDO"));
 			}
 			rs.close();

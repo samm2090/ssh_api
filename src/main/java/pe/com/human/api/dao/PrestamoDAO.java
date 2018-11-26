@@ -13,6 +13,4 @@ public interface PrestamoDAO {
 	Widget cantidadCuotasPendientes(String idCompania, String idSucursal, String idEmpleado,
 			ConfiguracionDataSource configuracionDataSource);
 	
-	
-	
 }

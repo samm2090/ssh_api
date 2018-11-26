@@ -24,7 +24,7 @@ public class EmpleadoRequest {
         this.empleado = empleado;
     }
 
-    private static class Empleado {
+    public static class Empleado {
         @JsonProperty("id")
         private String id;
 

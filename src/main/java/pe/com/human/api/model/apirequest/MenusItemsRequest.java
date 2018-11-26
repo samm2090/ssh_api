@@ -24,7 +24,7 @@ public class MenusItemsRequest {
         this.menu = menu;
     }
 
-    private static class Menu {
+    public static class Menu {
         @JsonProperty("id")
         private String id;
 

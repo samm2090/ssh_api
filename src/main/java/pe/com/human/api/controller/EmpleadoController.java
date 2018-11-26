@@ -25,7 +25,7 @@ import pe.com.human.api.service.EmpleadoService;
  */
 @RestController
 @RequestMapping("/v1/empleado/")
-public class EmpleadoController{
+public class EmpleadoController {
 
 	@Autowired
 	EmpleadoService empleadoService;
@@ -71,11 +71,11 @@ public class EmpleadoController{
 	@SuppressWarnings("unchecked")
 	@CrossOrigin
 	@RequestMapping(value = "dashboard/widgets", method = RequestMethod.POST)
-	public Map<String, Object> dashboardWidgets(@RequestBody Map<String, Object> parametros) {
+	public ResponseEntity<Map<String, Object>> dashboardWidgets(@RequestBody Map<String, Object> parametros) {
 		Map<String, Object> base = (Map<String, Object>) parametros.get("base");
 		Map<String, Object> compania = (Map<String, Object>) base.get("compania");
 		Map<String, Object> sucursal = (Map<String, Object>) compania.get("sucursal");
-		Map<String, Object> empleado = (Map<String, Object>) compania.get("empleado");
+		Map<String, Object> empleado = (Map<String, Object>) parametros.get("empleado");
 
 		String idCompania = compania.get("id").toString();
 		String idSucursal = sucursal.get("id").toString();
@@ -83,7 +83,8 @@ public class EmpleadoController{
 		String idEmpleado = empleado.get("id").toString();
 		String rol = empleado.get("rol").toString();
 
-		return empleadoService.dashboardWidgets(idCompania, idSucursal, baseDatos, idEmpleado, rol);
+		return new ResponseEntity<Map<String, Object>>(
+				empleadoService.dashboardWidgets(idCompania, idSucursal, baseDatos, idEmpleado, rol), HttpStatus.OK);
 	}
 
 	@SuppressWarnings("unchecked")

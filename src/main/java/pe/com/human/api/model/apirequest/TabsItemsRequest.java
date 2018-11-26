@@ -27,7 +27,7 @@ public class TabsItemsRequest {
         this.tab = tab;
     }
 
-    private static class Tab {
+    public static class Tab {
         @JsonProperty("id")
         private String id;
 

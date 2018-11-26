@@ -138,21 +138,18 @@ public class EmpleadoService {
 				configuracionDataSource);
 		Widget prestamoWidget = prestamoDAO.cantidadCuotasPendientes(idCompania, idSucursal, idEmpleado,
 				configuracionDataSource);
-
-		data.add(boletasWidget);
-		data.add(vacacionesWidget);
-		data.add(evdWidget);
-		data.add(asistenciaWidget);
-		data.add(prestamoWidget);
-
+		
 		if (rol.equals(ROL_JEFE)) {
 			Widget miEquipoWidget = empleadoDAO.cantidadSubordinados(idCompania, idSucursal, idEmpleado,
 					configuracionDataSource);
 			data.add(miEquipoWidget);
 		}
 
-		// data.put("empleado", empleado);
-		// data.put("compania", compania);
+		data.add(boletasWidget);
+		data.add(vacacionesWidget);
+		data.add(evdWidget);
+		data.add(asistenciaWidget);
+		data.add(prestamoWidget);
 
 		respuesta.put("data", data);
 

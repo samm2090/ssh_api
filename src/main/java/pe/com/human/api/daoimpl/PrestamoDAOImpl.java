@@ -20,8 +20,8 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 	@Autowired
 	PropertiesReader lector;
 
-	static final String TITLE_BOLETAS = "Prestamos";
-	static final String SUBTITLE_BOLETAS = "Cuentas Pendientes";
+	static final String TITLE_PRESTAMO = "Prestamos";
+	static final String SUBTITLE_PRESTAMO = "Cuentas Pendientes";
 
 	@Override
 	public Widget cantidadCuotasPendientes(String idCompania, String idSucursal, String idEmpleado,
@@ -30,7 +30,7 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 		Widget resultado = null;
 		Connection conexion = null;
 
-		String query = lector.leerPropiedad("queries/prestamo.query").getProperty("cantidadCuotasPendientes");
+		String query = lector.leerPropiedad("queries/prestamo.query").getProperty("cantidadColaboradores");
 
 		try {
 			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
@@ -45,9 +45,9 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 			if (rs.next()) {
 				resultado = new Widget();
 
-				resultado.setTitle(TITLE_BOLETAS);
-				resultado.setSubtitle(SUBTITLE_BOLETAS);
-				resultado.setValor(rs.getString("SALDO"));
+				resultado.setTitle(TITLE_PRESTAMO);
+				resultado.setSubtitle(SUBTITLE_PRESTAMO);
+				resultado.setValor(rs.getString("CANTIDAD"));
 			}
 			rs.close();
 			calcularCantidad.close();

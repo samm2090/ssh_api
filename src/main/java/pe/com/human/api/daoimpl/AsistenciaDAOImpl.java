@@ -20,8 +20,8 @@ public class AsistenciaDAOImpl implements AsistenciaDAO {
 	@Autowired
 	PropertiesReader lector;
 	
-	static final String TITLE_BOLETAS = "Asistencia";
-	static final String SUBTITLE_BOLETAS = "Aceptable";
+	static final String TITLE_ASISTENCIA = "Asistencia";
+	static final String SUBTITLE_ASISTENCIA = "Aceptable";
 
 
 	@Override
@@ -46,8 +46,8 @@ public class AsistenciaDAOImpl implements AsistenciaDAO {
 			if (rs.next()) {
 				resultado = new Widget();
 
-				resultado.setTitle(TITLE_BOLETAS);
-				resultado.setSubtitle(SUBTITLE_BOLETAS);
+				resultado.setTitle(TITLE_ASISTENCIA);
+				resultado.setSubtitle(SUBTITLE_ASISTENCIA);
 				resultado.setValor(rs.getString("CANTIDAD"));
 			}
 			rs.close();

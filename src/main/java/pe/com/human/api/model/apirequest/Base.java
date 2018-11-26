@@ -46,7 +46,7 @@ public class Base {
             this.sucursal = sucursal;
         }
 
-        private static class Sucursal {
+        public static class Sucursal {
             @JsonProperty("id")
             private String id;
 

@@ -20,16 +20,16 @@ import pe.com.human.api.util.PropertiesReader;
 @Repository
 public class EmpleadoDAOImpl implements EmpleadoDAO {
 
+	private static final String TITLE_SUBORDINADOS = "Mi Equipo";
+	private static final String SUBTITLE_SUBORDINADOS = "Colaboradores";
+
 	@Autowired
 	PropertiesReader lector;
 
 	@Override
 	public EmpleadoResumenResponse getEmpleadoResumen(EmpleadoRequest request) {
-		return new EmpleadoResumenResponse(
-				new EmpleadoResumenResponse.Data(
-						new Avatar("A"),
-						new NombrePersonal("X", "Y", "Z"),
-						new CodigoTabla("A", "B", "C")));
+		return new EmpleadoResumenResponse(new EmpleadoResumenResponse.Data(new Avatar("A"),
+				new NombrePersonal("X", "Y", "Z"), new CodigoTabla("A", "B", "C")));
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				resultado.setId(rs.getString("EMPCODTRA"));
 				resultado.setRol(rs.getString("ROL"));
 			}
-			
+
 			rs.close();
 			buscarEmpleado.close();
 
@@ -77,8 +77,43 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 	@Override
 	public Widget cantidadSubordinados(String idCompania, String idSucursal, String idEmpleado,
 			ConfiguracionDataSource configuracionDataSource) {
-		// TODO Auto-generated method stub
-		return null;
+		Widget resultado = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("cantidadColaboradores");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement calcularCantidad = conexion.prepareStatement(query);
+			calcularCantidad.setString(1, idCompania);
+			calcularCantidad.setString(2, idSucursal);
+			calcularCantidad.setString(3, idEmpleado);
+
+			ResultSet rs = calcularCantidad.executeQuery();
+
+			if (rs.next()) {
+				resultado = new Widget();
+
+				resultado.setTitle(TITLE_SUBORDINADOS);
+				resultado.setSubtitle(SUBTITLE_SUBORDINADOS);
+				resultado.setValor(rs.getString("CANTIDAD"));
+			}
+			rs.close();
+			calcularCantidad.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return resultado;
 	}
 
 }
