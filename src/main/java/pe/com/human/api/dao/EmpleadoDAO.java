@@ -1,9 +1,9 @@
 package pe.com.human.api.dao;
 
 import pe.com.human.api.model.Empleado;
+import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
-import pe.com.human.api.model.apiresponse.EmpleadoResumenResponse;
 import pe.com.human.api.util.ConfiguracionDataSource;
 
 /**
@@ -19,6 +19,7 @@ public interface EmpleadoDAO {
 	public Widget cantidadSubordinados(String idCompania, String idSucursal, String idEmpleado,
 			ConfiguracionDataSource configuracionDataSource);
 
-	EmpleadoResumenResponse getEmpleadoResumen(EmpleadoRequest request);
+	public EmpleadoResumen buscarEmpleadoResumen(EmpleadoRequest empleado,
+			ConfiguracionDataSource configuracionDataSource);
 
 }

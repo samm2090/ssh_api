@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
-import pe.com.human.api.model.apiresponse.EmpleadoResumenResponse;
 import pe.com.human.api.service.EmpleadoService;
 
 /**
@@ -61,12 +60,7 @@ public class EmpleadoController {
 		return new ResponseEntity<Map<String, Object>>(
 				empleadoService.authLogin(idCompania, idSucursal, baseDatos, documento, contrasenia), HttpStatus.OK);
 	}
-
-	@RequestMapping(value = "resumen", method = RequestMethod.POST)
-	public ResponseEntity<EmpleadoResumenResponse> empleadoResumen(@RequestBody EmpleadoRequest request) {
-		EmpleadoResumenResponse response = empleadoService.getEmpleadoResument(request);
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
+	
 
 	@SuppressWarnings("unchecked")
 	@CrossOrigin
@@ -139,4 +133,14 @@ public class EmpleadoController {
 		return empleadoService.dashboardComunicados(idCompania, idSucursal, baseDatos, idEmpleado);
 	}
 
+	@CrossOrigin
+	@RequestMapping(value = "resumen", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> informacionPersonalResumen(@RequestBody EmpleadoRequest empleado) {
+
+		Map<String, Object> respuesta = empleadoService.informacionPersonalResumen(empleado);
+
+		return new ResponseEntity<Map<String, Object>>(respuesta, HttpStatus.OK);
+	}
+
+	
 }

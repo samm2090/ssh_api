@@ -1,0 +1,42 @@
+buscarEstiloXCompania = SELECT *                                                            \
+						FROM SSMG_COMPANIA C INNER JOIN SSMG_ESTILO E                       \
+						ON C.COM_I_ESTILO = E.EST_I_ID LEFT JOIN SSMG_ESTILO_COLOR EC       \
+						ON E.EST_I_ID = EC.ESC_I_ESTILO LEFT JOIN SSMG_ESTILO_RESOURCE ER   \
+						ON e.EST_I_ID = ER.ESR_I_ESTILO LEFT JOIN SSMG_COLOR COL              \
+						ON EC.ESC_I_COLOR = col.COL_I_ID LEFT JOIN SSMG_COLOR_TIPO CT       \
+						ON col.COL_I_TIPO = CT.COT_I_ID LEFT JOIN SSMG_COLOR_USO CU         \
+						ON col.COL_I_USO = CU.COU_I_ID LEFT JOIN SSMG_COLOR_CODIGO CC       \
+						ON col.COL_I_COD = CC.COC_I_ID LEFT JOIN SSMG_COLOR_TIPO_PROP CTP   \
+						ON col.COL_I_TIP_PRO = CTP.CTP_I_ID LEFT JOIN SSMG_RESOURCE RES     \
+						ON ER.ESR_I_RESOURCE = RES.RES_I_ID LEFT JOIN SSMG_RESOURCE_TIPO RT \
+						ON RES.RES_I_RES_TIPO = RT.RET_I_ID LEFT JOIN SSMG_ARCHIVO A        \
+						ON RES.RES_I_ARCHIVO = a.ARC_I_ID LEFT JOIN SSMG_ALMA_TIPO AT       \
+						ON a.ARC_I_ALMA_TIPO = at.ALT_I_ID LEFT JOIN SSMG_ARCHIVO_TIPO ARCT \
+						ON a.ARC_I_TIPO = ARCT.ART_I_ID LEFT JOIN SSMG_ARCHIVO_EXT ARCE     \
+						ON a.ARC_I_EXT = ARCE.ARE_I_ID                                      \
+						WHERE c.COM_C_HUMAN = ? AND CT.COT_I_ID = 4 AND RT.RET_I_ID = 3
+						
+						
+listarAssetsXCompania = SELECT *                                                             \
+						FROM SSMG_COMPANIA C INNER JOIN SSMG_ESTILO E                        \
+						ON c.COM_I_ESTILO = E.EST_I_ID LEFT JOIN SSMG_ESTILO_RESOURCE ER     \
+						ON E.EST_I_ID = ER.ESR_I_ESTILO LEFT JOIN SSMG_RESOURCE RES          \
+						ON ER.ESR_I_RESOURCE = RES.RES_I_ID LEFT JOIN SSMG_RESOURCE_TIPO RT  \
+						ON RES.RES_I_RES_TIPO = RT.RET_I_ID LEFT JOIN SSMG_ARCHIVO A         \
+						ON RES.RES_I_ARCHIVO = a.ARC_I_ID LEFT JOIN SSMG_ALMA_TIPO AT        \
+						ON a.ARC_I_ALMA_TIPO = at.ALT_I_ID LEFT JOIN SSMG_ARCHIVO_TIPO ARCT  \
+						ON a.ARC_I_TIPO = ARCT.ART_I_ID LEFT JOIN SSMG_ARCHIVO_EXT ARCE      \
+						ON a.ARC_I_EXT = ARCE.ARE_I_ID                                       \
+						WHERE C.COM_C_HUMAN = ?
+
+
+listarColoresXCompania = 	SELECT *                                                          \
+							FROM SSMG_COMPANIA C INNER JOIN SSMG_ESTILO E                     \
+							ON C.COM_I_ESTILO = E.EST_I_ID LEFT JOIN SSMG_ESTILO_COLOR EC     \
+							ON E.EST_I_ID = EC.ESC_I_ESTILO LEFT JOIN SSMG_COLOR COL          \
+							ON EC.ESC_I_COLOR = col.COL_I_ID LEFT JOIN SSMG_COLOR_TIPO CT     \
+							ON col.COL_I_TIPO = CT.COT_I_ID LEFT JOIN SSMG_COLOR_USO CU       \
+							ON col.COL_I_USO = CU.COU_I_ID LEFT JOIN SSMG_COLOR_CODIGO CC     \
+							ON col.COL_I_COD = CC.COC_I_ID LEFT JOIN SSMG_COLOR_TIPO_PROP CTP \
+							ON col.COL_I_TIP_PRO = CTP.CTP_I_ID                               \
+							WHERE c.COM_C_HUMAN = ?

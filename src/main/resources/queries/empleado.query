@@ -11,3 +11,16 @@ buscarEmpleadoXUsuario = SELECT E.EMPCODTRA, \
 cantidadColaboradores = SELECT COUNT(DISTINCT EMPCODTRA) AS CANTIDAD FROM HR_EMPLEADO \
 						WHERE EMPCODCIA = ? AND EMPCODSUC = ? \
 						AND EMPCODTRAJEF = ?
+						
+						
+buscarEmpleadoResumen = SELECT EMPCODTRA,EMPNOMBRE, EMPAPATERN, EMPAMATERN, EMPNRODOCID,                                                           \
+						(SELECT TTBDESOBJ FROM EB_TTABLE                                                                                           \
+						WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '09' AND TTBKEYOBJ = EMPTIPDOCID) AS TIPO_DOCUMENTO, \
+						(SELECT PUEDESPUE FROM HR_PUESTO                                                                                           \
+						WHERE PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC AND PUECODPUE = EMPCODPUEST) AS PUESTO,                              \
+						(SELECT CASE WHEN NVL(COUNT(EMPCODTRA),0) > 0 THEN '01' ELSE '02' END FROM HR_EMPLEADO                                     \
+						WHERE EMPCODTRAJEF = E.EMPCODTRA AND EMPCODCIA = E.EMPCODCIA AND EMPCODSUC = E.EMPCODSUC) AS ROL                           \
+						FROM HR_EMPLEADO E                                                                                                         \
+						WHERE EMPCODCIA = ? AND                                                                                                    \
+						EMPCODSUC = ? AND                                                                                                          \
+						EMPCODTRA = ? 

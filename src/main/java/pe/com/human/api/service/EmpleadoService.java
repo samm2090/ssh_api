@@ -14,15 +14,17 @@ import pe.com.human.api.dao.BaseDatosDAO;
 import pe.com.human.api.dao.BoletaDAO;
 import pe.com.human.api.dao.CompaniaDAO;
 import pe.com.human.api.dao.EmpleadoDAO;
+import pe.com.human.api.dao.EstiloDAO;
 import pe.com.human.api.dao.EvaluacionDesempenioDAO;
 import pe.com.human.api.dao.PrestamoDAO;
 import pe.com.human.api.dao.VacacionesDAO;
 import pe.com.human.api.exception.ExcepcionNoExisteEmpleado;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Empleado;
+import pe.com.human.api.model.EmpleadoResumen;
+import pe.com.human.api.model.Estilo;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
-import pe.com.human.api.model.apiresponse.EmpleadoResumenResponse;
 import pe.com.human.api.util.ConfiguracionDataSource;
 
 /**
@@ -35,6 +37,9 @@ public class EmpleadoService {
 
 	@Autowired
 	CompaniaDAO companiaDAO;
+
+	@Autowired
+	EstiloDAO estiloDAO;
 
 	@Autowired
 	BaseDatosDAO baseDatosDAO;
@@ -60,10 +65,6 @@ public class EmpleadoService {
 	private static Logger logger = Logger.getLogger(EmpleadoService.class);
 
 	static final String ROL_JEFE = "01";
-
-	public EmpleadoResumenResponse getEmpleadoResument(EmpleadoRequest request) {
-		return empleadoDAO.getEmpleadoResumen(request);
-	}
 
 	public Map<String, Object> listarCompaniasXDocumento(String documento) {
 		Map<String, Object> respuesta = new HashMap<>();
@@ -109,19 +110,26 @@ public class EmpleadoService {
 			if (empleado != null) {
 				compania = companiaDAO.buscarCompaniaXEmpleado(idCompania, idSucursal, empleado.getId(), contrasenia,
 						configuracionDataSource);
+
+				if (compania != null) {
+					ConfiguracionDataSource configBaseAppMovil = new ConfiguracionDataSource();
+
+					Estilo estilo = estiloDAO.buscarEstiloXCompania(compania, configBaseAppMovil);
+					compania.setEstilo(estilo);
+				}
 			}
 		}
 
-		data.put("empleado", empleado);
 		data.put("compania", compania);
+		data.put("empleado", empleado);
 
 		respuesta.put("data", data);
 
 		return respuesta;
 	}
 
-	public Map<String, Object> dashboardWidgets(String idCompania, String idSucursal, int baseDatos,
-			String idEmpleado, String rol) {
+	public Map<String, Object> dashboardWidgets(String idCompania, String idSucursal, int baseDatos, String idEmpleado,
+			String rol) {
 		Map<String, Object> respuesta = new HashMap<>();
 
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
@@ -138,18 +146,24 @@ public class EmpleadoService {
 				configuracionDataSource);
 		Widget prestamoWidget = prestamoDAO.cantidadCuotasPendientes(idCompania, idSucursal, idEmpleado,
 				configuracionDataSource);
-		
+
 		if (rol.equals(ROL_JEFE)) {
 			Widget miEquipoWidget = empleadoDAO.cantidadSubordinados(idCompania, idSucursal, idEmpleado,
 					configuracionDataSource);
-			data.add(miEquipoWidget);
+			if (miEquipoWidget != null)
+				data.add(miEquipoWidget);
 		}
 
-		data.add(boletasWidget);
-		data.add(vacacionesWidget);
-		data.add(evdWidget);
-		data.add(asistenciaWidget);
-		data.add(prestamoWidget);
+		if (boletasWidget != null)
+			data.add(boletasWidget);
+		if (vacacionesWidget != null)
+			data.add(vacacionesWidget);
+		if (evdWidget != null)
+			data.add(evdWidget);
+		if (asistenciaWidget != null)
+			data.add(asistenciaWidget);
+		if (prestamoWidget != null)
+			data.add(prestamoWidget);
 
 		respuesta.put("data", data);
 
@@ -168,6 +182,21 @@ public class EmpleadoService {
 	public Map<String, Object> dashboardComunicados(String idCompania, String idSucursal, String baseDatos,
 			String idEmpleado) {
 		return null;
+	}
+
+	public Map<String, Object> informacionPersonalResumen(EmpleadoRequest empleadoRequest) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO
+				.buscarConfiguracionXId(Integer.parseInt(empleadoRequest.getBase().getBaseDatos()));
+		Map<String, Object> data = new HashMap<>();
+
+		EmpleadoResumen empleado = empleadoDAO.buscarEmpleadoResumen(empleadoRequest, configuracionDataSource);
+
+		data.put("empleado", empleado);
+
+		respuesta.put("data", data);
+
+		return respuesta;
 	}
 
 }

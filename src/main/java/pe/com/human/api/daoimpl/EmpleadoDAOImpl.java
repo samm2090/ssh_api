@@ -9,10 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.EmpleadoDAO;
+import pe.com.human.api.model.Datos;
+import pe.com.human.api.model.DatosLaborales;
+import pe.com.human.api.model.DatosPersonales;
+import pe.com.human.api.model.Documento;
 import pe.com.human.api.model.Empleado;
+import pe.com.human.api.model.EmpleadoResumen;
+import pe.com.human.api.model.NombreCompleto;
+import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
-import pe.com.human.api.model.apiresponse.*;
 import pe.com.human.api.util.ConexionBaseDatos;
 import pe.com.human.api.util.ConfiguracionDataSource;
 import pe.com.human.api.util.PropertiesReader;
@@ -25,12 +31,6 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 
 	@Autowired
 	PropertiesReader lector;
-
-	@Override
-	public EmpleadoResumenResponse getEmpleadoResumen(EmpleadoRequest request) {
-		return new EmpleadoResumenResponse(new EmpleadoResumenResponse.Data(new Avatar("A"),
-				new NombrePersonal("X", "Y", "Z"), new CodigoTabla("A", "B", "C")));
-	}
 
 	@Override
 	public Empleado buscarEmpleadoXUsuario(String idCompania, String idSucursal, String documento, String contrasenia,
@@ -114,6 +114,83 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			}
 		}
 		return resultado;
+	}
+
+	@Override
+	public EmpleadoResumen buscarEmpleadoResumen(EmpleadoRequest empleado,
+			ConfiguracionDataSource configuracionDataSource) {
+		EmpleadoResumen empleadoResumen = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarEmpleadoResumen");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, empleado.getBase().getCompania().getId());
+			buscarEmpleado.setString(2, empleado.getBase().getCompania().getSucursal().getId());
+			buscarEmpleado.setString(3, empleado.getEmpleado().getId());
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			if (rs.next()) {
+				Texto nombreTexto = new Texto(rs.getString("EMPNOMBRE"), null);
+				Texto apePaternoTexto = new Texto(rs.getString("EMPAPATERN"), null);
+				Texto apeMaternoTexto = new Texto(rs.getString("EMPAMATERN"), null);
+				
+				NombreCompleto nombre = new NombreCompleto();
+				nombre.setNombre(nombreTexto);
+				nombre.setApePaterno(apePaternoTexto);
+				nombre.setApeMaterno(apeMaternoTexto);
+				
+				Texto numeroDocumento = new Texto(rs.getString("EMPNRODOCID"), null);
+				Texto tipo = new Texto(rs.getString("TIPO_DOCUMENTO"), null);
+				
+				Documento documento = new Documento();
+				documento.setNumeroDocumento(numeroDocumento);
+				documento.setTipo(tipo);
+
+				DatosPersonales personales = new DatosPersonales();
+				personales.setNombre(nombre);
+				personales.setDocumento(documento);
+				
+				Texto codigo = new Texto(rs.getString("EMPCODTRA"), null);
+				Texto puesto = new Texto(rs.getString("PUESTO"), null);
+				
+				DatosLaborales laborales = new DatosLaborales();
+				laborales.setCodigo(codigo);
+				laborales.setPuesto(puesto);
+				laborales.setRol(rs.getString("ROL"));
+
+				Datos datos = new Datos();
+				datos.setPersonales(personales);
+				datos.setLaborales(laborales);
+
+				empleadoResumen = new EmpleadoResumen();
+				empleadoResumen.setDatos(datos);
+			}
+			
+//			ResItem resItem = new ResItem();
+//			resItem.setTipo(rs.getString(""));
+//			resItem.setArchivo(archivo);;
+			empleadoResumen.setResItem(null);
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return empleadoResumen;
 	}
 
 }

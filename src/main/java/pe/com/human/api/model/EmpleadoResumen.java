@@ -1,12 +1,9 @@
-package pe.com.human.api.model.apiresponse;
+package pe.com.human.api.model;
 
 import java.io.Serializable;
 
-import pe.com.human.api.model.Datos;
-import pe.com.human.api.model.ResItem;
+public class EmpleadoResumen implements Serializable{
 
-public class Empleado implements Serializable{
-	
 	private static final long serialVersionUID = 1L;
 	private ResItem resItem;
 	private Datos datos;

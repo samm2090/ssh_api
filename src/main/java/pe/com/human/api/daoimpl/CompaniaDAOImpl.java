@@ -42,7 +42,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 		try {
 			ConfiguracionDataSource configuracion = new ConfiguracionDataSource();
-			
+
 			conexion = ConexionBaseDatos.obtenerConexion(configuracion);
 
 			PreparedStatement listarCompanias = conexion.prepareStatement(query);
@@ -68,7 +68,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				companiaBase = new HashMap<>();
 
 				companiaBase.put("compania", compania);
-				
+
 				companiaBase.put("baseDatos", rs.getInt("BD_I_ID"));
 
 				resultado.add(companiaBase);
@@ -112,7 +112,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 			ResultSet rs = buscarCompania.executeQuery();
 
 			compania = new Compania();
-			while (rs.next()) {
+			if (rs.next()) {
 				compania = new Compania();
 				compania.setId(rs.getString("EBCODCIA"));
 				compania.setNombre(rs.getString("EBDESCIA"));
@@ -129,6 +129,51 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e);
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return compania;
+	}
+
+	@Override
+	public Compania buscarCompaniaXId(int id) {
+		Compania compania = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/compania.query").getProperty("buscarCompaniaXId");
+
+		try {
+			ConfiguracionDataSource configuracion = new ConfiguracionDataSource();
+
+			conexion = ConexionBaseDatos.obtenerConexion(configuracion);
+
+			PreparedStatement buscarCompania = conexion.prepareStatement(query);
+			buscarCompania.setInt(1, id);
+
+			ResultSet rs = buscarCompania.executeQuery();
+
+			if (rs.next()) {
+				compania = new Compania();
+				compania.setId(rs.getString("COM_C_HUMAN"));
+				compania.setNombre(rs.getString("COM_D_NOMBRE"));
+
+				Sucursal sucursal = new Sucursal();
+				sucursal.setId(rs.getString("SUC_C_HUMAN"));
+				sucursal.setNombre(rs.getString("SUC_D_NOMBRE"));
+
+				compania.setSucursal(sucursal);
+			}
+			rs.close();
+			buscarCompania.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		} finally {
 			if (conexion != null) {
 				try {

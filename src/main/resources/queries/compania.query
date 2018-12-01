@@ -5,10 +5,14 @@ listarCompaniasXDocumento = SELECT c.COM_D_NOMBRE, c.COM_C_HUMAN, s.SUC_D_NOMBRE
 							ON s.SUC_I_ID = e.EMP_I_SUC INNER JOIN SSMG_BD BD \
 							ON E.EMP_I_BD = BD.BD_I_ID \
 							WHERE EMP_E_EST = 1 AND EMP_N_DOC = ?
-
 							
 buscarCompaniaXEmpleado = 	SELECT C.EBCODCIA, C.EBCODSUC, C.EBDESCIA, c.EBDESSUC \
 							FROM EBCOMPANIA C INNER JOIN HR_EMPLEADO E \
 							ON C.EBCODCIA = E.EMPCODCIA \
 							WHERE E.EMPCODCIA = ? AND E.EMPCODSUC = ? \
 							AND E.EMPCODTRA = ?
+							
+buscarCompaniaXId = SELECT *                                          \
+					FROM SSMG_COMPANIA C INNER JOIN SSMG_SUCURSAL S   \
+					ON C.COM_I_ID = S.SUC_I_COMPANIA                  \
+					WHERE COM_C_HUMAN = ?

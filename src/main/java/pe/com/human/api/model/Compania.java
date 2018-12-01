@@ -13,7 +13,7 @@ public class Compania implements Serializable{
 	private String id;
 	private String nombre;
 	private Sucursal sucursal;
-	private Style style;
+	private Estilo estilo;
 	
 	public String getId() {
 		return id;
@@ -33,10 +33,10 @@ public class Compania implements Serializable{
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
 	}
-	public Style getStyle() {
-		return style;
+	public Estilo getEstilo() {
+		return estilo;
 	}
-	public void setStyle(Style style) {
-		this.style = style;
+	public void setEstilo(Estilo estilo) {
+		this.estilo = estilo;
 	}
 }

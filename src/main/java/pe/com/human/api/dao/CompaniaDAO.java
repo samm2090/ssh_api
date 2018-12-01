@@ -17,4 +17,6 @@ public interface CompaniaDAO {
 
 	public Compania buscarCompaniaXEmpleado(String idCompania, String idSucursal, String idEmpleado,
 			String contrasenia, ConfiguracionDataSource configuracionDataSource);
+
+	public Compania buscarCompaniaXId(int id);
 }
