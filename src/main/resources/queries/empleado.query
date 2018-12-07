@@ -24,3 +24,9 @@ buscarEmpleadoResumen = SELECT EMPCODTRA,EMPNOMBRE, EMPAPATERN, EMPAMATERN, EMPN
 						WHERE EMPCODCIA = ? AND                                                                                                    \
 						EMPCODSUC = ? AND                                                                                                          \
 						EMPCODTRA = ? 
+						
+listarCumpleanos = 	select * \
+					from hr_empleado \
+					where empcodcia = ? and empcodsuc = ? and empflgest = '1' \
+					and TO_CHAR(EMPFECNAC,'MM')= TO_CHAR(SYSDATE,'MM') \
+					and TO_CHAR(EMPFECNAC,'DD')= TO_CHAR(SYSDATE, 'DD')

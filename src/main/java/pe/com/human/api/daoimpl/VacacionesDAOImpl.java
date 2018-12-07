@@ -9,6 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.VacacionesDAO;
+import pe.com.human.api.model.Archivo;
+import pe.com.human.api.model.Color;
+import pe.com.human.api.model.Custom;
+import pe.com.human.api.model.Default;
+import pe.com.human.api.model.EstiloTexto;
+import pe.com.human.api.model.Local;
+import pe.com.human.api.model.ResItem;
+import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.util.ConexionBaseDatos;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -20,13 +28,13 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 	@Autowired
 	PropertiesReader lector;
 	
-	static final String TITLE_BOLETAS = "Vacaciones";
-	static final String SUBTITLE_BOLETAS = "Días disponibles";
+	static final String TITLE_VACACIONES = "Vacaciones";
+	static final String SUBTITLE_VACACIONES = "Días disponibles";
 
 	@Override
 	public Widget cantidadSaldo(String idCompania, String idSucursal, String idEmpleado,
 			ConfiguracionDataSource configuracionDataSource) {
-		Widget resultado = null;
+		Widget widget = null;
 		Connection conexion = null;
 
 		String query = lector.leerPropiedad("queries/vacaciones.query").getProperty("cantidadSaldo");
@@ -42,11 +50,64 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 			ResultSet rs = calcularCantidad.executeQuery();
 
 			if (rs.next()) {
-				resultado = new Widget();
+				Custom custom = new Custom();
+				custom.setHex(null);
 
-				resultado.setTitle(TITLE_BOLETAS);
-				resultado.setSubtitle(SUBTITLE_BOLETAS);
-				resultado.setValor(rs.getString("SALDO"));
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorTitulo = new Color();
+				colorTitulo.setTipo("TEXT");
+				colorTitulo.setUso("DEFAULT");
+				colorTitulo.setDefault1(default1);
+				colorTitulo.setCustom(custom);
+
+				EstiloTexto estiloTitulo = new EstiloTexto();
+				estiloTitulo.setFuente(null);
+				estiloTitulo.setColor(colorTitulo);
+				estiloTitulo.setCustom(custom);
+
+				Texto titulo = new Texto();
+				titulo.setTexto(TITLE_VACACIONES);
+				titulo.setEstilo(estiloTitulo);
+				
+
+				Local local = new Local();
+				local.setResTipo("ICON");
+				local.setNombre("beach_access");
+				local.setExt("");
+				
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("LOCAL");
+				archivo.setTipo("VECTOR");
+				archivo.setLocal(local);
+				archivo.setRemote(null);
+				
+				Color colorResItem = new Color();
+				colorResItem.setTipo("TINT");
+				colorResItem.setUso("DEFAULT");
+				colorResItem.setDefault1(default1);
+				colorResItem.setCustom(custom);
+				
+				ResItem resItem = new ResItem();
+				resItem.setTipo("ICON");
+				resItem.setArchivo(archivo);
+				resItem.setColor(colorResItem);
+
+				Texto valor = new Texto();
+				valor.setTexto(rs.getString("SALDO"));
+				valor.setEstilo(estiloTitulo);
+				
+				Texto subtitulo = new Texto();
+				subtitulo.setTexto(SUBTITLE_VACACIONES);
+				subtitulo.setEstilo(estiloTitulo);
+				
+				widget = new Widget();
+				widget.setTitulo(titulo);
+				widget.setResItem(resItem);
+				widget.setValor(valor);
+				widget.setSubtitulo(subtitulo);
+				widget.setColor(colorResItem);
 			}
 			rs.close();
 			calcularCantidad.close();
@@ -62,7 +123,7 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 				}
 			}
 		}
-		return resultado;
+		return widget;
 	}
 
 }

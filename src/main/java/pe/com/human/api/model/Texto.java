@@ -2,26 +2,31 @@ package pe.com.human.api.model;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author smuroy
+ *
+ */
 public class Texto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private String text;
+	private String texto;
 	private EstiloTexto estilo;
 
-	public Texto(String text, EstiloTexto estilo) {
-		this.text = text;
+	public Texto(String texto, EstiloTexto estilo) {
+		this.texto = texto;
 		this.estilo = estilo;
 	}
 
 	public Texto() {
 	}
 
-	public String getText() {
-		return text;
+	public String getTexto() {
+		return texto;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setTexto(String texto) {
+		this.texto = texto;
 	}
 
 	public EstiloTexto getEstilo() {

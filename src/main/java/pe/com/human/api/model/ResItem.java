@@ -7,6 +7,15 @@ public class ResItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String tipo;
 	private Archivo archivo;
+	private Color color;
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
 	public String getTipo() {
 		return tipo;

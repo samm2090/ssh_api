@@ -60,7 +60,6 @@ public class EmpleadoController {
 		return new ResponseEntity<Map<String, Object>>(
 				empleadoService.authLogin(idCompania, idSucursal, baseDatos, documento, contrasenia), HttpStatus.OK);
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	@CrossOrigin

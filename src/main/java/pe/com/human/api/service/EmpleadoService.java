@@ -131,10 +131,11 @@ public class EmpleadoService {
 	public Map<String, Object> dashboardWidgets(String idCompania, String idSucursal, int baseDatos, String idEmpleado,
 			String rol) {
 		Map<String, Object> respuesta = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
 
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
-		List<Widget> data = new ArrayList<>();
+		List<Widget> widgets = new ArrayList<>();
 
 		Widget boletasWidget = boletaDAO.cantidadPagosMesActual(idCompania, idSucursal, idEmpleado,
 				configuracionDataSource);
@@ -151,20 +152,21 @@ public class EmpleadoService {
 			Widget miEquipoWidget = empleadoDAO.cantidadSubordinados(idCompania, idSucursal, idEmpleado,
 					configuracionDataSource);
 			if (miEquipoWidget != null)
-				data.add(miEquipoWidget);
+				widgets.add(miEquipoWidget);
 		}
 
 		if (boletasWidget != null)
-			data.add(boletasWidget);
+			widgets.add(boletasWidget);
 		if (vacacionesWidget != null)
-			data.add(vacacionesWidget);
+			widgets.add(vacacionesWidget);
 		if (evdWidget != null)
-			data.add(evdWidget);
+			widgets.add(evdWidget);
 		if (asistenciaWidget != null)
-			data.add(asistenciaWidget);
+			widgets.add(asistenciaWidget);
 		if (prestamoWidget != null)
-			data.add(prestamoWidget);
+			widgets.add(prestamoWidget);
 
+		data.put("widgets", widgets);
 		respuesta.put("data", data);
 
 		return respuesta;

@@ -9,13 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.EmpleadoDAO;
+import pe.com.human.api.model.Archivo;
+import pe.com.human.api.model.Color;
+import pe.com.human.api.model.Custom;
 import pe.com.human.api.model.Datos;
 import pe.com.human.api.model.DatosLaborales;
 import pe.com.human.api.model.DatosPersonales;
+import pe.com.human.api.model.Default;
 import pe.com.human.api.model.Documento;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
+import pe.com.human.api.model.EstiloTexto;
+import pe.com.human.api.model.Local;
 import pe.com.human.api.model.NombreCompleto;
+import pe.com.human.api.model.ResItem;
 import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
@@ -77,7 +84,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 	@Override
 	public Widget cantidadSubordinados(String idCompania, String idSucursal, String idEmpleado,
 			ConfiguracionDataSource configuracionDataSource) {
-		Widget resultado = null;
+		Widget widget = null;
 		Connection conexion = null;
 
 		String query = lector.leerPropiedad("queries/empleado.query").getProperty("cantidadColaboradores");
@@ -93,11 +100,63 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			ResultSet rs = calcularCantidad.executeQuery();
 
 			if (rs.next()) {
-				resultado = new Widget();
+				Custom custom = new Custom();
+				custom.setHex(null);
 
-				resultado.setTitle(TITLE_SUBORDINADOS);
-				resultado.setSubtitle(SUBTITLE_SUBORDINADOS);
-				resultado.setValor(rs.getString("CANTIDAD"));
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorTitulo = new Color();
+				colorTitulo.setTipo("TEXT");
+				colorTitulo.setUso("DEFAULT");
+				colorTitulo.setDefault1(default1);
+				colorTitulo.setCustom(custom);
+
+				EstiloTexto estiloTitulo = new EstiloTexto();
+				estiloTitulo.setFuente(null);
+				estiloTitulo.setColor(colorTitulo);
+				estiloTitulo.setCustom(custom);
+
+				Texto titulo = new Texto();
+				titulo.setTexto(TITLE_SUBORDINADOS);
+				titulo.setEstilo(estiloTitulo);
+
+				Local local = new Local();
+				local.setResTipo("ICON");
+				local.setNombre("supervisor_account");
+				local.setExt("");
+				
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("LOCAL");
+				archivo.setTipo("VECTOR");
+				archivo.setLocal(local);
+				archivo.setRemote(null);
+				
+				Color colorResItem = new Color();
+				colorResItem.setTipo("TINT");
+				colorResItem.setUso("DEFAULT");
+				colorResItem.setDefault1(default1);
+				colorResItem.setCustom(custom);
+				
+				ResItem resItem = new ResItem();
+				resItem.setTipo("ICON");
+				resItem.setArchivo(archivo);
+				resItem.setColor(colorResItem);
+
+				Texto valor = new Texto();
+				valor.setTexto(rs.getString("CANTIDAD"));
+				valor.setEstilo(estiloTitulo);
+				
+				Texto subtitulo = new Texto();
+				subtitulo.setTexto(SUBTITLE_SUBORDINADOS);
+				subtitulo.setEstilo(estiloTitulo);
+				
+				widget = new Widget();
+				widget.setTitulo(titulo);
+				widget.setResItem(resItem);
+				widget.setValor(valor);
+				widget.setSubtitulo(subtitulo);
+				widget.setColor(colorResItem);
 			}
 			rs.close();
 			calcularCantidad.close();
@@ -113,7 +172,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				}
 			}
 		}
-		return resultado;
+		return widget;
 	}
 
 	@Override

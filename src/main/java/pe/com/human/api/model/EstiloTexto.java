@@ -2,19 +2,33 @@ package pe.com.human.api.model;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author smuroy
+ *
+ */
 public class EstiloTexto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Font font;
+	private Fuente fuente;
 	private Color color;
-
-	public Font getFont() {
-		return font;
+	private Custom custom;
+	
+	public Custom getCustom() {
+		return custom;
 	}
 
-	public void setFont(Font font) {
-		this.font = font;
+	public void setCustom(Custom custom) {
+		this.custom = custom;
+	}
+
+	public Fuente getFuente() {
+		return fuente;
+	}
+
+	public void setFuente(Fuente fuente) {
+		this.fuente = fuente;
 	}
 
 	public Color getColor() {

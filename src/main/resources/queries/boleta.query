@@ -2,3 +2,11 @@ cantidadPagosMesActual = 	SELECT COUNT(C.PBKIDPBK) AS CANTIDAD FROM HR_PAYBANKD 
 							ON D.PBKIDPBK = C.PBKIDPBK \
 							WHERE D.PBKCODCIA = ? AND D.PBKCODSUC = ? AND \
 							D.PBKCODTRA = ? AND C.PBKNROPER = TO_CHAR(SYSDATE, 'yyyymm')
+							
+listarBoletasXIdEmpleado =  SELECT PERCODCIA,PERCODSUC,PERCODPRO,PERCODPER, PERFECINI,PERFECFIN FROM HR_PERIODO ,                                             \
+							HR_PROCTL , HR_EMPXPROC  WHERE PCTCODCIA=PERCODCIA AND PCTCODPRO=PERCODPRO AND PCTNROPER=PERCODPER AND PCTFLGINI in ('3','4') AND \
+							EMPCODCIA=PCTCODCIA AND                                                                                                           \
+							EMPCODSUC=PCTCODSUC AND                                                                                                           \
+							EMPCODPRO=PCTCODPRO AND                                                                                                           \
+							EMPNROPER=PCTNROPER AND                                                                                                           \
+							PERCODCIA = ? AND PERCODSUC = ?  AND PERCODPRO = '01' AND EMPCODTRA=? ORDER BY PERCODPER DESC

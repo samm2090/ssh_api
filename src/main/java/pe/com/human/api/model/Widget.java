@@ -1,52 +1,49 @@
 package pe.com.human.api.model;
 
-import javax.swing.Icon;
-
 public class Widget {
+	private Texto titulo;
+	private ResItem resItem;
+	private Texto valor;
+	private Texto subtitulo;
+	private Color color;
 
-	private String title;
-	private Icon icon;
-	private String valor;
-	private String subtitle;
-	private String navigation;
-
-	public String getTitle() {
-		return title;
+	public Texto getTitulo() {
+		return titulo;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setTitulo(Texto titulo) {
+		this.titulo = titulo;
 	}
 
-	public Icon getIcon() {
-		return icon;
+	public ResItem getResItem() {
+		return resItem;
 	}
 
-	public void setIcon(Icon icon) {
-		this.icon = icon;
+	public void setResItem(ResItem resItem) {
+		this.resItem = resItem;
 	}
 
-	public String getValor() {
+	public Texto getValor() {
 		return valor;
 	}
 
-	public void setValor(String valor) {
+	public void setValor(Texto valor) {
 		this.valor = valor;
 	}
 
-	public String getSubtitle() {
-		return subtitle;
+	public Texto getSubtitulo() {
+		return subtitulo;
 	}
 
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
+	public void setSubtitulo(Texto subtitulo) {
+		this.subtitulo = subtitulo;
 	}
 
-	public String getNavigation() {
-		return navigation;
+	public Color getColor() {
+		return color;
 	}
 
-	public void setNavigation(String navigation) {
-		this.navigation = navigation;
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }
