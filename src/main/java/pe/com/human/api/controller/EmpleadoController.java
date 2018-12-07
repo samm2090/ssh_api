@@ -91,7 +91,7 @@ public class EmpleadoController {
 
 		String idCompania = compania.get("id").toString();
 		String idSucursal = sucursal.get("id").toString();
-		String baseDatos = base.get("baseDatos").toString();
+		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String idEmpleado = empleado.get("id").toString();
 
 		return empleadoService.dashboardPendientes(idCompania, idSucursal, baseDatos, idEmpleado);
@@ -100,18 +100,17 @@ public class EmpleadoController {
 	@SuppressWarnings("unchecked")
 	@CrossOrigin
 	@RequestMapping(value = "dashboard/birthdays", method = RequestMethod.POST)
-	public Map<String, Object> dashboardBirthdays(@RequestBody Map<String, Object> parametros) {
+	public ResponseEntity<Map<String, Object>> dashboardBirthdays(@RequestBody Map<String, Object> parametros) {
 		Map<String, Object> base = (Map<String, Object>) parametros.get("base");
 		Map<String, Object> compania = (Map<String, Object>) base.get("compania");
 		Map<String, Object> sucursal = (Map<String, Object>) compania.get("sucursal");
 
 		String idCompania = compania.get("id").toString();
 		String idSucursal = sucursal.get("id").toString();
-		String baseDatos = base.get("baseDatos").toString();
+		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 
-		String mes = parametros.get("mes").toString();
-
-		return empleadoService.dashboardBirthdays(idCompania, idSucursal, baseDatos, mes);
+		return new ResponseEntity<Map<String, Object>>(
+				empleadoService.dashboardBirthdays(idCompania, idSucursal, baseDatos), HttpStatus.OK);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -125,7 +124,7 @@ public class EmpleadoController {
 
 		String idCompania = compania.get("id").toString();
 		String idSucursal = sucursal.get("id").toString();
-		String baseDatos = base.get("baseDatos").toString();
+		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 
 		String idEmpleado = empleado.get("id").toString();
 
@@ -141,5 +140,4 @@ public class EmpleadoController {
 		return new ResponseEntity<Map<String, Object>>(respuesta, HttpStatus.OK);
 	}
 
-	
 }

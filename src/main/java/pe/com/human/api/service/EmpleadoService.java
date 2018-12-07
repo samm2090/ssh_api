@@ -19,10 +19,15 @@ import pe.com.human.api.dao.EvaluacionDesempenioDAO;
 import pe.com.human.api.dao.PrestamoDAO;
 import pe.com.human.api.dao.VacacionesDAO;
 import pe.com.human.api.exception.ExcepcionNoExisteEmpleado;
+import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Compania;
+import pe.com.human.api.model.Default;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.Estilo;
+import pe.com.human.api.model.EstiloTexto;
+import pe.com.human.api.model.ItemCumpleanos;
+import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -172,16 +177,54 @@ public class EmpleadoService {
 		return respuesta;
 	}
 
-	public Map<String, Object> dashboardPendientes(String idCompania, String idSucursal, String baseDatos,
+	public Map<String, Object> dashboardPendientes(String idCompania, String idSucursal, int baseDatos,
 			String idEmpleado) {
-		return null;
+		Map<String, Object> respuesta = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
+
+		Texto titulo = new Texto();
+		titulo.setTexto("");
+
+		data.put("titulo", titulo);
+		respuesta.put("data", data);
+
+		return respuesta;
 	}
 
-	public Map<String, Object> dashboardBirthdays(String idCompania, String idSucursal, String baseDatos, String mes) {
-		return null;
+	public Map<String, Object> dashboardBirthdays(String idCompania, String idSucursal, int baseDatos) {
+		Map<String, Object> respuesta = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Hoy Celebramos Cumpleaños");
+		titulo.setEstilo(estilo);
+
+		List<ItemCumpleanos> items = empleadoDAO.listarCumpleanos(idCompania, idSucursal, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+
+		return respuesta;
 	}
 
-	public Map<String, Object> dashboardComunicados(String idCompania, String idSucursal, String baseDatos,
+	public Map<String, Object> dashboardComunicados(String idCompania, String idSucursal, int baseDatos,
 			String idEmpleado) {
 		return null;
 	}

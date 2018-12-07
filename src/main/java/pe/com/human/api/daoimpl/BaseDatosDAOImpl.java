@@ -13,6 +13,11 @@ import pe.com.human.api.util.ConexionBaseDatos;
 import pe.com.human.api.util.ConfiguracionDataSource;
 import pe.com.human.api.util.PropertiesReader;
 
+/**
+ * 
+ * @author smuroy
+ *
+ */
 @Repository
 public class BaseDatosDAOImpl implements BaseDatosDAO {
 
