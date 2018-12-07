@@ -26,7 +26,7 @@ import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.Estilo;
 import pe.com.human.api.model.EstiloTexto;
-import pe.com.human.api.model.ItemCumpleanos;
+import pe.com.human.api.model.Item;
 import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
@@ -182,10 +182,30 @@ public class EmpleadoService {
 		Map<String, Object> respuesta = new HashMap<>();
 		Map<String, Object> data = new HashMap<>();
 
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
 		Texto titulo = new Texto();
-		titulo.setTexto("");
+		titulo.setTexto("Comunicados");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.listarCumpleanos(idCompania, idSucursal, configuracionDataSource);
 
 		data.put("titulo", titulo);
+		data.put("items", items);
 		respuesta.put("data", data);
 
 		return respuesta;
@@ -215,7 +235,7 @@ public class EmpleadoService {
 		titulo.setTexto("Hoy Celebramos Cumpleaños");
 		titulo.setEstilo(estilo);
 
-		List<ItemCumpleanos> items = empleadoDAO.listarCumpleanos(idCompania, idSucursal, configuracionDataSource);
+		List<Item> items = empleadoDAO.listarCumpleanos(idCompania, idSucursal, configuracionDataSource);
 
 		data.put("titulo", titulo);
 		data.put("items", items);
@@ -226,7 +246,36 @@ public class EmpleadoService {
 
 	public Map<String, Object> dashboardComunicados(String idCompania, String idSucursal, int baseDatos,
 			String idEmpleado) {
-		return null;
+		Map<String, Object> respuesta = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Comunicados");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.listarFeriados(idCompania, idSucursal, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+
+		return respuesta;
 	}
 
 	public Map<String, Object> informacionPersonalResumen(EmpleadoRequest empleadoRequest) {
@@ -244,4 +293,141 @@ public class EmpleadoService {
 		return respuesta;
 	}
 
+	public Map<String, Object> informacionGeneral(String idCompania, String idSucursal, String idEmpleado,
+			int baseDatos) {
+		Map<String, Object> respuesta = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Información General");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarInformacionGeneral(idCompania, idSucursal, idEmpleado,
+				configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
+
+	public Map<String, Object> datosDireccion(String idCompania, String idSucursal, String idEmpleado, int baseDatos) {
+		Map<String, Object> respuesta = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Datos Dirección");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarDatosDireccion(idCompania, idSucursal, idEmpleado,
+				configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
+
+	public Map<String, Object> informacionLaboral(String idCompania, String idSucursal, String idEmpleado,
+			int baseDatos) {
+		Map<String, Object> respuesta = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Información Laboral");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarInformacionLaboral(idCompania, idSucursal, idEmpleado,
+				configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
+	
+	public Map<String, Object> contactoEmergencia(String idCompania, String idSucursal, String idEmpleado,
+			int baseDatos) {
+		Map<String, Object> respuesta = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Contacto de Emergencia");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarDatosEmergencia(idCompania, idSucursal, idEmpleado, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
 }

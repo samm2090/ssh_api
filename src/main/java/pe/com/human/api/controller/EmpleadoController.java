@@ -83,7 +83,7 @@ public class EmpleadoController {
 	@SuppressWarnings("unchecked")
 	@CrossOrigin
 	@RequestMapping(value = "dashboard/pendientes", method = RequestMethod.POST)
-	public Map<String, Object> dashboardPendientes(@RequestBody Map<String, Object> parametros) {
+	public ResponseEntity<Map<String, Object>> dashboardPendientes(@RequestBody Map<String, Object> parametros) {
 		Map<String, Object> base = (Map<String, Object>) parametros.get("base");
 		Map<String, Object> compania = (Map<String, Object>) base.get("compania");
 		Map<String, Object> sucursal = (Map<String, Object>) compania.get("sucursal");
@@ -94,7 +94,8 @@ public class EmpleadoController {
 		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String idEmpleado = empleado.get("id").toString();
 
-		return empleadoService.dashboardPendientes(idCompania, idSucursal, baseDatos, idEmpleado);
+		return new ResponseEntity<Map<String, Object>>(
+				empleadoService.dashboardPendientes(idCompania, idSucursal, baseDatos, idEmpleado), HttpStatus.OK);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -116,11 +117,11 @@ public class EmpleadoController {
 	@SuppressWarnings("unchecked")
 	@CrossOrigin
 	@RequestMapping(value = "dashboard/comunicados", method = RequestMethod.POST)
-	public Map<String, Object> dashboardComunicados(@RequestBody Map<String, Object> parametros) {
+	public ResponseEntity<Map<String, Object>> dashboardComunicados(@RequestBody Map<String, Object> parametros) {
 		Map<String, Object> base = (Map<String, Object>) parametros.get("base");
 		Map<String, Object> compania = (Map<String, Object>) base.get("compania");
 		Map<String, Object> sucursal = (Map<String, Object>) compania.get("sucursal");
-		Map<String, Object> empleado = (Map<String, Object>) compania.get("empleado");
+		Map<String, Object> empleado = (Map<String, Object>) parametros.get("empleado");
 
 		String idCompania = compania.get("id").toString();
 		String idSucursal = sucursal.get("id").toString();
@@ -128,7 +129,8 @@ public class EmpleadoController {
 
 		String idEmpleado = empleado.get("id").toString();
 
-		return empleadoService.dashboardComunicados(idCompania, idSucursal, baseDatos, idEmpleado);
+		return new ResponseEntity<Map<String, Object>>(
+				empleadoService.dashboardComunicados(idCompania, idSucursal, baseDatos, idEmpleado), HttpStatus.OK);
 	}
 
 	@CrossOrigin
@@ -138,6 +140,78 @@ public class EmpleadoController {
 		Map<String, Object> respuesta = empleadoService.informacionPersonalResumen(empleado);
 
 		return new ResponseEntity<Map<String, Object>>(respuesta, HttpStatus.OK);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@CrossOrigin
+	@RequestMapping(value = "datos/personal/informacionGeneral", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> informacionGeneral(@RequestBody Map<String, Object> parametros) {
+		Map<String, Object> base = (Map<String, Object>) parametros.get("base");
+		Map<String, Object> compania = (Map<String, Object>) base.get("compania");
+		Map<String, Object> sucursal = (Map<String, Object>) compania.get("sucursal");
+		Map<String, Object> empleado = (Map<String, Object>) parametros.get("empleado");
+
+		String idCompania = compania.get("id").toString();
+		String idSucursal = sucursal.get("id").toString();
+		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
+		String idEmpleado = empleado.get("id").toString();
+
+		return new ResponseEntity<Map<String, Object>>(
+				empleadoService.informacionGeneral(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
+	}
+
+	@SuppressWarnings("unchecked")
+	@CrossOrigin
+	@RequestMapping(value = "datos/personal/datosDireccion", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> datosDireccion(@RequestBody Map<String, Object> parametros) {
+		Map<String, Object> base = (Map<String, Object>) parametros.get("base");
+		Map<String, Object> compania = (Map<String, Object>) base.get("compania");
+		Map<String, Object> sucursal = (Map<String, Object>) compania.get("sucursal");
+		Map<String, Object> empleado = (Map<String, Object>) parametros.get("empleado");
+
+		String idCompania = compania.get("id").toString();
+		String idSucursal = sucursal.get("id").toString();
+		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
+		String idEmpleado = empleado.get("id").toString();
+
+		return new ResponseEntity<Map<String, Object>>(
+				empleadoService.datosDireccion(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@CrossOrigin
+	@RequestMapping(value = "datos/laboral/informacionLaboral", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> informacionLaboral(@RequestBody Map<String, Object> parametros) {
+		Map<String, Object> base = (Map<String, Object>) parametros.get("base");
+		Map<String, Object> compania = (Map<String, Object>) base.get("compania");
+		Map<String, Object> sucursal = (Map<String, Object>) compania.get("sucursal");
+		Map<String, Object> empleado = (Map<String, Object>) parametros.get("empleado");
+
+		String idCompania = compania.get("id").toString();
+		String idSucursal = sucursal.get("id").toString();
+		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
+		String idEmpleado = empleado.get("id").toString();
+
+		return new ResponseEntity<Map<String, Object>>(
+				empleadoService.informacionLaboral(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@CrossOrigin
+	@RequestMapping(value = "datos/personal/contactoEmergencia", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> contactoEmergencia(@RequestBody Map<String, Object> parametros) {
+		Map<String, Object> base = (Map<String, Object>) parametros.get("base");
+		Map<String, Object> compania = (Map<String, Object>) base.get("compania");
+		Map<String, Object> sucursal = (Map<String, Object>) compania.get("sucursal");
+		Map<String, Object> empleado = (Map<String, Object>) parametros.get("empleado");
+
+		String idCompania = compania.get("id").toString();
+		String idSucursal = sucursal.get("id").toString();
+		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
+		String idEmpleado = empleado.get("id").toString();
+
+		return new ResponseEntity<Map<String, Object>>(
+				empleadoService.contactoEmergencia(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
 	}
 
 }

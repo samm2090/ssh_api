@@ -26,9 +26,52 @@ buscarEmpleadoResumen = SELECT EMPCODTRA,EMPNOMBRE, EMPAPATERN, EMPAMATERN, EMPN
 						EMPCODTRA = ? 
 						
 listarCumpleanos = 	SELECT E.EMPNOMBRE || ' ' || E.EMPAPATERN || ' ' || E.EMPAMATERN AS NOMBRE,                \
-					P.PUEDESPUE, E.EMPTELFMOV                                                                  \
-					FROM HR_EMPLEADO E LEFT JOIN HR_PUESTO P                                                   \
-					ON E.EMPCODPUEST = P.PUECODPUE AND E.EMPCODCIA = P.PUECODCIA AND E.EMPCODSUC = P.PUECODCIA \
+					A.AREDESAREA, EMPTELFMOV                                                                   \
+					FROM HR_EMPLEADO E LEFT JOIN HR_AREA A                                                     \
+					ON E.EMPCODAREA = A.ARECODAREA AND E.EMPCODCIA = A.ARECODCIA AND E.EMPCODSUC = A.ARECODSUC \
 					WHERE E.EMPCODCIA = ? AND E.EMPCODSUC = ? AND E.EMPFLGEST = '1'                            \
 					AND TO_CHAR(E.EMPFECNAC,'MM')= TO_CHAR(SYSDATE,'MM')                                       \
 					AND TO_CHAR(E.EMPFECNAC,'DD')= TO_CHAR(SYSDATE, 'DD')
+					
+listarFeriados =SELECT *                                                \
+				FROM HR_FERIADO                                         \
+				WHERE TO_CHAR(FERFECHA, 'mm') = TO_CHAR(SYSDATE, 'mm')  \
+				AND TO_CHAR(FERFECHA, 'yyyy') = TO_CHAR(SYSDATE, 'yyyy')\
+				AND FERCODCIA = ?                                       \
+				AND FERCODSUC = ?
+				
+buscarInformacionGeneral = 	SELECT E.EMPNRODOCID, TO_CHAR(E.EMPFECNAC, 'dd/mm/yyyy') as EMPFECNAC, \
+							(SELECT TTBDESOBJ                                                   \
+							FROM EB_TTABLE                                                      \
+							WHERE TTBCODCIA = E.EMPCODCIA AND TTBCODSUC = E.EMPCODSUC           \
+							AND TTBCODTAB = '10' AND TTBKEYOBJ = E.EMPNACIONAL) AS NACIONALIDAD,\
+							(SELECT TTBDESOBJ                                                   \
+							FROM EB_TTABLE                                                      \
+							WHERE TTBCODCIA = E.EMPCODCIA AND TTBCODSUC = E.EMPCODSUC           \
+							AND TTBCODTAB = '02' AND TTBKEYOBJ = E.EMPESTCIV) AS ESTADO_CIVIL   \
+							FROM HR_EMPLEADO E                                                  \
+							WHERE E.EMPCODCIA = ? AND E.EMPCODSUC = ? AND E.EMPCODTRA = ?
+							
+buscarInformacionLaboral = 	SELECT E.EMPCODTRA,                                                                          \
+							(SELECT GERNOMBRE FROM HR_GERENCIA WHERE GERCODCIA = E.EMPCODCIA AND                         \
+							GERCODSUC = E.EMPCODSUC AND GERCODIGO = E.EMPCODGER) AS GERENCIA,                            \
+							(SELECT AREDESAREA FROM HR_AREA WHERE ARECODCIA = E.EMPCODCIA AND                            \
+							ARECODSUC = E.EMPCODSUC AND ARECODAREA = E.EMPCODAREA) AS AREA,                              \
+							(SELECT PUEDESPUE FROM HR_PUESTO WHERE PUECODCIA = E.EMPCODCIA AND                           \
+							PUECODSUC = E.EMPCODSUC AND PUECODPUE = E.EMPCODPUEST) AS PUESTO,                            \
+							(SELECT EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN FROM HR_EMPLEADO WHERE           \
+							EMPCODCIA = E.EMPCODCIA AND EMPCODSUC = E.EMPCODSUC AND EMPCODTRA = E.EMPCODTRAJEF) AS JEFE, \
+							(SELECT LOCDESLOC FROM HR_LOCAL WHERE                                                        \
+							LOCCODCIA = E.EMPCODCIA AND LOCCODSUC = E.EMPCODSUC AND LOCCODLOC = E.EMPCODLOC) AS LOCAL,   \
+							TO_CHAR(E.EMPFECING, 'DD/MM/YYYY') AS EMPFECING,                                             \
+							EMPANEXOORG                                                                                  \
+							FROM HR_EMPLEADO E                                                                           \
+							WHERE E.EMPCODCIA = ? AND E.EMPCODSUC = ? AND E.EMPCODTRA = ?
+
+buscarDatosDireccion = 	SELECT EMPDIRECCION, EMPEMAILORG, EMPEMAIL, EMPTELFMOV,EMPTELFFIJO    \
+						FROM HR_EMPLEADO                                                      \
+						WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?
+						
+buscarDatosEmergencia = SELECT EMPNOMEMER, EMPPARCE, EMPDIRECCIONCE, EMPTELFCE, EMPCELCE \
+						FROM HR_EMPLEADO                                                 \
+						WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?

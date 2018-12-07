@@ -2,7 +2,7 @@ package pe.com.human.api.dao;
 
 import java.util.List;
 
-import pe.com.human.api.model.ItemCumpleanos;
+import pe.com.human.api.model.Item;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.Widget;
@@ -25,7 +25,22 @@ public interface EmpleadoDAO {
 	public EmpleadoResumen buscarEmpleadoResumen(EmpleadoRequest empleado,
 			ConfiguracionDataSource configuracionDataSource);
 
-	public List<ItemCumpleanos> listarCumpleanos(String idCompania, String idSucursal,
+	public List<Item> listarCumpleanos(String idCompania, String idSucursal,
+			ConfiguracionDataSource configuracionDataSource);
+
+	public List<Item> listarFeriados(String idCompania, String idSucursal,
+			ConfiguracionDataSource configuracionDataSource);
+
+	public List<Item> buscarInformacionGeneral(String idCompania, String idSucursal, String idEmpleado,
+			ConfiguracionDataSource configuracionDataSource);
+
+	public List<Item> buscarInformacionLaboral(String idCompania, String idSucursal, String idEmpleado,
+			ConfiguracionDataSource configuracionDataSource);
+
+	public List<Item> buscarDatosDireccion(String idCompania, String idSucursal, String idEmpleado,
+			ConfiguracionDataSource configuracionDataSource);
+	
+	public List<Item> buscarDatosEmergencia(String idCompania, String idSucursal, String idEmpleado,
 			ConfiguracionDataSource configuracionDataSource);
 
 }

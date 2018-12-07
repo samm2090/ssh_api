@@ -4,8 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,7 +28,7 @@ import pe.com.human.api.model.Documento;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.EstiloTexto;
-import pe.com.human.api.model.ItemCumpleanos;
+import pe.com.human.api.model.Item;
 import pe.com.human.api.model.Linea;
 import pe.com.human.api.model.Local;
 import pe.com.human.api.model.NombreCompleto;
@@ -260,10 +265,10 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 	}
 
 	@Override
-	public List<ItemCumpleanos> listarCumpleanos(String idCompania, String idSucursal,
+	public List<Item> listarCumpleanos(String idCompania, String idSucursal,
 			ConfiguracionDataSource configuracionDataSource) {
 
-		List<ItemCumpleanos> cumpleanos = null;
+		List<Item> cumpleanos = null;
 		Connection conexion = null;
 
 		String query = lector.leerPropiedad("queries/empleado.query").getProperty("listarCumpleanos");
@@ -278,9 +283,9 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			ResultSet rs = listarEmpleados.executeQuery();
 
 			cumpleanos = new ArrayList<>();
-			ItemCumpleanos item = null;
+			Item item = null;
 			while (rs.next()) {
-				item = new ItemCumpleanos();
+				item = new Item();
 
 				Remote remote = new Remote();
 				remote.setResTipo("");
@@ -319,7 +324,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				primeraLinea.setAction(null);
 
 				Texto textoSegundaLinea = new Texto();
-				textoSegundaLinea.setTexto(rs.getString("PUEDESPUE"));
+				textoSegundaLinea.setTexto(rs.getString("AREDESAREA"));
 				textoSegundaLinea.setEstilo(estiloTextoPrimeraLinea);
 
 				Local localSegundaLinea = new Local();
@@ -383,6 +388,708 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			}
 		}
 		return cumpleanos;
+	}
+
+	@Override
+	public List<Item> listarFeriados(String idCompania, String idSucursal,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> feriados = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("listarFeriados");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement listarEmpleados = conexion.prepareStatement(query);
+			listarEmpleados.setString(1, idCompania);
+			listarEmpleados.setString(2, idSucursal);
+
+			ResultSet rs = listarEmpleados.executeQuery();
+
+			feriados = new ArrayList<>();
+			Item item = null;
+			while (rs.next()) {
+				item = new Item();
+
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Local local = new Local();
+				local.setResTipo("ICON");
+				local.setNombre("schedule");
+				local.setExt("xml");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("LOCAL");
+				archivo.setTipo("VECTOR");
+				archivo.setLocal(local);
+				archivo.setRemote(null);
+
+				Default defaultResItem = new Default();
+				defaultResItem.setNombre("PRIMARYDARK");
+
+				Color colorResItem = new Color();
+				colorResItem.setTipo("TINT");
+				colorResItem.setUso("LOCAL");
+				colorResItem.setDefault1(defaultResItem);
+
+				ResItem resItem = new ResItem();
+				resItem.setTipo("ICON");
+				resItem.setArchivo(archivo);
+				resItem.setColor(colorResItem);
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(rs.getString("FERDESC"));
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Date ferFecha = rs.getDate("FERFECHA");
+				SimpleDateFormat sdf = new SimpleDateFormat("EEEE',' MMM',' YYYY", new Locale("es", "PE"));
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(sdf.format(ferFecha));
+				textoSegundaLinea.setEstilo(estiloTextoPrimeraLinea);
+
+//				Local localSegundaLinea = new Local();
+//				localSegundaLinea.setResTipo("ICON");
+//				localSegundaLinea.setNombre("schedule");
+//				localSegundaLinea.setExt("xml");
+//
+//				Archivo archivoSegundaLinea = new Archivo();
+//				archivoSegundaLinea.setAlmaTipo("LOCAL");
+//				archivoSegundaLinea.setTipo("VECTOR");
+//				archivoSegundaLinea.setRemote(null);
+//				archivo.setLocal(localSegundaLinea);
+//
+//				Default defaultSegundaLinea = new Default();
+//				defaultSegundaLinea.setNombre("PRIMARYDARK");
+//
+//				Color colorSegundaLinea = new Color();
+//				colorSegundaLinea.setTipo("TINT");
+//				colorSegundaLinea.setUso("LOCAL");
+//				colorSegundaLinea.setDefault1(defaultSegundaLinea);
+//				colorSegundaLinea.setCustom(null);
+//
+//				ResItem resItemSegundaLinea = new ResItem();
+//				resItemSegundaLinea.setTipo("PHONE");
+//				resItemSegundaLinea.setArchivo(archivoSegundaLinea);
+//				resItemSegundaLinea.setColor(colorSegundaLinea);
+
+				// Phone phone = new Phone();
+				// phone.setTipo("MOBILE");
+				// phone.setUri(rs.getString("EMPTELFMOV"));
+
+//				Action actionSegundaLinea = new Action();
+//				actionSegundaLinea.setTipo("PHONE");
+//				actionSegundaLinea.setResItem(resItemSegundaLinea);
+				// actionSegundaLinea.setPhone(phone);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(resItem);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+
+				feriados.add(item);
+			}
+
+			rs.close();
+			listarEmpleados.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return feriados;
+	}
+
+	@Override
+	public List<Item> buscarInformacionGeneral(String idCompania, String idSucursal, String idEmpleado,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarInformacionGeneral");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, idCompania);
+			buscarEmpleado.setString(2, idSucursal);
+			buscarEmpleado.setString(3, idEmpleado);
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			items = new ArrayList<>();
+			Item item = null;
+			
+			
+			Map<String, String> datoEmpleado = new LinkedHashMap<>(); 
+			if (rs.next()) {
+				datoEmpleado.put("DNI", rs.getString("EMPNRODOCID"));
+				datoEmpleado.put("Fecha de Nacimiento", rs.getString("EMPFECNAC"));
+				datoEmpleado.put("Nacionalidad", rs.getString("NACIONALIDAD"));
+				datoEmpleado.put("Estado Civil", rs.getString("ESTADO_CIVIL"));
+			}
+			
+			for(String key : datoEmpleado.keySet()){
+				item = new Item();
+
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTO");
+				archivo.setTipo("IMAGEN");
+				archivo.setLocal(null);
+				archivo.setRemote(null);
+
+				ResItem resItem = new ResItem();
+				resItem.setTipo("AVATAR40");
+				resItem.setArchivo(archivo);
+				resItem.setColor(null);
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(key);
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(datoEmpleado.get(key));
+				textoSegundaLinea.setEstilo(estiloTextoPrimeraLinea);
+
+//				Local localSegundaLinea = new Local();
+//				localSegundaLinea.setResTipo("ICON");
+//				localSegundaLinea.setNombre("phone");
+//				localSegundaLinea.setExt("xml");
+//
+//				Archivo archivoSegundaLinea = new Archivo();
+//				archivoSegundaLinea.setAlmaTipo("LOCAL");
+//				archivoSegundaLinea.setTipo("VECTOR");
+//				archivoSegundaLinea.setRemote(null);
+//				archivo.setLocal(localSegundaLinea);
+//
+//				Default defaultSegundaLinea = new Default();
+//				default1.setNombre("PRIMARYDARK");
+//
+//				Color colorSegundaLinea = new Color();
+//				colorSegundaLinea.setTipo("TINT");
+//				colorSegundaLinea.setUso("LOCAL");
+//				colorSegundaLinea.setDefault1(defaultSegundaLinea);
+//				colorSegundaLinea.setCustom(null);
+//
+//				ResItem resItemSegundaLinea = new ResItem();
+//				resItemSegundaLinea.setTipo("PHONE");
+//				resItemSegundaLinea.setArchivo(archivoSegundaLinea);
+//				resItemSegundaLinea.setColor(colorSegundaLinea);
+//
+//				Phone phone = new Phone();
+//				phone.setTipo("MOBILE");
+//				phone.setUri(rs.getString("EMPTELFMOV"));
+//
+//				Action actionSegundaLinea = new Action();
+//				actionSegundaLinea.setTipo("PHONE");
+//				actionSegundaLinea.setResItem(resItemSegundaLinea);
+//				actionSegundaLinea.setPhone(phone);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(resItem);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+
+				items.add(item);
+			}
+				
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
+	}
+
+	@Override
+	public List<Item> buscarInformacionLaboral(String idCompania, String idSucursal, String idEmpleado,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarInformacionLaboral");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, idCompania);
+			buscarEmpleado.setString(2, idSucursal);
+			buscarEmpleado.setString(3, idEmpleado);
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			items = new ArrayList<>();
+			Item item = null;
+			
+			
+			Map<String, String> datoEmpleado = new LinkedHashMap<>(); 
+			if (rs.next()) {
+				datoEmpleado.put("Código del trabajador", rs.getString("EMPCODTRA"));
+				datoEmpleado.put("Gerencia", rs.getString("GERENCIA"));
+				datoEmpleado.put("Área", rs.getString("AREA"));
+				datoEmpleado.put("Puesto", rs.getString("PUESTO"));
+				datoEmpleado.put("Jefe Directo", rs.getString("JEFE"));
+				datoEmpleado.put("Local", rs.getString("LOCAL"));
+				datoEmpleado.put("Fecha de Ingreso", rs.getString("EMPFECING"));
+				datoEmpleado.put("Anexo", rs.getString("EMPANEXOORG"));
+			}
+			
+			for(String key : datoEmpleado.keySet()){
+				item = new Item();
+
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTO");
+				archivo.setTipo("IMAGEN");
+				archivo.setLocal(null);
+				archivo.setRemote(null);
+
+				ResItem resItem = new ResItem();
+				resItem.setTipo("AVATAR40");
+				resItem.setArchivo(archivo);
+				resItem.setColor(null);
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(key);
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(datoEmpleado.get(key));
+				textoSegundaLinea.setEstilo(estiloTextoPrimeraLinea);
+
+//				Local localSegundaLinea = new Local();
+//				localSegundaLinea.setResTipo("ICON");
+//				localSegundaLinea.setNombre("phone");
+//				localSegundaLinea.setExt("xml");
+//
+//				Archivo archivoSegundaLinea = new Archivo();
+//				archivoSegundaLinea.setAlmaTipo("LOCAL");
+//				archivoSegundaLinea.setTipo("VECTOR");
+//				archivoSegundaLinea.setRemote(null);
+//				archivo.setLocal(localSegundaLinea);
+//
+//				Default defaultSegundaLinea = new Default();
+//				default1.setNombre("PRIMARYDARK");
+//
+//				Color colorSegundaLinea = new Color();
+//				colorSegundaLinea.setTipo("TINT");
+//				colorSegundaLinea.setUso("LOCAL");
+//				colorSegundaLinea.setDefault1(defaultSegundaLinea);
+//				colorSegundaLinea.setCustom(null);
+//
+//				ResItem resItemSegundaLinea = new ResItem();
+//				resItemSegundaLinea.setTipo("PHONE");
+//				resItemSegundaLinea.setArchivo(archivoSegundaLinea);
+//				resItemSegundaLinea.setColor(colorSegundaLinea);
+//
+//				Phone phone = new Phone();
+//				phone.setTipo("MOBILE");
+//				phone.setUri(rs.getString("EMPTELFMOV"));
+//
+//				Action actionSegundaLinea = new Action();
+//				actionSegundaLinea.setTipo("PHONE");
+//				actionSegundaLinea.setResItem(resItemSegundaLinea);
+//				actionSegundaLinea.setPhone(phone);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(resItem);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+
+				items.add(item);
+			}
+				
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
+	}
+
+	@Override
+	public List<Item> buscarDatosDireccion(String idCompania, String idSucursal, String idEmpleado,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarDatosDireccion");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, idCompania);
+			buscarEmpleado.setString(2, idSucursal);
+			buscarEmpleado.setString(3, idEmpleado);
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			items = new ArrayList<>();
+			Item item = null;
+			
+			Map<String, String> datoEmpleado = new LinkedHashMap<>(); 
+			if (rs.next()) {
+				datoEmpleado.put("Dirección Actual", rs.getString("EMPDIRECCION"));
+				datoEmpleado.put("Email Empresa", rs.getString("EMPEMAILORG"));
+				datoEmpleado.put("Email Personal", rs.getString("EMPEMAIL"));
+				datoEmpleado.put("Celular Personal", rs.getString("EMPTELFMOV"));
+				datoEmpleado.put("Teléfono Casa", rs.getString("EMPTELFFIJO"));
+			}
+			
+			for(String key : datoEmpleado.keySet()){
+				item = new Item();
+
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTO");
+				archivo.setTipo("IMAGEN");
+				archivo.setLocal(null);
+				archivo.setRemote(null);
+
+				ResItem resItem = new ResItem();
+				resItem.setTipo("AVATAR40");
+				resItem.setArchivo(archivo);
+				resItem.setColor(null);
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(key);
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(datoEmpleado.get(key));
+				textoSegundaLinea.setEstilo(estiloTextoPrimeraLinea);
+
+//				Local localSegundaLinea = new Local();
+//				localSegundaLinea.setResTipo("ICON");
+//				localSegundaLinea.setNombre("phone");
+//				localSegundaLinea.setExt("xml");
+//
+//				Archivo archivoSegundaLinea = new Archivo();
+//				archivoSegundaLinea.setAlmaTipo("LOCAL");
+//				archivoSegundaLinea.setTipo("VECTOR");
+//				archivoSegundaLinea.setRemote(null);
+//				archivo.setLocal(localSegundaLinea);
+//
+//				Default defaultSegundaLinea = new Default();
+//				default1.setNombre("PRIMARYDARK");
+//
+//				Color colorSegundaLinea = new Color();
+//				colorSegundaLinea.setTipo("TINT");
+//				colorSegundaLinea.setUso("LOCAL");
+//				colorSegundaLinea.setDefault1(defaultSegundaLinea);
+//				colorSegundaLinea.setCustom(null);
+//
+//				ResItem resItemSegundaLinea = new ResItem();
+//				resItemSegundaLinea.setTipo("PHONE");
+//				resItemSegundaLinea.setArchivo(archivoSegundaLinea);
+//				resItemSegundaLinea.setColor(colorSegundaLinea);
+//
+//				Phone phone = new Phone();
+//				phone.setTipo("MOBILE");
+//				phone.setUri(rs.getString("EMPTELFMOV"));
+//
+//				Action actionSegundaLinea = new Action();
+//				actionSegundaLinea.setTipo("PHONE");
+//				actionSegundaLinea.setResItem(resItemSegundaLinea);
+//				actionSegundaLinea.setPhone(phone);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(resItem);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+
+				items.add(item);
+			}
+				
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
+	}
+
+	@Override
+	public List<Item> buscarDatosEmergencia(String idCompania, String idSucursal, String idEmpleado,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarDatosEmergencia");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, idCompania);
+			buscarEmpleado.setString(2, idSucursal);
+			buscarEmpleado.setString(3, idEmpleado);
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			items = new ArrayList<>();
+			Item item = null;
+
+			if (rs.next()) {
+				item = new Item();
+
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTO");
+				archivo.setTipo("IMAGEN");
+				archivo.setLocal(null);
+				archivo.setRemote(null);
+
+				ResItem resItem = new ResItem();
+				resItem.setTipo("AVATAR40");
+				resItem.setArchivo(archivo);
+				resItem.setColor(null);
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(rs.getString("EMPNOMEMER"));
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(rs.getString("EMPDIRECCIONCE"));
+				textoSegundaLinea.setEstilo(estiloTextoPrimeraLinea);
+				
+				Texto textoTercerLinea = new Texto();
+				textoTercerLinea.setTexto(rs.getString("EMPTELFCE"));
+				textoTercerLinea.setEstilo(estiloTextoPrimeraLinea);
+				
+				Texto textoCuartaLinea = new Texto();
+				textoCuartaLinea.setTexto(rs.getString("EMPCELCE"));
+				textoCuartaLinea.setEstilo(estiloTextoPrimeraLinea);
+
+//				Local localSegundaLinea = new Local();
+//				localSegundaLinea.setResTipo("ICON");
+//				localSegundaLinea.setNombre("phone");
+//				localSegundaLinea.setExt("xml");
+//
+//				Archivo archivoSegundaLinea = new Archivo();
+//				archivoSegundaLinea.setAlmaTipo("LOCAL");
+//				archivoSegundaLinea.setTipo("VECTOR");
+//				archivoSegundaLinea.setRemote(null);
+//				archivo.setLocal(localSegundaLinea);
+//
+//				Default defaultSegundaLinea = new Default();
+//				default1.setNombre("PRIMARYDARK");
+//
+//				Color colorSegundaLinea = new Color();
+//				colorSegundaLinea.setTipo("TINT");
+//				colorSegundaLinea.setUso("LOCAL");
+//				colorSegundaLinea.setDefault1(defaultSegundaLinea);
+//				colorSegundaLinea.setCustom(null);
+//
+//				ResItem resItemSegundaLinea = new ResItem();
+//				resItemSegundaLinea.setTipo("PHONE");
+//				resItemSegundaLinea.setArchivo(archivoSegundaLinea);
+//				resItemSegundaLinea.setColor(colorSegundaLinea);
+//
+//				Phone phone = new Phone();
+//				phone.setTipo("MOBILE");
+//				phone.setUri(rs.getString("EMPTELFMOV"));
+//
+//				Action actionSegundaLinea = new Action();
+//				actionSegundaLinea.setTipo("PHONE");
+//				actionSegundaLinea.setResItem(resItemSegundaLinea);
+//				actionSegundaLinea.setPhone(phone);
+				
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+				
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+				
+				Linea tercerLinea = new Linea();
+				tercerLinea.setTexto(textoTercerLinea);
+				tercerLinea.setAction(null);
+				
+				Linea cuartaLinea = new Linea();
+				cuartaLinea.setTexto(textoCuartaLinea);
+				cuartaLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(resItem);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+				item.setTerceraLinea(tercerLinea);
+				item.setCuartaLinea(cuartaLinea);
+
+				items.add(item);
+			}
+				
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
 	}
 
 }

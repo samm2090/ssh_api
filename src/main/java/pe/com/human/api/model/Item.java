@@ -5,12 +5,30 @@ package pe.com.human.api.model;
  * @author smuroy
  *
  */
-public class ItemCumpleanos {
+public class Item {
 
 	private String tipo;
 	private ResItem resItem;
 	private Linea primeraLinea;
 	private Linea segundaLinea;
+	private Linea terceraLinea;
+	private Linea cuartaLinea;
+
+	public Linea getTerceraLinea() {
+		return terceraLinea;
+	}
+
+	public void setTerceraLinea(Linea terceraLinea) {
+		this.terceraLinea = terceraLinea;
+	}
+
+	public Linea getCuartaLinea() {
+		return cuartaLinea;
+	}
+
+	public void setCuartaLinea(Linea cuartaLinea) {
+		this.cuartaLinea = cuartaLinea;
+	}
 
 	public String getTipo() {
 		return tipo;
