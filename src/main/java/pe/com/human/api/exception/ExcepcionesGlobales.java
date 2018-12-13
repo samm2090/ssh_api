@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -18,13 +18,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.human.api.util.ResponseError;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 
 	public ExcepcionesGlobales() {
 	}
 
-	
 	@Override
 	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
@@ -46,9 +45,7 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<Object>(json, HttpStatus.BAD_REQUEST);
 	}
-	
 
-	
 	// @ExceptionHandler({ NoHandlerFoundException.class })
 	// @ResponseStatus(value = HttpStatus.NOT_FOUND)
 	// @ResponseBody
@@ -71,7 +68,6 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 
 		error.setCodigo(HttpStatus.NOT_FOUND.toString());
 		error.setMensaje("Porfin");
-
 
 		return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
 	}
@@ -111,20 +107,19 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<Object>(json, HttpStatus.BAD_REQUEST);
 	}
-	
-	
+
 	@ExceptionHandler({ MethodArgumentTypeMismatchException.class })
-	public ResponseEntity<Object> handleBadRequest(final MethodArgumentTypeMismatchException ex, final WebRequest request) {
+	public ResponseEntity<Object> handleBadRequest(final MethodArgumentTypeMismatchException ex,
+			final WebRequest request) {
 		ResponseError error = new ResponseError();
 
 		error.setCodigo(HttpStatus.NOT_FOUND.toString());
 		error.setMensaje("Porfin");
 
-
 		return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
 	}
-	
-	@ExceptionHandler({ ExcepcionNoExisteEmpleado.class })
+
+	@ExceptionHandler(ExcepcionNoExisteEmpleado.class)
 	protected ResponseEntity<Object> prueba(final ExcepcionNoExisteEmpleado ex, WebRequest request) {
 
 		ResponseError error = new ResponseError();
@@ -134,8 +129,6 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<Object>(error, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
-	
-
 
 	// @Override
 	// protected ResponseEntity<Object> handleHttpMessageNotReadable(final

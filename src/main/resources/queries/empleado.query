@@ -25,8 +25,8 @@ buscarEmpleadoResumen = SELECT EMPCODTRA,EMPNOMBRE, EMPAPATERN, EMPAMATERN, EMPN
 						EMPCODSUC = ? AND                                                                                                          \
 						EMPCODTRA = ? 
 						
-listarCumpleanos = 	SELECT E.EMPNOMBRE || ' ' || E.EMPAPATERN || ' ' || E.EMPAMATERN AS NOMBRE,                \
-					A.AREDESAREA, EMPTELFMOV                                                                   \
+listarCumpleanos = 	SELECT INITCAP(E.EMPNOMBRE || ' ' || E.EMPAPATERN || ' ' || E.EMPAMATERN) AS NOMBRE,       \
+					INITCAP(A.AREDESAREA) AS AREDESAREA, EMPTELFMOV                                            \
 					FROM HR_EMPLEADO E LEFT JOIN HR_AREA A                                                     \
 					ON E.EMPCODAREA = A.ARECODAREA AND E.EMPCODCIA = A.ARECODCIA AND E.EMPCODSUC = A.ARECODSUC \
 					WHERE E.EMPCODCIA = ? AND E.EMPCODSUC = ? AND E.EMPFLGEST = '1'                            \

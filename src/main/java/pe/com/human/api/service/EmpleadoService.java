@@ -301,7 +301,7 @@ public class EmpleadoService {
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
 		Default default1 = new Default();
-		default1.setNombre("SECONDARYDARK");
+		default1.setNombre("PRIMARYDARK");
 
 		Color color = new Color();
 		color.setTipo("TEXT");
@@ -335,7 +335,7 @@ public class EmpleadoService {
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
 		Default default1 = new Default();
-		default1.setNombre("SECONDARYDARK");
+		default1.setNombre("PRIMARYDARK");
 
 		Color color = new Color();
 		color.setTipo("TEXT");
@@ -370,7 +370,7 @@ public class EmpleadoService {
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
 		Default default1 = new Default();
-		default1.setNombre("SECONDARYDARK");
+		default1.setNombre("PRIMARYDARK");
 
 		Color color = new Color();
 		color.setTipo("TEXT");
@@ -396,7 +396,7 @@ public class EmpleadoService {
 
 		return respuesta;
 	}
-	
+
 	public Map<String, Object> contactoEmergencia(String idCompania, String idSucursal, String idEmpleado,
 			int baseDatos) {
 		Map<String, Object> respuesta = new HashMap<>();
@@ -405,7 +405,7 @@ public class EmpleadoService {
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
 		Default default1 = new Default();
-		default1.setNombre("SECONDARYDARK");
+		default1.setNombre("PRIMARYDARK");
 
 		Color color = new Color();
 		color.setTipo("TEXT");
@@ -422,7 +422,8 @@ public class EmpleadoService {
 		titulo.setTexto("Contacto de Emergencia");
 		titulo.setEstilo(estilo);
 
-		List<Item> items = empleadoDAO.buscarDatosEmergencia(idCompania, idSucursal, idEmpleado, configuracionDataSource);
+		List<Item> items = empleadoDAO.buscarDatosEmergencia(idCompania, idSucursal, idEmpleado,
+				configuracionDataSource);
 
 		data.put("titulo", titulo);
 		data.put("items", items);
