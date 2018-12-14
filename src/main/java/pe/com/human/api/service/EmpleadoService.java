@@ -69,29 +69,25 @@ public class EmpleadoService {
 
 	private static Logger logger = Logger.getLogger(EmpleadoService.class);
 
-	static final String ROL_JEFE = "01";
+	static final String ROL_JEFE = "1";
 
 	public Map<String, Object> listarCompaniasXDocumento(String documento) {
 		Map<String, Object> respuesta = new HashMap<>();
-		try {
-			List<Map<String, Object>> companias = companiaDAO.listarCompaniasXDocumento(documento);
-			if (!companias.isEmpty()) {
+		List<Map<String, Object>> companias = companiaDAO.listarCompaniasXDocumento(documento);
+		if (!companias.isEmpty()) {
 
-				List<Map<String, Object>> data = new ArrayList<>();
-				Map<String, Object> comp;
-				for (Map<String, Object> compania : companias) {
-					comp = new HashMap<>();
-					comp.put("compania", compania.get("compania"));
-					comp.put("baseDatos", compania.get("baseDatos"));
-					data.add(comp);
-				}
-
-				respuesta.put("data", data);
-			} else {
-				throw new ExcepcionNoExisteEmpleado();
+			List<Map<String, Object>> data = new ArrayList<>();
+			Map<String, Object> comp;
+			for (Map<String, Object> compania : companias) {
+				comp = new HashMap<>();
+				comp.put("compania", compania.get("compania"));
+				comp.put("baseDatos", compania.get("baseDatos"));
+				data.add(comp);
 			}
-		} catch (Exception e) {
-			logger.info("Exception: " + e);
+
+			respuesta.put("data", data);
+		} else {
+			throw new ExcepcionNoExisteEmpleado();
 		}
 		return respuesta;
 	}

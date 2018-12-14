@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,11 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pe.com.human.api.util.ResponseError;
 
+@EnableWebMvc
 @RestControllerAdvice
 public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
-
-	public ExcepcionesGlobales() {
-	}
 
 	@Override
 	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
@@ -121,7 +120,6 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(ExcepcionNoExisteEmpleado.class)
 	protected ResponseEntity<Object> prueba(final ExcepcionNoExisteEmpleado ex, WebRequest request) {
-
 		ResponseError error = new ResponseError();
 
 		error.setCodigo(HttpStatus.NOT_FOUND.toString());

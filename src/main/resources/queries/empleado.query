@@ -1,5 +1,5 @@
 buscarEmpleadoXUsuario = SELECT E.EMPCODTRA, \
-						(SELECT CASE WHEN NVL(COUNT(EMPCODTRA),0) > 0 THEN '01' ELSE '02' END FROM HR_EMPLEADO \
+						(SELECT CASE WHEN NVL(COUNT(EMPCODTRA),0) > 0 THEN '1' ELSE '2' END FROM HR_EMPLEADO \
 						WHERE EMPCODTRAJEF = E.EMPCODTRA AND EMPCODCIA = E.EMPCODCIA AND EMPCODSUC = E.EMPCODSUC) AS ROL \
 						FROM HR_EMPLEADO E INNER JOIN EBUSUEMP UE \
 						ON E.EMPCODTRA = UE.EMPCODTRA INNER JOIN EBUSUARIOS U \
@@ -18,7 +18,7 @@ buscarEmpleadoResumen = SELECT EMPCODTRA,EMPNOMBRE, EMPAPATERN, EMPAMATERN, EMPN
 						WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '09' AND TTBKEYOBJ = EMPTIPDOCID) AS TIPO_DOCUMENTO, \
 						(SELECT PUEDESPUE FROM HR_PUESTO                                                                                           \
 						WHERE PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC AND PUECODPUE = EMPCODPUEST) AS PUESTO,                              \
-						(SELECT CASE WHEN NVL(COUNT(EMPCODTRA),0) > 0 THEN '01' ELSE '02' END FROM HR_EMPLEADO                                     \
+						(SELECT CASE WHEN NVL(COUNT(EMPCODTRA),0) > 0 THEN '1' ELSE '2' END FROM HR_EMPLEADO                                     \
 						WHERE EMPCODTRAJEF = E.EMPCODTRA AND EMPCODCIA = E.EMPCODCIA AND EMPCODSUC = E.EMPCODSUC) AS ROL                           \
 						FROM HR_EMPLEADO E                                                                                                         \
 						WHERE EMPCODCIA = ? AND                                                                                                    \

@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import pe.com.human.api.constants.ApiConstantes;
 import pe.com.human.api.dao.BoletaDAO;
 import pe.com.human.api.model.Archivo;
 import pe.com.human.api.model.BoletaEmpleado;
@@ -79,19 +80,19 @@ public class BoletaDAOImpl implements BoletaDAO {
 				local.setResTipo("ICON");
 				local.setNombre("payment");
 				local.setExt("");
-				
+
 				Archivo archivo = new Archivo();
 				archivo.setAlmaTipo("LOCAL");
 				archivo.setTipo("VECTOR");
 				archivo.setLocal(local);
 				archivo.setRemote(null);
-				
+
 				Color colorResItem = new Color();
 				colorResItem.setTipo("TINT");
 				colorResItem.setUso("DEFAULT");
 				colorResItem.setDefault1(default1);
 				colorResItem.setCustom(custom);
-				
+
 				ResItem resItem = new ResItem();
 				resItem.setTipo("ICON");
 				resItem.setArchivo(archivo);
@@ -100,11 +101,11 @@ public class BoletaDAOImpl implements BoletaDAO {
 				Texto valor = new Texto();
 				valor.setTexto(rs.getString("CANTIDAD"));
 				valor.setEstilo(estiloTitulo);
-				
+
 				Texto subtitulo = new Texto();
 				subtitulo.setTexto(SUBTITLE_BOLETAS);
 				subtitulo.setEstilo(estiloTitulo);
-				
+
 				widget = new Widget();
 				widget.setTitulo(titulo);
 				widget.setResItem(resItem);
@@ -152,8 +153,8 @@ public class BoletaDAOImpl implements BoletaDAO {
 			while (rs.next()) {
 				String periodo = rs.getString("PERCODPER");
 
-				String url = "http://148.102.59.142:5555/api/" + codtra + "_" + periodo.substring(4, 6)
-						+ periodo.substring(2, 4) + "_FM.pdf";
+				String url = ApiConstantes.URL_BASE + codtra + "_" + periodo.substring(4, 6) + periodo.substring(2, 4)
+						+ "_FM.pdf";
 
 				Remote remote = new Remote();
 				remote.setResTipo(null);
