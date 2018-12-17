@@ -13,7 +13,7 @@ cantidadColaboradores = SELECT COUNT(DISTINCT EMPCODTRA) AS CANTIDAD FROM HR_EMP
 						AND EMPCODTRAJEF = ?
 						
 						
-buscarEmpleadoResumen = SELECT EMPCODTRA,EMPNOMBRE, EMPAPATERN, EMPAMATERN, EMPNRODOCID,                                                           \
+buscarEmpleadoResumen = SELECT EMPCODTRA,EMPNOMBRE, EMPAPATERN, EMPAMATERN, EMPNRODOCID, EMPFOTO,                                                         \
 						(SELECT TTBDESOBJ FROM EB_TTABLE                                                                                           \
 						WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '09' AND TTBKEYOBJ = EMPTIPDOCID) AS TIPO_DOCUMENTO, \
 						(SELECT NVL(PUEDESPUE,'No contiene dato') FROM HR_PUESTO                                                                                           \
@@ -25,7 +25,7 @@ buscarEmpleadoResumen = SELECT EMPCODTRA,EMPNOMBRE, EMPAPATERN, EMPAMATERN, EMPN
 						EMPCODSUC = ? AND                                                                                                          \
 						EMPCODTRA = ? 
 						
-listarCumpleanos = 	SELECT INITCAP(E.EMPNOMBRE || ' ' || E.EMPAPATERN || ' ' || E.EMPAMATERN) AS NOMBRE,       \
+listarCumpleanos = 	SELECT INITCAP(E.EMPNOMBRE || ' ' || E.EMPAPATERN || ' ' || E.EMPAMATERN) AS NOMBRE,EMPFOTO,       \
 					NVL(INITCAP(A.AREDESAREA),'No contiene dato') AS AREDESAREA, EMPTELFMOV                                            \
 					FROM HR_EMPLEADO E LEFT JOIN HR_AREA A                                                     \
 					ON E.EMPCODAREA = A.ARECODAREA AND E.EMPCODCIA = A.ARECODCIA AND E.EMPCODSUC = A.ARECODSUC \

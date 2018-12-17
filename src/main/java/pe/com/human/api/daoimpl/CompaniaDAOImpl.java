@@ -322,10 +322,6 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				resItemSegundaLinea.setArchivo(archivoSegundaLinea);
 				resItemSegundaLinea.setColor(colorSegundaLinea);
 
-				Phone phone = new Phone();
-				phone.setTipo("MOBILE");
-				phone.setUri(rs.getString("EMPTELFMOV"));
-
 				Linea segundaLinea = new Linea();
 				segundaLinea.setTexto(textoSegundaLinea);
 				segundaLinea.setAction(null);
@@ -380,7 +376,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				Action emailOrg = new Action();
 				emailOrg.setTipo("EMAIL");
 				emailOrg.setResItem(resItemMail);
-				emailOrg.setEmail(new Email("WORK", rs.getString("EMPEMAIL")));
+				emailOrg.setEmail(new Email("WORK", rs.getString("EMPEMAILORG")));
 
 				action.add(movilePhone);
 				action.add(workPhone);

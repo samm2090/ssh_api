@@ -15,6 +15,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import pe.com.human.api.constants.ApiConstantes;
 import pe.com.human.api.dao.EmpleadoDAO;
 import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.model.Action;
@@ -25,6 +26,7 @@ import pe.com.human.api.model.Datos;
 import pe.com.human.api.model.DatosLaborales;
 import pe.com.human.api.model.DatosPersonales;
 import pe.com.human.api.model.Default;
+import pe.com.human.api.model.DimensionRatio;
 import pe.com.human.api.model.Documento;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
@@ -207,6 +209,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			buscarEmpleado.setString(3, empleado.getEmpleado().getId());
 
 			ResultSet rs = buscarEmpleado.executeQuery();
+			String foto = "";
 			Texto numeroDocumento = null;
 			if (rs.next()) {
 				Texto nombreTexto = new Texto(rs.getString("EMPNOMBRE"), null);
@@ -243,16 +246,22 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 
 				empleadoResumen = new EmpleadoResumen();
 				empleadoResumen.setDatos(datos);
+
+				foto = rs.getString("EMPFOTO");
 			}
-			
-			String url = "http://148.102.59.142:5555/api/" + numeroDocumento.getTexto() + ".jpg";
-			
+
+			String url = "";
+			if (foto != null) {
+				url = ApiConstantes.URL_BASE_REPOSITORIO + empleado.getBase().getCompania().getId() + "/FOTO_EMPLEADO/"
+						+ foto;
+			}
+
 			Remote remote = new Remote();
 			remote.setResTipo("AVATAR72");
-			remote.setNombre(numeroDocumento.getTexto());
+			remote.setNombre(foto);
 			remote.setUrl(url);
 			remote.setExt("JPG");
-			
+
 			Archivo archivo = new Archivo();
 			archivo.setAlmaTipo("REMOTE");
 			archivo.setTipo("IMAGEN");
@@ -262,7 +271,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			ResItem resItem = new ResItem();
 			resItem.setTipo("AVATAR72");
 			resItem.setArchivo(archivo);
-			
+
 			empleadoResumen.setResItem(resItem);
 
 			rs.close();
@@ -306,14 +315,24 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			while (rs.next()) {
 				item = new Item();
 
+				String foto = rs.getString("EMPFOTO");
+				String url = "";
+				if (foto != null) {
+					url = ApiConstantes.URL_BASE_REPOSITORIO + idCompania + "/FOTO_EMPLEADO/" + foto;
+				}
+
 				Remote remote = new Remote();
-				remote.setResTipo("");
+				remote.setResTipo("AVATAR40");
+				remote.setUrl(url);
+				remote.setNombre(foto);
+				remote.setDimensionRatio(new DimensionRatio("W,40:40", "40", "40"));
+				remote.setExt("JPG");
 
 				Archivo archivo = new Archivo();
-				archivo.setAlmaTipo("REMOTO");
+				archivo.setAlmaTipo("REMOTE");
 				archivo.setTipo("IMAGEN");
 				archivo.setLocal(null);
-				archivo.setRemote(null);
+				archivo.setRemote(remote);
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("AVATAR40");
@@ -341,16 +360,16 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				Linea primeraLinea = new Linea();
 				primeraLinea.setTexto(textoPrimeraLinea);
 				primeraLinea.setAction(null);
-				
+
 				Default default2 = new Default();
 				default2.setNombre("SECONDARYDARK");
-				
+
 				Color colorDefault2 = new Color();
 				colorDefault2.setTipo("TEXT");
 				colorDefault2.setUso("DEFAULT");
 				colorDefault2.setDefault1(default2);
 				colorDefault2.setCustom(null);
-				
+
 				EstiloTexto estiloTextoSegundaLinea = new EstiloTexto();
 				estiloTextoSegundaLinea.setColor(colorDefault2);
 				estiloTextoSegundaLinea.setCustom(null);
@@ -369,7 +388,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				archivoSegundaLinea.setAlmaTipo("LOCAL");
 				archivoSegundaLinea.setTipo("VECTOR");
 				archivoSegundaLinea.setRemote(null);
-				archivo.setLocal(localSegundaLinea);
+				archivoSegundaLinea.setLocal(localSegundaLinea);
 
 				Default defaultSegundaLinea = new Default();
 				defaultSegundaLinea.setNombre("PRIMARYDARK");
@@ -459,13 +478,10 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				archivo.setLocal(local);
 				archivo.setRemote(null);
 
-				Default defaultResItem = new Default();
-				defaultResItem.setNombre("PRIMARYDARK");
-
 				Color colorResItem = new Color();
 				colorResItem.setTipo("TINT");
 				colorResItem.setUso("LOCAL");
-				colorResItem.setDefault1(defaultResItem);
+				colorResItem.setLocal(new Local("PRIMARYDARK"));
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("ICON");
@@ -496,16 +512,16 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 
 				Date ferFecha = rs.getDate("FERFECHA");
 				SimpleDateFormat sdf = new SimpleDateFormat("EEEE',' MMM',' YYYY", new Locale("es", "PE"));
-				
+
 				Default default2 = new Default();
 				default2.setNombre("SECONDARYDARK");
-				
+
 				Color colorDefault2 = new Color();
 				colorDefault2.setTipo("TEXT");
 				colorDefault2.setUso("DEFAULT");
 				colorDefault2.setDefault1(default2);
 				colorDefault2.setCustom(null);
-				
+
 				EstiloTexto estiloTextoSegundaLinea = new EstiloTexto();
 				estiloTextoSegundaLinea.setColor(colorDefault2);
 				estiloTextoSegundaLinea.setCustom(null);
@@ -615,7 +631,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				remote.setResTipo("");
 
 				Archivo archivo = new Archivo();
-				archivo.setAlmaTipo("REMOTO");
+				archivo.setAlmaTipo("REMOTE");
 				archivo.setTipo("IMAGEN");
 				archivo.setLocal(null);
 				archivo.setRemote(null);
@@ -769,7 +785,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				remote.setResTipo("");
 
 				Archivo archivo = new Archivo();
-				archivo.setAlmaTipo("REMOTO");
+				archivo.setAlmaTipo("REMOTE");
 				archivo.setTipo("IMAGEN");
 				archivo.setLocal(null);
 				archivo.setRemote(null);
@@ -920,7 +936,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				remote.setResTipo("");
 
 				Archivo archivo = new Archivo();
-				archivo.setAlmaTipo("REMOTO");
+				archivo.setAlmaTipo("REMOTE");
 				archivo.setTipo("IMAGEN");
 				archivo.setLocal(null);
 				archivo.setRemote(null);
@@ -1062,7 +1078,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				remote.setResTipo("");
 
 				Archivo archivo = new Archivo();
-				archivo.setAlmaTipo("REMOTO");
+				archivo.setAlmaTipo("REMOTE");
 				archivo.setTipo("IMAGEN");
 				archivo.setLocal(null);
 				archivo.setRemote(null);

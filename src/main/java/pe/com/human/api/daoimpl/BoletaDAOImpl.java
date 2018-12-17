@@ -156,7 +156,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 			while (rs.next()) {
 				String periodo = rs.getString("PERCODPER");
 
-				String url = ApiConstantes.URL_BASE + codcia + BOLETAS + codtra + "_" + periodo + ".pdf";
+				String url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + BOLETAS + codtra + "_" + periodo + ".pdf";
 
 				Remote remote = new Remote();
 				remote.setResTipo(null);
@@ -166,7 +166,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 				remote.setExt("PDF");
 
 				Archivo archivo = new Archivo();
-				archivo.setAlmaTipo("REMOTO");
+				archivo.setAlmaTipo("REMOTE");
 				archivo.setTipo("DOCUMENTO");
 				archivo.setLocal(null);
 				archivo.setRemote(remote);
