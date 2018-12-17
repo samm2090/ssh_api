@@ -41,11 +41,11 @@ listarFeriados =SELECT INITCAP(FERDESC) AS FERDESC, FERFECHA             \
 				AND FERCODSUC = ?
 				
 buscarInformacionGeneral = 	SELECT E.EMPNRODOCID, NVL(TO_CHAR(E.EMPFECNAC, 'dd/mm/yyyy'), 'No existe dato') as EMPFECNAC, \
-							(SELECT NVL(TTBDESOBJ, 'No existe dato')                                                   \
+							(SELECT NVL(INITCAP(TTBDESOBJ), 'No existe dato')                                                   \
 							FROM EB_TTABLE                                                      \
 							WHERE TTBCODCIA = E.EMPCODCIA AND TTBCODSUC = E.EMPCODSUC           \
-							AND TTBCODTAB = '10' AND TTBKEYOBJ = E.EMPNACIONAL) AS NACIONALIDAD,\
-							(SELECT NVL(TTBDESOBJ, 'No existe dato')                                                    \
+							AND TTBCODTAB = '10' AND TTBKEYOBJ = E.EMPNACIONAL) AS NACIONALIDAD, \
+							(SELECT NVL(INITCAP(TTBDESOBJ), 'No existe dato')                                                    \
 							FROM EB_TTABLE                                                      \
 							WHERE TTBCODCIA = E.EMPCODCIA AND TTBCODSUC = E.EMPCODSUC           \
 							AND TTBCODTAB = '02' AND TTBKEYOBJ = E.EMPESTCIV) AS ESTADO_CIVIL   \
@@ -68,12 +68,14 @@ buscarInformacionLaboral = 	SELECT E.EMPCODTRA,                                 
 							FROM HR_EMPLEADO E                                                                           \
 							WHERE E.EMPCODCIA = ? AND E.EMPCODSUC = ? AND E.EMPCODTRA = ?
 
-buscarDatosDireccion = 	SELECT NVL(EMPDIRECCION, 'No existe dato'), NVL(EMPEMAILORG, 'No existe dato'), NVL(EMPEMAIL, 'No existe dato'), \
-						NVL(EMPTELFMOV,EMPTELFFIJO, 'No existe dato') \
+buscarDatosDireccion = 	SELECT NVL(EMPDIRECCION, 'No existe dato') AS EMPDIRECCION, NVL(EMPEMAILORG, 'No existe dato') AS EMPEMAILORG, \
+						NVL(EMPEMAIL, 'No existe dato') AS EMPEMAIL, \
+						NVL(EMPTELFMOV, 'No existe dato') AS EMPTELFMOV, NVL(EMPTELFFIJO, 'No existe dato') AS EMPTELFFIJO \
 						FROM HR_EMPLEADO                                                      \
 						WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?
 						
-buscarDatosEmergencia = SELECT NVL(EMPNOMEMER, 'No existe dato'), NVL(EMPPARCE, 'No existe dato'), NVL(EMPDIRECCIONCE, 'No existe dato'), \
-						NVL(EMPTELFCE, 'No existe dato'), NVL(EMPCELCE, 'No existe dato') \
+buscarDatosEmergencia = SELECT NVL(INITCAP(EMPNOMEMER), 'No existe dato') AS EMPNOMEMER, \
+						NVL(EMPPARCE, 'No existe dato') AS EMPPARCE, NVL(EMPDIRECCIONCE, 'No existe dato') AS EMPDIRECCIONCE, \
+						NVL(EMPTELFCE, 'No existe dato') AS EMPTELFCE, NVL(EMPCELCE, 'No existe dato') AS EMPCELCE \
 						FROM HR_EMPLEADO                                                 \
 						WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?

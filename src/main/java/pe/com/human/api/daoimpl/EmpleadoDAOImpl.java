@@ -250,7 +250,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				foto = rs.getString("EMPFOTO");
 			}
 
-			String url = "";
+			String url = null;
 			if (foto != null) {
 				url = ApiConstantes.URL_BASE_REPOSITORIO + empleado.getBase().getCompania().getId() + "/FOTO_EMPLEADO/"
 						+ foto;
@@ -316,7 +316,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				item = new Item();
 
 				String foto = rs.getString("EMPFOTO");
-				String url = "";
+				String url = null;
 				if (foto != null) {
 					url = ApiConstantes.URL_BASE_REPOSITORIO + idCompania + "/FOTO_EMPLEADO/" + foto;
 				}
@@ -480,8 +480,8 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 
 				Color colorResItem = new Color();
 				colorResItem.setTipo("TINT");
-				colorResItem.setUso("LOCAL");
-				colorResItem.setLocal(new Local("PRIMARYDARK"));
+				colorResItem.setUso("DEFAULT");
+				colorResItem.setDefault1(new Default("PRIMARYDARK"));
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("ICON");

@@ -95,7 +95,7 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 		ResponseError error = new ResponseError();
 
 		error.setCodigo(ErrorConstantes.NO_USUARIO);
-		error.setMensaje("Porfin");
+		error.setMensaje("No existe usuario con ese documento de identidad");
 		respuesta.put("error", error);
 		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
 	}

@@ -234,7 +234,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				Item valor = new Item();
 
 				String foto = rs.getString("EMPFOTO");
-				String url = "";
+				String url = null;
 				if (foto != null) {
 					url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
 				}
@@ -476,7 +476,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 					Item valor = new Item();
 					
 					String foto = rs.getString("EMPFOTO");
-					String url = "";
+					String url = null;
 					if (foto != null) {
 						url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
 					}
