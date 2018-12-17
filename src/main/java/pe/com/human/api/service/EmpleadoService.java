@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ import pe.com.human.api.dao.EstiloDAO;
 import pe.com.human.api.dao.EvaluacionDesempenioDAO;
 import pe.com.human.api.dao.PrestamoDAO;
 import pe.com.human.api.dao.VacacionesDAO;
-import pe.com.human.api.exception.ExcepcionNoExisteEmpleado;
+import pe.com.human.api.exception.ExcepcionNoExisteUsuario;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Default;
@@ -31,6 +30,7 @@ import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
+import pe.com.human.api.util.RequestValidator;
 
 /**
  * 
@@ -67,7 +67,10 @@ public class EmpleadoService {
 	@Autowired
 	PrestamoDAO prestamoDAO;
 
-	private static Logger logger = Logger.getLogger(EmpleadoService.class);
+	@Autowired
+	RequestValidator requestValidator;
+
+	// private static Logger logger = Logger.getLogger(EmpleadoService.class);
 
 	static final String ROL_JEFE = "1";
 
@@ -87,7 +90,7 @@ public class EmpleadoService {
 
 			respuesta.put("data", data);
 		} else {
-			throw new ExcepcionNoExisteEmpleado();
+			throw new ExcepcionNoExisteUsuario();
 		}
 		return respuesta;
 	}
@@ -276,6 +279,9 @@ public class EmpleadoService {
 
 	public Map<String, Object> informacionPersonalResumen(EmpleadoRequest empleadoRequest) {
 		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleadoRequest);
+
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO
 				.buscarConfiguracionXId(Integer.parseInt(empleadoRequest.getBase().getBaseDatos()));
 		Map<String, Object> data = new HashMap<>();

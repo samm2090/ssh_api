@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.constants.ApiConstantes;
 import pe.com.human.api.dao.BoletaDAO;
+import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.model.Archivo;
 import pe.com.human.api.model.BoletaEmpleado;
 import pe.com.human.api.model.Color;
@@ -33,8 +34,9 @@ public class BoletaDAOImpl implements BoletaDAO {
 	@Autowired
 	PropertiesReader lector;
 
-	static final String TITLE_BOLETAS = "Boletas";
-	static final String SUBTITLE_BOLETAS = "No leídas";
+	private static final String TITLE_BOLETAS = "Boletas";
+	private static final String SUBTITLE_BOLETAS = "No leídas";
+	private static final String BOLETAS = "/BOLETAS/";
 
 	@Override
 	public Widget cantidadPagosMesActual(String idCompania, String idSucursal, String idEmpleado,
@@ -118,6 +120,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {
@@ -153,8 +156,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 			while (rs.next()) {
 				String periodo = rs.getString("PERCODPER");
 
-				String url = ApiConstantes.URL_BASE + codtra + "_" + periodo.substring(4, 6) + periodo.substring(2, 4)
-						+ "_FM.pdf";
+				String url = ApiConstantes.URL_BASE + codcia + BOLETAS + codtra + "_" + periodo + ".pdf";
 
 				Remote remote = new Remote();
 				remote.setResTipo(null);
@@ -181,6 +183,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {

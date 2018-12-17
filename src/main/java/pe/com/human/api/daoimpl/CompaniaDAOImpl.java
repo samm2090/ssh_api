@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.CompaniaDAO;
+import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Sucursal;
 import pe.com.human.api.util.ConexionBaseDatos;
@@ -78,6 +79,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {
@@ -128,7 +130,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println(e);
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {
@@ -174,6 +176,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {

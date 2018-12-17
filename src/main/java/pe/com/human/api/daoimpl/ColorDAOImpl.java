@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.ColorDAO;
+import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Colores;
 import pe.com.human.api.model.Compania;
@@ -76,6 +77,7 @@ public class ColorDAOImpl implements ColorDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.MenuDAO;
+import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.model.apiresponse.Menu;
 import pe.com.human.api.util.ConexionBaseDatos;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -58,6 +59,7 @@ public class MenuDAOImpl implements MenuDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {
@@ -107,6 +109,7 @@ public class MenuDAOImpl implements MenuDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {

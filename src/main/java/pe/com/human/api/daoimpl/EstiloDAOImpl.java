@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.EstiloDAO;
+import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.model.AlmacenamientoTipo;
 import pe.com.human.api.model.Archivo;
 import pe.com.human.api.model.ArchivoTipo;
@@ -105,6 +106,7 @@ public class EstiloDAOImpl implements EstiloDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {

@@ -11,6 +11,13 @@ public class ApiInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		return new Class[] { ApiConfiguration.class };
 	}
 
+	@Override
+	protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
+		DispatcherServlet dispatcherServlet = (DispatcherServlet) super.createDispatcherServlet(servletAppContext);
+		dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+		return dispatcherServlet;
+	}
+
 	protected Class<?>[] getServletConfigClasses() {
 		return null;
 	}
@@ -18,12 +25,5 @@ public class ApiInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
-	
-	@Override
-    protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
-        DispatcherServlet ds = new DispatcherServlet(servletAppContext);
-        ds.setThrowExceptionIfNoHandlerFound(true);
-        return ds;
-    }
 
 }

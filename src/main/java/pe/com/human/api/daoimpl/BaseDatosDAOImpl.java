@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.BaseDatosDAO;
+import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.util.ConexionBaseDatos;
 import pe.com.human.api.util.ConfiguracionDataSource;
 import pe.com.human.api.util.PropertiesReader;
@@ -45,7 +46,7 @@ public class BaseDatosDAOImpl implements BaseDatosDAO {
 
 			ResultSet rs = buscarConexion.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				configuracionBD = new ConfiguracionDataSource();
 				configuracionBD.setNombre(rs.getString("BD_D_NOMBRE"));
 				configuracionBD.setDriverClassName(rs.getString("BD_D_DRIVER"));
@@ -53,11 +54,17 @@ public class BaseDatosDAOImpl implements BaseDatosDAO {
 				configuracionBD.setUsername(rs.getString("BD_D_USER"));
 				configuracionBD.setPassword(rs.getString("BD_D_PASS"));
 			}
+
 			rs.close();
 			buscarConexion.close();
 
+			if (configuracionBD == null) {
+				throw new ExcepcionBDNoResponde();
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
 		} finally {
 			if (conexion != null) {
 				try {
