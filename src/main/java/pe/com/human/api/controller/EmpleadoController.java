@@ -40,8 +40,11 @@ public class EmpleadoController {
 	@CrossOrigin
 	@RequestMapping(value = "{documento}/compania", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> companiaLista(@PathVariable("documento") String documento) {
-		return new ResponseEntity<Map<String, Object>>(empleadoService.listarCompaniasXDocumento(documento),
-				HttpStatus.OK);
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.listarCompaniasXDocumento(documento), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -66,8 +69,10 @@ public class EmpleadoController {
 			throw new ExcepcionContrasenaVacia();
 		}
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.authLogin(idCompania, idSucursal, baseDatos, documento, contrasenia), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -85,8 +90,10 @@ public class EmpleadoController {
 		String idEmpleado = empleado.get("id").toString();
 		String rol = empleado.get("rol").toString();
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.dashboardWidgets(idCompania, idSucursal, baseDatos, idEmpleado, rol), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -103,8 +110,10 @@ public class EmpleadoController {
 		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String idEmpleado = empleado.get("id").toString();
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.dashboardPendientes(idCompania, idSucursal, baseDatos, idEmpleado), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -119,8 +128,10 @@ public class EmpleadoController {
 		String idSucursal = sucursal.get("id").toString();
 		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.dashboardBirthdays(idCompania, idSucursal, baseDatos), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -138,8 +149,10 @@ public class EmpleadoController {
 
 		String idEmpleado = empleado.get("id").toString();
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.dashboardComunicados(idCompania, idSucursal, baseDatos, idEmpleado), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 	@CrossOrigin
@@ -165,8 +178,10 @@ public class EmpleadoController {
 		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String idEmpleado = empleado.get("id").toString();
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.informacionGeneral(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -183,8 +198,10 @@ public class EmpleadoController {
 		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String idEmpleado = empleado.get("id").toString();
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.datosDireccion(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -201,8 +218,10 @@ public class EmpleadoController {
 		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String idEmpleado = empleado.get("id").toString();
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.informacionLaboral(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -219,8 +238,10 @@ public class EmpleadoController {
 		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String idEmpleado = empleado.get("id").toString();
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta =  new ResponseEntity<Map<String, Object>>(
 				empleadoService.contactoEmergencia(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
+		
+		return respuesta;
 	}
 
 }

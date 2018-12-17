@@ -23,16 +23,18 @@ import pe.com.human.api.service.BoletaService;
 @RestController
 @RequestMapping("/v1/boleta/")
 public class BoletaController {
-	
+
 	@Autowired
 	BoletaService boletaService;
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "empleado", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> e(@RequestBody EmpleadoRequest empleado) {
+	public ResponseEntity<Map<String, Object>> empleado(@RequestBody EmpleadoRequest empleado) {
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				boletaService.buscarBoletasXEmpleado(empleado), HttpStatus.OK);
+
+		return respuesta;
 	}
 
 }

@@ -10,6 +10,16 @@ public class DimensionRatio implements Serializable {
 	private String ancho;
 	private String alto;
 
+	public DimensionRatio() {
+
+	}
+
+	public DimensionRatio(String radio, String ancho, String alto) {
+		this.radio = radio;
+		this.ancho = ancho;
+		this.alto = alto;
+	}
+
 	public String getRadio() {
 		return radio;
 	}

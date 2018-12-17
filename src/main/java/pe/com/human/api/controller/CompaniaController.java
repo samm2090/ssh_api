@@ -27,28 +27,31 @@ public class CompaniaController {
 
 	@Autowired
 	CompaniaService companiaService;
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> estilos(@PathVariable("id") int id) {
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				companiaService.estiloCompania(id), HttpStatus.OK);
+
+		return respuesta;
 	}
-	
-	@RequestMapping(value = "directorio/area", method = RequestMethod.GET)
+
+	@RequestMapping(value = "directorio/area", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> directorioArea(@RequestBody EmpleadoRequest empleado) {
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				companiaService.directorioArea(empleado), HttpStatus.OK);
+		return respuesta;
 	}
-	
-	@RequestMapping(value = "directorio/busqueda", method = RequestMethod.GET)
+
+	@RequestMapping(value = "directorio/busqueda", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> directorioBusqueda(@RequestBody DirectorioRequest directorio) {
 
-		return new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				companiaService.directorioBusqueda(directorio), HttpStatus.OK);
+		return respuesta;
 	}
-	
-	
+
 }

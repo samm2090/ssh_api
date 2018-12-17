@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import pe.com.human.api.constants.ApiConstantes;
 import pe.com.human.api.dao.CompaniaDAO;
 import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.model.Action;
@@ -20,6 +21,7 @@ import pe.com.human.api.model.Archivo;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Default;
+import pe.com.human.api.model.DimensionRatio;
 import pe.com.human.api.model.Directorio;
 import pe.com.human.api.model.Email;
 import pe.com.human.api.model.EstiloTexto;
@@ -220,6 +222,8 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 			listarDirectorio.setString(1, codcia);
 			listarDirectorio.setString(2, codsuc);
 			listarDirectorio.setString(3, codtra);
+			listarDirectorio.setString(4, codcia);
+			listarDirectorio.setString(5, codsuc);
 
 			ResultSet rs = listarDirectorio.executeQuery();
 
@@ -229,14 +233,24 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 			while (rs.next()) {
 				Item valor = new Item();
 
+				String foto = rs.getString("EMPFOTO");
+				String url = "";
+				if (foto != null) {
+					url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
+				}
+
 				Remote remote = new Remote();
-				remote.setResTipo("");
+				remote.setResTipo("AVATAR40");
+				remote.setUrl(url);
+				remote.setNombre(foto);
+				remote.setDimensionRatio(new DimensionRatio("W,40:40", "40", "40"));
+				remote.setExt("JPG");
 
 				Archivo archivo = new Archivo();
-				archivo.setAlmaTipo("REMOTO");
+				archivo.setAlmaTipo("REMOTE");
 				archivo.setTipo("IMAGEN");
 				archivo.setLocal(null);
-				archivo.setRemote(null);
+				archivo.setRemote(remote);
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("AVATAR40");
@@ -292,7 +306,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				archivoSegundaLinea.setAlmaTipo("LOCAL");
 				archivoSegundaLinea.setTipo("VECTOR");
 				archivoSegundaLinea.setRemote(null);
-				archivo.setLocal(localSegundaLinea);
+				archivoSegundaLinea.setLocal(localSegundaLinea);
 
 				Default defaultSegundaLinea = new Default();
 				defaultSegundaLinea.setNombre("PRIMARYDARK");
@@ -323,8 +337,8 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 				Color colorPhone = new Color();
 				colorPhone.setTipo("TINT");
-				colorPhone.setUso("LOCAL");
-				colorPhone.setLocal(new Local("PRIMARYDARK"));
+				colorPhone.setUso("DEFAULT");
+				colorPhone.setDefault1(new Default("DEFAULT"));
 
 				ResItem resItemPhone = new ResItem();
 				resItemPhone.setTipo("ICON");
@@ -350,8 +364,8 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 				Color colorMail = new Color();
 				colorMail.setTipo("TINT");
-				colorMail.setUso("LOCAL");
-				colorMail.setLocal(new Local("PRIMARYDARK"));
+				colorMail.setUso("DEFAULT");
+				colorMail.setDefault1(new Default("DEFAULT"));
 
 				ResItem resItemMail = new ResItem();
 				resItemMail.setTipo("ICON");
@@ -381,9 +395,23 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 				area = rs.getString("AREA");
 			}
+
+			Color coloreEstiloArea = new Color();
+			coloreEstiloArea.setTipo("TEXT");
+			coloreEstiloArea.setUso("DEFAULT");
+			coloreEstiloArea.setDefault1(new Default("SECONDARYDARK"));
+
+			EstiloTexto estiloTextoArea = new EstiloTexto();
+			estiloTextoArea.setFuente(null);
+			estiloTextoArea.setColor(coloreEstiloArea);
+
+			Texto textoArea = new Texto();
+			textoArea.setTexto(area);
+			textoArea.setEstilo(estiloTextoArea);
+
 			item = new Directorio();
-			item.setTipo("SINGLE_LINE_ACTION");
-			item.setArea(area);
+			item.setTipo("SINGLE_LINE_AVATAR");
+			item.setArea(textoArea);
 			item.setValores(valores);
 			directorio.add(item);
 
@@ -450,15 +478,25 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				Directorio item = null;
 				while (rs2.next()) {
 					Item valor = new Item();
+					
+					String foto = rs.getString("EMPFOTO");
+					String url = "";
+					if (foto != null) {
+						url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
+					}
 
 					Remote remote = new Remote();
-					remote.setResTipo("");
+					remote.setResTipo("AVATAR40");
+					remote.setUrl(url);
+					remote.setNombre(foto);
+					remote.setDimensionRatio(new DimensionRatio("W,40:40", "40", "40"));
+					remote.setExt("JPG");
 
 					Archivo archivo = new Archivo();
-					archivo.setAlmaTipo("REMOTO");
+					archivo.setAlmaTipo("REMOTE");
 					archivo.setTipo("IMAGEN");
 					archivo.setLocal(null);
-					archivo.setRemote(null);
+					archivo.setRemote(remote);
 
 					ResItem resItem = new ResItem();
 					resItem.setTipo("AVATAR40");
@@ -514,7 +552,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 					archivoSegundaLinea.setAlmaTipo("LOCAL");
 					archivoSegundaLinea.setTipo("VECTOR");
 					archivoSegundaLinea.setRemote(null);
-					archivo.setLocal(localSegundaLinea);
+					archivoSegundaLinea.setLocal(localSegundaLinea);
 
 					Default defaultSegundaLinea = new Default();
 					defaultSegundaLinea.setNombre("PRIMARYDARK");
@@ -545,8 +583,8 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 					Color colorPhone = new Color();
 					colorPhone.setTipo("TINT");
-					colorPhone.setUso("LOCAL");
-					colorPhone.setLocal(new Local("PRIMARYDARK"));
+					colorPhone.setUso("DEFAULT");
+					colorPhone.setDefault1(new Default("DEFAULT"));
 
 					ResItem resItemPhone = new ResItem();
 					resItemPhone.setTipo("ICON");
@@ -572,8 +610,8 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 					Color colorMail = new Color();
 					colorMail.setTipo("TINT");
-					colorMail.setUso("LOCAL");
-					colorMail.setLocal(new Local("PRIMARYDARK"));
+					colorMail.setUso("DEFAULT");
+					colorMail.setDefault1(new Default("DEFAULT"));
 
 					ResItem resItemMail = new ResItem();
 					resItemMail.setTipo("ICON");
@@ -601,9 +639,22 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 					valor.setAction(action);
 					valores.add(valor);
 				}
+				Color coloreEstiloArea = new Color();
+				coloreEstiloArea.setTipo("TEXT");
+				coloreEstiloArea.setUso("DEFAULT");
+				coloreEstiloArea.setDefault1(new Default("SECONDARYDARK"));
+
+				EstiloTexto estiloTextoArea = new EstiloTexto();
+				estiloTextoArea.setFuente(null);
+				estiloTextoArea.setColor(coloreEstiloArea);
+
+				Texto textoArea = new Texto();
+				textoArea.setTexto(area.get("area"));
+				textoArea.setEstilo(estiloTextoArea);
+
 				item = new Directorio();
 				item.setTipo("SINGLE_LINE_ACTION");
-				item.setArea(area.get("area"));
+				item.setArea(textoArea);
 				item.setValores(valores);
 				directorio.add(item);
 

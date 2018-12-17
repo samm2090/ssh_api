@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
+import pe.com.human.api.exception.ExcepcionCaracteresNumericos;
 import pe.com.human.api.exception.ExcepcionEspacioBlanco;
 import pe.com.human.api.exception.ExcepcionParametroIncorrecto;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
@@ -44,9 +45,8 @@ public class RequestValidator {
 		if (matcher.find()) {
 			throw new ExcepcionEspacioBlanco();
 		}else if(!documento.matches("[0-9]+")){
-			
+			throw new ExcepcionCaracteresNumericos();
 		}
-		
 		
 		validacion = true;
 

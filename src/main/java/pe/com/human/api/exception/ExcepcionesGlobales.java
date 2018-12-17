@@ -97,7 +97,7 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 		error.setCodigo(ErrorConstantes.NO_USUARIO);
 		error.setMensaje("Porfin");
 		respuesta.put("error", error);
-		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(ExcepcionContrasenaVacia.class)
@@ -115,13 +115,13 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleAutenticacion(final ExcepcionAutenticacion ex, WebRequest request) {
 		Map<String, Object> respuesta = new HashMap<>();
 		ResponseError error = new ResponseError();
-
 		error.setCodigo(ErrorConstantes.CREDENCIAL_INVALIDA);
 		error.setMensaje("Credenciales invalidas");
 		respuesta.put("error", error);
-		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
+
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(ExcepcionCompaniaAssets.class)
 	protected ResponseEntity<Object> handleCompaniaAssets(final ExcepcionCompaniaAssets ex, WebRequest request) {
 		Map<String, Object> respuesta = new HashMap<>();
@@ -130,9 +130,9 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 		error.setCodigo(ErrorConstantes.NO_SELFSERVICE);
 		error.setMensaje("Lo sentimos su compañía no cuenta con Selfservice Movil");
 		respuesta.put("error", error);
-		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(ExcepcionCompaniaMenu.class)
 	protected ResponseEntity<Object> handleCompaniaMenu(final ExcepcionCompaniaMenu ex, WebRequest request) {
 		Map<String, Object> respuesta = new HashMap<>();
@@ -141,9 +141,9 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 		error.setCodigo(ErrorConstantes.NO_SELFSERVICE);
 		error.setMensaje("Lo sentimos su compañía no cuenta con Selfservice Movil");
 		respuesta.put("error", error);
-		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(ExcepcionCriterioBusqueda.class)
 	protected ResponseEntity<Object> handleCriterioBusqueda(final ExcepcionCriterioBusqueda ex, WebRequest request) {
 		Map<String, Object> respuesta = new HashMap<>();
@@ -152,7 +152,7 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 		error.setCodigo(ErrorConstantes.NO_CRITERIO);
 		error.setMensaje("Debe de ingresar un criterio de busqueda");
 		respuesta.put("error", error);
-		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
 	}
 
 }

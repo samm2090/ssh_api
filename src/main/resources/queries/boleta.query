@@ -9,4 +9,5 @@ listarBoletasXIdEmpleado =  SELECT PERCODCIA,PERCODSUC,PERCODPRO,PERCODPER, PERF
 							EMPCODSUC=PCTCODSUC AND                                                                                                           \
 							EMPCODPRO=PCTCODPRO AND                                                                                                           \
 							EMPNROPER=PCTNROPER AND                                                                                                           \
-							PERCODCIA = ? AND PERCODSUC = ?  AND PERCODPRO = '01' AND EMPCODTRA=? ORDER BY PERCODPER DESC
+							PERCODCIA = ? AND PERCODSUC = ?  AND PERCODPRO = '01' AND EMPCODTRA=? \
+							AND SUBSTR(EMPNROPER,0,4) = '2018' ORDER BY PERCODPER DESC

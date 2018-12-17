@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Directorio {
 	private String tipo;
-	private String area;
+	private Texto area;
 	private List<Item> valores;
 
 	public String getTipo() {
@@ -15,11 +15,11 @@ public class Directorio {
 		this.tipo = tipo;
 	}
 
-	public String getArea() {
+	public Texto getArea() {
 		return area;
 	}
 
-	public void setArea(String area) {
+	public void setArea(Texto area) {
 		this.area = area;
 	}
 
