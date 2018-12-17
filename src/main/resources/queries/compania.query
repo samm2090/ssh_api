@@ -16,3 +16,36 @@ buscarCompaniaXId = SELECT *                                          \
 					FROM SSMG_COMPANIA C INNER JOIN SSMG_SUCURSAL S   \
 					ON C.COM_I_ID = S.SUC_I_COMPANIA                  \
 					WHERE COM_C_HUMAN = ?
+
+listarDirectorioArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN) AS NOMBRE,                                                          \
+						(SELECT INITCAP(PUEDESPUE) FROM HR_PUESTO WHERE PUECODPUE = EMPCODPUEST AND PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC) AS PUESTO, \
+						(SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC) AS AREA,    \
+						EMPCODTRA,                                                                                                                              \
+						NVL(EMPTELFMOV,'No cuenta con dato') AS EMPTELFMOV,                                                                                     \
+						NVL(EMPTELFFIJO,'No cuenta con dato') AS EMPTELFFIJO,                                                                                   \
+						NVL(EMPEMAIL,'No cuenta con dato') AS EMPEMAIL,                                                                                         \
+						NVL(EMPEMAILORG,'No cuenta con dato') AS EMPEMAILORG                                                                                    \
+						FROM HR_EMPLEADO                                                                                                                        \
+						WHERE EMPCODAREA =                                                                                                                      \
+						(SELECT EMPCODAREA                                                                                                                      \
+						FROM HR_EMPLEADO                                                                                                                        \
+						WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?) \
+						ORDER BY EMPNOMBRE ASC
+						
+listarDirectorioCriterio = 	SELECT DISTINCT EMPCODAREA, \
+							(SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC) AS AREA \
+							FROM HR_EMPLEADO \
+							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND (EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN LIKE ?) AND EMPCODAREA IS NOT NULL \
+							ORDER BY EMPCODAREA ASC
+							
+listarDirectorioCodArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN) AS NOMBRE,                                                          \
+							(SELECT INITCAP(PUEDESPUE) FROM HR_PUESTO WHERE PUECODPUE = EMPCODPUEST AND PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC) AS PUESTO, \
+							(SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC) AS AREA,    \
+							EMPCODTRA,                                                                                                                              \
+							NVL(EMPTELFMOV,'No cuenta con dato') AS EMPTELFMOV,                                                                                     \
+							NVL(EMPTELFFIJO,'No cuenta con dato') AS EMPTELFFIJO,                                                                                   \
+							NVL(EMPEMAIL,'No cuenta con dato') AS EMPEMAIL,                                                                                         \
+							NVL(EMPEMAILORG,'No cuenta con dato') AS EMPEMAILORG                                                                                    \
+							FROM HR_EMPLEADO                                                                                                                        \
+							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODAREA = ? AND (EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN LIKE ?) \
+							ORDER BY EMPNOMBRE ASC

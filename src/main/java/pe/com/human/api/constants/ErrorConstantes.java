@@ -12,5 +12,6 @@ public class ErrorConstantes {
 	public static final String CREDENCIAL_INVALIDA = "-8";
 	public static final String NO_SELFSERVICE = "-9";
 	public static final String NO_BOLETAS = "-10";
+	public static final String NO_CRITERIO = "-11";
 
 }

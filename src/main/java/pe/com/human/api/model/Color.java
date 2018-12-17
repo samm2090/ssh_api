@@ -16,8 +16,17 @@ public class Color implements Serializable {
 	private String uso;
 	private Custom custom;
 	private Default default1;
-	
-	@JsonProperty("default")	
+	private Local local;
+
+	public Local getLocal() {
+		return local;
+	}
+
+	public void setLocal(Local local) {
+		this.local = local;
+	}
+
+	@JsonProperty("default")
 	public Default getDefault1() {
 		return default1;
 	}

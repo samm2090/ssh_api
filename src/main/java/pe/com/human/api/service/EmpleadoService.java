@@ -17,6 +17,7 @@ import pe.com.human.api.dao.EstiloDAO;
 import pe.com.human.api.dao.EvaluacionDesempenioDAO;
 import pe.com.human.api.dao.PrestamoDAO;
 import pe.com.human.api.dao.VacacionesDAO;
+import pe.com.human.api.exception.ExcepcionAutenticacion;
 import pe.com.human.api.exception.ExcepcionNoExisteUsuario;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Compania;
@@ -75,10 +76,12 @@ public class EmpleadoService {
 	static final String ROL_JEFE = "1";
 
 	public Map<String, Object> listarCompaniasXDocumento(String documento) {
+		requestValidator.validarDocumento(documento);
+
 		Map<String, Object> respuesta = new HashMap<>();
 		List<Map<String, Object>> companias = companiaDAO.listarCompaniasXDocumento(documento);
-		if (!companias.isEmpty()) {
 
+		if (!companias.isEmpty()) {
 			List<Map<String, Object>> data = new ArrayList<>();
 			Map<String, Object> comp;
 			for (Map<String, Object> compania : companias) {
@@ -87,7 +90,6 @@ public class EmpleadoService {
 				comp.put("baseDatos", compania.get("baseDatos"));
 				data.add(comp);
 			}
-
 			respuesta.put("data", data);
 		} else {
 			throw new ExcepcionNoExisteUsuario();
@@ -121,6 +123,8 @@ public class EmpleadoService {
 					Estilo estilo = estiloDAO.buscarEstiloXCompania(compania, configBaseAppMovil);
 					compania.setEstilo(estilo);
 				}
+			} else {
+				throw new ExcepcionAutenticacion();
 			}
 		}
 

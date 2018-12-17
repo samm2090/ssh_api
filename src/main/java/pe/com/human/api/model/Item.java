@@ -1,5 +1,7 @@
 package pe.com.human.api.model;
 
+import java.util.List;
+
 /**
  * 
  * @author smuroy
@@ -13,6 +15,15 @@ public class Item {
 	private Linea segundaLinea;
 	private Linea terceraLinea;
 	private Linea cuartaLinea;
+	private List<Action> action;
+
+	public List<Action> getAction() {
+		return action;
+	}
+
+	public void setAction(List<Action> action) {
+		this.action = action;
+	}
 
 	public Linea getTerceraLinea() {
 		return terceraLinea;

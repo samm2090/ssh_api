@@ -54,27 +54,105 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(respuesta, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
-	@ExceptionHandler(ExcepcionNoExisteUsuario.class)
-	protected ResponseEntity<Object> handleNoExisteUsuario(final ExcepcionNoExisteUsuario ex, WebRequest request) {
-		Map<String, Object> respuesta = new HashMap<>();
-		ResponseError error = new ResponseError();
-
-		error.setCodigo(HttpStatus.NOT_FOUND.toString());
-		error.setMensaje("Porfin");
-		respuesta.put("error", error);
-		return new ResponseEntity<Object>(respuesta, HttpStatus.UNPROCESSABLE_ENTITY);
-	}
-
 	@ExceptionHandler(ExcepcionParametroIncorrecto.class)
 	protected ResponseEntity<Object> handleParametroIncorrecto(final ExcepcionParametroIncorrecto ex,
 			WebRequest request) {
 		Map<String, Object> respuesta = new HashMap<>();
 		ResponseError error = new ResponseError();
 
-		error.setCodigo(HttpStatus.UNPROCESSABLE_ENTITY.toString());
+		error.setCodigo(ErrorConstantes.PARAMETROS_INCORRECTOS);
 		error.setMensaje("Los datos enviados no son correctos");
 		respuesta.put("error", error);
 		return new ResponseEntity<Object>(respuesta, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@ExceptionHandler(ExcepcionEspacioBlanco.class)
+	protected ResponseEntity<Object> handleEspacioBlanco(final ExcepcionEspacioBlanco ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.ESPACIO_BLANCO);
+		error.setMensaje("Debe de ingresar el número de documento sin espacios en blanco");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ExcepcionCaracteresNumericos.class)
+	protected ResponseEntity<Object> handleCaracteresNumericos(final ExcepcionCaracteresNumericos ex,
+			WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.CARACTER_NUMERICO);
+		error.setMensaje("Debe de ingresar solo caracteres numéricos");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ExcepcionNoExisteUsuario.class)
+	protected ResponseEntity<Object> handleNoExisteUsuario(final ExcepcionNoExisteUsuario ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.NO_USUARIO);
+		error.setMensaje("Porfin");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
+	}
+
+	@ExceptionHandler(ExcepcionContrasenaVacia.class)
+	protected ResponseEntity<Object> handleContrasenaVacia(final ExcepcionContrasenaVacia ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.NO_CONTRASENA);
+		error.setMensaje("Debe de ingresar la contraseña");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ExcepcionAutenticacion.class)
+	protected ResponseEntity<Object> handleAutenticacion(final ExcepcionAutenticacion ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.CREDENCIAL_INVALIDA);
+		error.setMensaje("Credenciales invalidas");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
+	}
+	
+	@ExceptionHandler(ExcepcionCompaniaAssets.class)
+	protected ResponseEntity<Object> handleCompaniaAssets(final ExcepcionCompaniaAssets ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.NO_SELFSERVICE);
+		error.setMensaje("Lo sentimos su compañía no cuenta con Selfservice Movil");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
+	}
+	
+	@ExceptionHandler(ExcepcionCompaniaMenu.class)
+	protected ResponseEntity<Object> handleCompaniaMenu(final ExcepcionCompaniaMenu ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.NO_SELFSERVICE);
+		error.setMensaje("Lo sentimos su compañía no cuenta con Selfservice Movil");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
+	}
+	
+	@ExceptionHandler(ExcepcionCriterioBusqueda.class)
+	protected ResponseEntity<Object> handleCriterioBusqueda(final ExcepcionCriterioBusqueda ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.NO_CRITERIO);
+		error.setMensaje("Debe de ingresar un criterio de busqueda");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.NO_CONTENT);
 	}
 
 }

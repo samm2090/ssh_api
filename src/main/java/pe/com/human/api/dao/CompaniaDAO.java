@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import pe.com.human.api.model.Compania;
+import pe.com.human.api.model.Directorio;
 import pe.com.human.api.util.ConfiguracionDataSource;
 
 
@@ -19,4 +20,10 @@ public interface CompaniaDAO {
 			String contrasenia, ConfiguracionDataSource configuracionDataSource);
 
 	public Compania buscarCompaniaXId(int id);
+
+	public List<Directorio> buscarDirectorioXEmpleadoArea(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource);
+
+	public List<Directorio> buscarDirectorioCriterio(String codcia, String codsuc, String criterio,
+			ConfiguracionDataSource configuracionDataSource);
 }

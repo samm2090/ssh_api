@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pe.com.human.api.dao.BaseDatosDAO;
 import pe.com.human.api.dao.EmpleadoDAO;
 import pe.com.human.api.dao.MenuDAO;
+import pe.com.human.api.exception.ExcepcionCompaniaMenu;
 import pe.com.human.api.model.apirequest.MenusRequest;
 import pe.com.human.api.model.apirequest.TabsRequest;
 import pe.com.human.api.model.apiresponse.Menu;
@@ -40,9 +41,15 @@ public class NavigationService {
 		if (idRol == 2) {
 			rol = "2";
 		}
-		
+
 		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource();
-		return menuDAO.buscarMenu(codcia, TIPO_MENU, rol, configuracionDataSource);
+		List<Menu> opciones = menuDAO.buscarMenu(codcia, TIPO_MENU, rol, configuracionDataSource);
+
+		if (opciones == null) {
+			throw new ExcepcionCompaniaMenu();
+		}
+
+		return opciones;
 	}
 
 	public List<Menu> getNavigationMenusTabs(TabsRequest request) {
@@ -57,7 +64,13 @@ public class NavigationService {
 
 		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource();
 
-		return menuDAO.buscarSubMenu(codcia, TIPO_TAB, rol, idPadre, configuracionDataSource);
+		List<Menu> opciones = menuDAO.buscarMenu(codcia, TIPO_MENU, rol, configuracionDataSource);
+
+		if (opciones == null) {
+			throw new ExcepcionCompaniaMenu();
+		}
+
+		return opciones;
 	}
 
 	public List<Menu> getNavigationMenusTabsItems(TabsRequest request) {
@@ -72,7 +85,13 @@ public class NavigationService {
 
 		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource();
 
-		return menuDAO.buscarSubMenu(codcia, TIPO_ITEM, rol, idPadre, configuracionDataSource);
+		List<Menu> opciones = menuDAO.buscarMenu(codcia, TIPO_MENU, rol, configuracionDataSource);
+
+		if (opciones == null) {
+			throw new ExcepcionCompaniaMenu();
+		}
+
+		return opciones;
 	}
 
 	public List<Menu> getNavigationMenusItems(TabsRequest request) {
@@ -87,6 +106,12 @@ public class NavigationService {
 
 		ConfiguracionDataSource configuracionDataSource = new ConfiguracionDataSource();
 
-		return menuDAO.buscarSubMenu(codcia, TIPO_ITEM, rol, idPadre, configuracionDataSource);
+		List<Menu> opciones = menuDAO.buscarMenu(codcia, TIPO_MENU, rol, configuracionDataSource);
+
+		if (opciones == null) {
+			throw new ExcepcionCompaniaMenu();
+		}
+
+		return opciones;
 	}
 }

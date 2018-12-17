@@ -6,8 +6,17 @@ public class Action {
 	private ResItem resItem;
 	private Phone phone;
 	private Location location;
+	private Email email;
 	private Edit edit;
 	private Navigation navigation;
+
+	public Email getEmail() {
+		return email;
+	}
+
+	public void setEmail(Email email) {
+		this.email = email;
+	}
 
 	public Phone getPhone() {
 		return phone;

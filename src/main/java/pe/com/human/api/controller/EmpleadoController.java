@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.com.human.api.exception.ExcepcionContrasenaVacia;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.service.EmpleadoService;
 
@@ -55,7 +56,15 @@ public class EmpleadoController {
 		String idSucursal = sucursal.get("id").toString();
 		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String documento = parametros.get("documento").toString();
-		String contrasenia = parametros.get("contrasenia").toString();
+		String contrasenia;
+		try {
+			contrasenia = parametros.get("contrasenia").toString();
+			if (contrasenia.isEmpty()) {
+				throw new ExcepcionContrasenaVacia();
+			}
+		} catch (Exception e) {
+			throw new ExcepcionContrasenaVacia();
+		}
 
 		return new ResponseEntity<Map<String, Object>>(
 				empleadoService.authLogin(idCompania, idSucursal, baseDatos, documento, contrasenia), HttpStatus.OK);
@@ -141,7 +150,7 @@ public class EmpleadoController {
 
 		return new ResponseEntity<Map<String, Object>>(respuesta, HttpStatus.OK);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@CrossOrigin
 	@RequestMapping(value = "datos/personal/informacionGeneral", method = RequestMethod.POST)
@@ -177,7 +186,7 @@ public class EmpleadoController {
 		return new ResponseEntity<Map<String, Object>>(
 				empleadoService.datosDireccion(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@CrossOrigin
 	@RequestMapping(value = "datos/laboral/informacionLaboral", method = RequestMethod.POST)
@@ -195,7 +204,7 @@ public class EmpleadoController {
 		return new ResponseEntity<Map<String, Object>>(
 				empleadoService.informacionLaboral(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@CrossOrigin
 	@RequestMapping(value = "datos/personal/contactoEmergencia", method = RequestMethod.POST)

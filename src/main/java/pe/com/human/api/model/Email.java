@@ -1,14 +1,14 @@
 package pe.com.human.api.model;
 
-public class Phone {
+public class Email {
 
 	private String tipo;
 	private String uri;
 
-	public Phone() {
+	public Email() {
 	}
 
-	public Phone(String tipo, String uri) {
+	public Email(String tipo, String uri) {
 		this.tipo = tipo;
 		this.uri = uri;
 	}
