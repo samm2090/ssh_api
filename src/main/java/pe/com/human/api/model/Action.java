@@ -9,6 +9,33 @@ public class Action {
 	private Email email;
 	private Edit edit;
 	private Navigation navigation;
+	private Linea primeraLinea;
+	private Linea segundaLinea;
+	private Extra extra;
+
+	public Extra getExtra() {
+		return extra;
+	}
+
+	public void setExtra(Extra extra) {
+		this.extra = extra;
+	}
+
+	public Linea getPrimeraLinea() {
+		return primeraLinea;
+	}
+
+	public void setPrimeraLinea(Linea primeraLinea) {
+		this.primeraLinea = primeraLinea;
+	}
+
+	public Linea getSegundaLinea() {
+		return segundaLinea;
+	}
+
+	public void setSegundaLinea(Linea segundaLinea) {
+		this.segundaLinea = segundaLinea;
+	}
 
 	public Email getEmail() {
 		return email;

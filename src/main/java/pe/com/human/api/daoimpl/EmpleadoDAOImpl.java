@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,7 @@ import pe.com.human.api.model.Documento;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.EstiloTexto;
+import pe.com.human.api.model.Hex;
 import pe.com.human.api.model.Item;
 import pe.com.human.api.model.Linea;
 import pe.com.human.api.model.Local;
@@ -211,6 +213,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			ResultSet rs = buscarEmpleado.executeQuery();
 			String foto = "";
 			Texto numeroDocumento = null;
+			empleadoResumen = new EmpleadoResumen();
 			if (rs.next()) {
 				Texto nombreTexto = new Texto(rs.getString("EMPNOMBRE"), null);
 				Texto apePaternoTexto = new Texto(rs.getString("EMPAPATERN"), null);
@@ -244,7 +247,6 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				datos.setPersonales(personales);
 				datos.setLaborales(laborales);
 
-				empleadoResumen = new EmpleadoResumen();
 				empleadoResumen.setDatos(datos);
 
 				foto = rs.getString("EMPFOTO");
@@ -384,44 +386,51 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				localSegundaLinea.setNombre("phone");
 				localSegundaLinea.setExt("xml");
 
-				Archivo archivoSegundaLinea = new Archivo();
-				archivoSegundaLinea.setAlmaTipo("LOCAL");
-				archivoSegundaLinea.setTipo("VECTOR");
-				archivoSegundaLinea.setRemote(null);
-				archivoSegundaLinea.setLocal(localSegundaLinea);
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
 
-				Default defaultSegundaLinea = new Default();
-				defaultSegundaLinea.setNombre("PRIMARYDARK");
+				Archivo archivoAction = new Archivo();
+				archivoAction.setAlmaTipo("LOCAL");
+				archivoAction.setTipo("VECTOR");
+				archivoAction.setRemote(null);
+				archivoAction.setLocal(localSegundaLinea);
 
-				Color colorSegundaLinea = new Color();
-				colorSegundaLinea.setTipo("TINT");
-				colorSegundaLinea.setUso("LOCAL");
-				colorSegundaLinea.setDefault1(defaultSegundaLinea);
-				colorSegundaLinea.setCustom(null);
-
-				ResItem resItemSegundaLinea = new ResItem();
-				resItemSegundaLinea.setTipo("PHONE");
-				resItemSegundaLinea.setArchivo(archivoSegundaLinea);
-				resItemSegundaLinea.setColor(colorSegundaLinea);
+				String telefono = rs.getString("EMPTELFMOV");
 
 				Phone phone = new Phone();
 				phone.setTipo("MOBILE");
-				phone.setUri(rs.getString("EMPTELFMOV"));
+				phone.setUri(telefono);
 
-				Action actionSegundaLinea = new Action();
-				actionSegundaLinea.setTipo("PHONE");
-				actionSegundaLinea.setResItem(resItemSegundaLinea);
-				actionSegundaLinea.setPhone(phone);
+				Color colorAction = new Color();
+				if (!("").equals(telefono)) {
+					colorAction.setTipo("TINT");
+					colorAction.setUso("DEFAULT");
+					colorAction.setDefault1(new Default("PRIMARYDARK"));
+				} else {
+					colorAction.setTipo("TINT");
+					colorAction.setUso("CUSTOM");
+					colorAction.setCustom(new Custom(new Hex("#CCCCCC")));
+				}
 
-				Linea segundaLinea = new Linea();
-				segundaLinea.setTexto(textoSegundaLinea);
-				segundaLinea.setAction(actionSegundaLinea);
+				ResItem resItemAction = new ResItem();
+				resItemAction.setTipo("PHONE");
+				resItemAction.setArchivo(archivoAction);
+				resItemAction.setColor(colorAction);
+
+				Action itemAction = new Action();
+				itemAction.setTipo("PHONE");
+				itemAction.setResItem(resItemAction);
+				itemAction.setPhone(phone);
+
+				List<Action> actions = new ArrayList<>();
+				actions.add(itemAction);
 
 				item.setTipo("SINGLE_LINE_ACTION");
 				item.setResItem(resItem);
 				item.setPrimeraLinea(primeraLinea);
 				item.setSegundaLinea(segundaLinea);
-
+				item.setAction(actions);
 				cumpleanos.add(item);
 			}
 
@@ -511,7 +520,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				primeraLinea.setAction(null);
 
 				Date ferFecha = rs.getDate("FERFECHA");
-				SimpleDateFormat sdf = new SimpleDateFormat("EEEE',' MMM',' YYYY", new Locale("es", "PE"));
+				SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMM',' YYYY", new Locale("es", "PE"));
 
 				Default default2 = new Default();
 				default2.setNombre("SECONDARYDARK");
@@ -528,7 +537,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				estiloTextoSegundaLinea.setFuente(null);
 
 				Texto textoSegundaLinea = new Texto();
-				textoSegundaLinea.setTexto(sdf.format(ferFecha));
+				textoSegundaLinea.setTexto(WordUtils.capitalize(sdf.format(ferFecha)));
 				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
 
 				// Local localSegundaLinea = new Local();
@@ -569,10 +578,15 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				segundaLinea.setTexto(textoSegundaLinea);
 				segundaLinea.setAction(null);
 
+				Linea lineaTitulo = new Linea();
+				lineaTitulo.setTexto(new Texto("Feriado No Laborable", estiloTextoPrimeraLinea));
+				lineaTitulo.setAction(null);
+
 				item.setTipo("SINGLE_LINE_ACTION");
 				item.setResItem(resItem);
-				item.setPrimeraLinea(primeraLinea);
-				item.setSegundaLinea(segundaLinea);
+				item.setPrimeraLinea(lineaTitulo);
+				item.setSegundaLinea(primeraLinea);
+				item.setTerceraLinea(segundaLinea);
 
 				feriados.add(item);
 			}

@@ -18,6 +18,7 @@ import pe.com.human.api.dao.EvaluacionDesempenioDAO;
 import pe.com.human.api.dao.PrestamoDAO;
 import pe.com.human.api.dao.VacacionesDAO;
 import pe.com.human.api.exception.ExcepcionAutenticacion;
+import pe.com.human.api.exception.ExcepcionNoComunicados;
 import pe.com.human.api.exception.ExcepcionNoExisteUsuario;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Compania;
@@ -145,7 +146,7 @@ public class EmpleadoService {
 
 		List<Widget> widgets = new ArrayList<>();
 
-		Widget boletasWidget = boletaDAO.cantidadPagosMesActual(idCompania, idSucursal, idEmpleado,
+		Widget boletasWidget = boletaDAO.cantidadBoletasNoLeidas(idCompania, idSucursal, idEmpleado,
 				configuracionDataSource);
 		Widget vacacionesWidget = vacacionesDAO.cantidadSaldo(idCompania, idSucursal, idEmpleado,
 				configuracionDataSource);
@@ -240,6 +241,10 @@ public class EmpleadoService {
 
 		List<Item> items = empleadoDAO.listarCumpleanos(idCompania, idSucursal, configuracionDataSource);
 
+//		if (items.isEmpty()) {
+//			throw new ExcepcionNoCumpleanos();
+//		}
+
 		data.put("titulo", titulo);
 		data.put("items", items);
 		respuesta.put("data", data);
@@ -273,6 +278,10 @@ public class EmpleadoService {
 		titulo.setEstilo(estilo);
 
 		List<Item> items = empleadoDAO.listarFeriados(idCompania, idSucursal, configuracionDataSource);
+
+//		if (items.isEmpty()) {
+//			throw new ExcepcionNoComunicados();
+//		}
 
 		data.put("titulo", titulo);
 		data.put("items", items);
@@ -430,6 +439,12 @@ public class EmpleadoService {
 
 		List<Item> items = empleadoDAO.buscarDatosEmergencia(idCompania, idSucursal, idEmpleado,
 				configuracionDataSource);
+		
+//		if(items.isEmpty()){
+//			throw new ExcepcionNoContacto();
+//		}else if(("No existe dato").equals(items.get(0).getPrimeraLinea().getTexto().getTexto())){
+//			throw new ExcepcionNoContacto();
+//		}
 
 		data.put("titulo", titulo);
 		data.put("items", items);

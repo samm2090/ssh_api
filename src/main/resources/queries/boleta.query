@@ -10,4 +10,9 @@ listarBoletasXIdEmpleado =  SELECT PERCODCIA,PERCODSUC,PERCODPRO,PERCODPER, PERF
 							EMPCODPRO=PCTCODPRO AND                                                                                                           \
 							EMPNROPER=PCTNROPER AND                                                                                                           \
 							PERCODCIA = ? AND PERCODSUC = ?  AND PERCODPRO = '01' AND EMPCODTRA=? \
-							AND SUBSTR(EMPNROPER,0,4) = '2018' ORDER BY PERCODPER DESC
+							AND SUBSTR(EMPNROPER,0,4) = ? ORDER BY PERCODPER DESC
+							
+cantidadNoLeidas = 	SELECT COUNT(*) AS CANTIDAD             \
+							FROM HR_EMPXPROC                       \
+							WHERE EMPCODCIA = ? AND EMPCODSUC = ?  \
+							AND EMPCODTRA = ? AND EMPCODPRO = '01' AND EMPFLGLEIDO = '0'

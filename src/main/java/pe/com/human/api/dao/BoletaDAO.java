@@ -18,4 +18,7 @@ public interface BoletaDAO {
 
 	List<BoletaEmpleado> listarBoletasXIdEmpleado(String codcia, String codsuc, String codtra, ConfiguracionDataSource configuracionDataSource);
 
+	Widget cantidadBoletasNoLeidas(String idCompania, String idSucursal, String idEmpleado,
+			ConfiguracionDataSource configuracionDataSource);
+
 }

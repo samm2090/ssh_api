@@ -22,6 +22,7 @@ import pe.com.human.api.model.Directorio;
 import pe.com.human.api.model.Estilo;
 import pe.com.human.api.model.EstiloTexto;
 import pe.com.human.api.model.Texto;
+import pe.com.human.api.model.apirequest.DirectorioDetalleRequest;
 import pe.com.human.api.model.apirequest.DirectorioRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -132,6 +133,41 @@ public class CompaniaService {
 		}
 
 		List<Directorio> items = companiaDAO.buscarDirectorioCriterio(codcia, codsuc, criterio,
+				configuracionDataSource);
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(new Default("SECONDARYDARK"));
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Contacto");
+		titulo.setEstilo(estilo);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
+
+	public Map<String, Object> directorioDetalle(DirectorioDetalleRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getId();
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO
+				.buscarConfiguracionXId(Integer.parseInt(empleado.getBase().getBaseDatos()));
+
+		List<Directorio> items = companiaDAO.buscarDirectorioXEmpleado(codcia, codsuc, codtra,
 				configuracionDataSource);
 
 		Color color = new Color();

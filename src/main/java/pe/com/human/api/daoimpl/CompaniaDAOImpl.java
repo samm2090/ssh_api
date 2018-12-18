@@ -343,15 +343,31 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 				List<Action> action = new ArrayList<>();
 
+				Linea primeraLineaMobile = new Linea();
+				primeraLineaMobile.setTexto(new Texto("MOBILE", estiloTextoPrimeraLinea));
+
+				Linea segundaLineaMobile = new Linea();
+				segundaLineaMobile.setTexto(new Texto(rs.getString("EMPTELFMOV"), estiloTextoSegundaLinea));
+
 				Action movilePhone = new Action();
 				movilePhone.setTipo("PHONE");
 				movilePhone.setResItem(resItemPhone);
 				movilePhone.setPhone(new Phone("MOBILE", rs.getString("EMPTELFMOV")));
+				movilePhone.setPrimeraLinea(primeraLineaMobile);
+				movilePhone.setSegundaLinea(segundaLineaMobile);
+
+				Linea primeraLineaWorkPhone = new Linea();
+				primeraLineaWorkPhone.setTexto(new Texto("WORK", estiloTextoPrimeraLinea));
+
+				Linea segundaLineaWorkPhone = new Linea();
+				segundaLineaWorkPhone.setTexto(new Texto(rs.getString("EMPTELFFIJO"), estiloTextoSegundaLinea));
 
 				Action workPhone = new Action();
 				workPhone.setTipo("PHONE");
 				workPhone.setResItem(resItemPhone);
 				workPhone.setPhone(new Phone("WORK", rs.getString("EMPTELFFIJO")));
+				workPhone.setPrimeraLinea(primeraLineaWorkPhone);
+				workPhone.setSegundaLinea(segundaLineaWorkPhone);
 
 				Archivo archivoMail = new Archivo();
 				archivoMail.setAlmaTipo("LOCAL");
@@ -368,15 +384,31 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				resItemMail.setArchivo(archivoMail);
 				resItemMail.setColor(colorMail);
 
+				Linea primeraLineaEmail = new Linea();
+				primeraLineaEmail.setTexto(new Texto("PERSONAL", estiloTextoPrimeraLinea));
+
+				Linea segundaLineaEmail = new Linea();
+				segundaLineaEmail.setTexto(new Texto(rs.getString("EMPEMAIL"), estiloTextoSegundaLinea));
+
 				Action email = new Action();
 				email.setTipo("EMAIL");
 				email.setResItem(resItemMail);
 				email.setEmail(new Email("PERSONAL", rs.getString("EMPEMAIL")));
+				email.setPrimeraLinea(primeraLineaEmail);
+				email.setSegundaLinea(segundaLineaEmail);
+
+				Linea primeraLineaEmailOrg = new Linea();
+				primeraLineaEmailOrg.setTexto(new Texto("WORK", estiloTextoPrimeraLinea));
+
+				Linea segundaLineaEmailOrg = new Linea();
+				segundaLineaEmailOrg.setTexto(new Texto(rs.getString("EMPEMAILORG"), estiloTextoSegundaLinea));
 
 				Action emailOrg = new Action();
 				emailOrg.setTipo("EMAIL");
 				emailOrg.setResItem(resItemMail);
 				emailOrg.setEmail(new Email("WORK", rs.getString("EMPEMAILORG")));
+				emailOrg.setPrimeraLinea(primeraLineaEmailOrg);
+				emailOrg.setSegundaLinea(segundaLineaEmailOrg);
 
 				action.add(movilePhone);
 				action.add(workPhone);
@@ -474,8 +506,8 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				Directorio item = null;
 				while (rs2.next()) {
 					Item valor = new Item();
-					
-					String foto = rs.getString("EMPFOTO");
+
+					String foto = rs2.getString("EMPFOTO");
 					String url = null;
 					if (foto != null) {
 						url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
@@ -564,10 +596,6 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 					resItemSegundaLinea.setArchivo(archivoSegundaLinea);
 					resItemSegundaLinea.setColor(colorSegundaLinea);
 
-					Phone phone = new Phone();
-					phone.setTipo("MOBILE");
-					phone.setUri(rs2.getString("EMPTELFMOV"));
-
 					Linea segundaLinea = new Linea();
 					segundaLinea.setTexto(textoSegundaLinea);
 					segundaLinea.setAction(null);
@@ -589,15 +617,31 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 					List<Action> action = new ArrayList<>();
 
+					Linea primeraLineaMobile = new Linea();
+					primeraLineaMobile.setTexto(new Texto("MOBILE", estiloTextoPrimeraLinea));
+
+					Linea segundaLineaMobile = new Linea();
+					segundaLineaMobile.setTexto(new Texto(rs2.getString("EMPTELFMOV"), estiloTextoSegundaLinea));
+
 					Action movilePhone = new Action();
 					movilePhone.setTipo("PHONE");
 					movilePhone.setResItem(resItemPhone);
 					movilePhone.setPhone(new Phone("MOBILE", rs2.getString("EMPTELFMOV")));
+					movilePhone.setPrimeraLinea(primeraLineaMobile);
+					movilePhone.setSegundaLinea(segundaLineaMobile);
+
+					Linea primeraLineaWorkPhone = new Linea();
+					primeraLineaWorkPhone.setTexto(new Texto("WORK", estiloTextoPrimeraLinea));
+
+					Linea segundaLineaWorkPhone = new Linea();
+					segundaLineaWorkPhone.setTexto(new Texto(rs2.getString("EMPTELFFIJO"), estiloTextoSegundaLinea));
 
 					Action workPhone = new Action();
 					workPhone.setTipo("PHONE");
 					workPhone.setResItem(resItemPhone);
 					workPhone.setPhone(new Phone("WORK", rs2.getString("EMPTELFFIJO")));
+					workPhone.setPrimeraLinea(primeraLineaWorkPhone);
+					workPhone.setSegundaLinea(segundaLineaWorkPhone);
 
 					Archivo archivoMail = new Archivo();
 					archivoMail.setAlmaTipo("LOCAL");
@@ -614,15 +658,31 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 					resItemMail.setArchivo(archivoMail);
 					resItemMail.setColor(colorMail);
 
+					Linea primeraLineaEmail = new Linea();
+					primeraLineaEmail.setTexto(new Texto("PERSONAL", estiloTextoPrimeraLinea));
+
+					Linea segundaLineaEmail = new Linea();
+					segundaLineaEmail.setTexto(new Texto(rs2.getString("EMPEMAIL"), estiloTextoSegundaLinea));
+
 					Action email = new Action();
 					email.setTipo("EMAIL");
 					email.setResItem(resItemMail);
 					email.setEmail(new Email("PERSONAL", rs2.getString("EMPEMAIL")));
+					email.setPrimeraLinea(primeraLineaEmail);
+					email.setSegundaLinea(segundaLineaEmail);
+
+					Linea primeraLineaEmailOrg = new Linea();
+					primeraLineaEmailOrg.setTexto(new Texto("WORK", estiloTextoPrimeraLinea));
+
+					Linea segundaLineaEmailOrg = new Linea();
+					segundaLineaEmailOrg.setTexto(new Texto(rs2.getString("EMPEMAILORG"), estiloTextoSegundaLinea));
 
 					Action emailOrg = new Action();
 					emailOrg.setTipo("EMAIL");
 					emailOrg.setResItem(resItemMail);
-					emailOrg.setEmail(new Email("WORK", rs2.getString("EMPEMAIL")));
+					emailOrg.setEmail(new Email("WORK", rs2.getString("EMPEMAILORG")));
+					emailOrg.setPrimeraLinea(primeraLineaEmailOrg);
+					emailOrg.setSegundaLinea(segundaLineaEmailOrg);
 
 					action.add(movilePhone);
 					action.add(workPhone);
@@ -657,6 +717,260 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				rs2.close();
 				listarDir.close();
 			}
+
+			rs.close();
+			listarDirectorio.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return directorio;
+	}
+
+	@Override
+	public List<Directorio> buscarDirectorioXEmpleado(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Directorio> directorio = null;
+		List<Item> valores = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/compania.query").getProperty("listarDirectorioEmpleado");
+		String area = "";
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement listarDirectorio = conexion.prepareStatement(query);
+			listarDirectorio.setString(1, codcia);
+			listarDirectorio.setString(2, codsuc);
+			listarDirectorio.setString(3, codtra);
+
+			ResultSet rs = listarDirectorio.executeQuery();
+
+			directorio = new ArrayList<>();
+			valores = new ArrayList<>();
+			Directorio item = null;
+			while (rs.next()) {
+				Item valor = new Item();
+
+				String foto = rs.getString("EMPFOTO");
+				String url = null;
+				if (foto != null) {
+					url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
+				}
+
+				Remote remote = new Remote();
+				remote.setResTipo("AVATAR40");
+				remote.setUrl(url);
+				remote.setNombre(foto);
+				remote.setDimensionRatio(new DimensionRatio("W,40:40", "40", "40"));
+				remote.setExt("JPG");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTE");
+				archivo.setTipo("IMAGEN");
+				archivo.setLocal(null);
+				archivo.setRemote(remote);
+
+				ResItem resItem = new ResItem();
+				resItem.setTipo("AVATAR40");
+				resItem.setArchivo(archivo);
+				resItem.setColor(null);
+
+				Default default1 = new Default();
+				default1.setNombre("PRIMARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(rs.getString("NOMBRE"));
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Default default2 = new Default();
+				default2.setNombre("SECONDARYDARK");
+
+				Color colorDefault2 = new Color();
+				colorDefault2.setTipo("TEXT");
+				colorDefault2.setUso("DEFAULT");
+				colorDefault2.setDefault1(default2);
+				colorDefault2.setCustom(null);
+
+				EstiloTexto estiloTextoSegundaLinea = new EstiloTexto();
+				estiloTextoSegundaLinea.setColor(colorDefault2);
+				estiloTextoSegundaLinea.setCustom(null);
+				estiloTextoSegundaLinea.setFuente(null);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(rs.getString("PUESTO"));
+				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
+
+				Local localSegundaLinea = new Local();
+				localSegundaLinea.setResTipo("ICON");
+				localSegundaLinea.setNombre("phone");
+				localSegundaLinea.setExt("xml");
+
+				Archivo archivoSegundaLinea = new Archivo();
+				archivoSegundaLinea.setAlmaTipo("LOCAL");
+				archivoSegundaLinea.setTipo("VECTOR");
+				archivoSegundaLinea.setRemote(null);
+				archivoSegundaLinea.setLocal(localSegundaLinea);
+
+				Default defaultSegundaLinea = new Default();
+				defaultSegundaLinea.setNombre("PRIMARYDARK");
+
+				Color colorSegundaLinea = new Color();
+				colorSegundaLinea.setTipo("TINT");
+				colorSegundaLinea.setUso("LOCAL");
+				colorSegundaLinea.setDefault1(defaultSegundaLinea);
+				colorSegundaLinea.setCustom(null);
+
+				ResItem resItemSegundaLinea = new ResItem();
+				resItemSegundaLinea.setTipo("PHONE");
+				resItemSegundaLinea.setArchivo(archivoSegundaLinea);
+				resItemSegundaLinea.setColor(colorSegundaLinea);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				Archivo archivoPhone = new Archivo();
+				archivoPhone.setAlmaTipo("LOCAL");
+				archivoPhone.setTipo("VECTOR");
+				archivoPhone.setLocal(new Local("ICON", "phone", "xml"));
+
+				Color colorPhone = new Color();
+				colorPhone.setTipo("TINT");
+				colorPhone.setUso("DEFAULT");
+				colorPhone.setDefault1(new Default("DEFAULT"));
+
+				ResItem resItemPhone = new ResItem();
+				resItemPhone.setTipo("ICON");
+				resItemPhone.setArchivo(archivoPhone);
+				resItemPhone.setColor(colorPhone);
+
+				List<Action> action = new ArrayList<>();
+
+				Linea primeraLineaMobile = new Linea();
+				primeraLineaMobile.setTexto(new Texto("MOBILE", estiloTextoPrimeraLinea));
+
+				Linea segundaLineaMobile = new Linea();
+				segundaLineaMobile.setTexto(new Texto(rs.getString("EMPTELFMOV"), estiloTextoSegundaLinea));
+
+				Action movilePhone = new Action();
+				movilePhone.setTipo("PHONE");
+				movilePhone.setResItem(resItemPhone);
+				movilePhone.setPhone(new Phone("MOBILE", rs.getString("EMPTELFMOV")));
+				movilePhone.setPrimeraLinea(primeraLineaMobile);
+				movilePhone.setSegundaLinea(segundaLineaMobile);
+
+				Linea primeraLineaWorkPhone = new Linea();
+				primeraLineaWorkPhone.setTexto(new Texto("WORK", estiloTextoPrimeraLinea));
+
+				Linea segundaLineaWorkPhone = new Linea();
+				segundaLineaWorkPhone.setTexto(new Texto(rs.getString("EMPTELFFIJO"), estiloTextoSegundaLinea));
+
+				Action workPhone = new Action();
+				workPhone.setTipo("PHONE");
+				workPhone.setResItem(resItemPhone);
+				workPhone.setPhone(new Phone("WORK", rs.getString("EMPTELFFIJO")));
+				workPhone.setPrimeraLinea(primeraLineaWorkPhone);
+				workPhone.setSegundaLinea(segundaLineaWorkPhone);
+
+				Archivo archivoMail = new Archivo();
+				archivoMail.setAlmaTipo("LOCAL");
+				archivoMail.setTipo("VECTOR");
+				archivoMail.setLocal(new Local("ICON", "email", "xml"));
+
+				Color colorMail = new Color();
+				colorMail.setTipo("TINT");
+				colorMail.setUso("DEFAULT");
+				colorMail.setDefault1(new Default("DEFAULT"));
+
+				ResItem resItemMail = new ResItem();
+				resItemMail.setTipo("ICON");
+				resItemMail.setArchivo(archivoMail);
+				resItemMail.setColor(colorMail);
+
+				Linea primeraLineaEmail = new Linea();
+				primeraLineaEmail.setTexto(new Texto("PERSONAL", estiloTextoPrimeraLinea));
+
+				Linea segundaLineaEmail = new Linea();
+				segundaLineaEmail.setTexto(new Texto(rs.getString("EMPEMAIL"), estiloTextoSegundaLinea));
+
+				Action email = new Action();
+				email.setTipo("EMAIL");
+				email.setResItem(resItemMail);
+				email.setEmail(new Email("PERSONAL", rs.getString("EMPEMAIL")));
+				email.setPrimeraLinea(primeraLineaEmail);
+				email.setSegundaLinea(segundaLineaEmail);
+
+				Linea primeraLineaEmailOrg = new Linea();
+				primeraLineaEmailOrg.setTexto(new Texto("WORK", estiloTextoPrimeraLinea));
+
+				Linea segundaLineaEmailOrg = new Linea();
+				segundaLineaEmailOrg.setTexto(new Texto(rs.getString("EMPEMAILORG"), estiloTextoSegundaLinea));
+
+				Action emailOrg = new Action();
+				emailOrg.setTipo("EMAIL");
+				emailOrg.setResItem(resItemMail);
+				emailOrg.setEmail(new Email("WORK", rs.getString("EMPEMAILORG")));
+				emailOrg.setPrimeraLinea(primeraLineaEmailOrg);
+				emailOrg.setSegundaLinea(segundaLineaEmailOrg);
+
+				action.add(movilePhone);
+				action.add(workPhone);
+				action.add(email);
+				action.add(emailOrg);
+
+				valor.setResItem(resItem);
+				valor.setPrimeraLinea(primeraLinea);
+				valor.setSegundaLinea(segundaLinea);
+				valor.setAction(action);
+				valores.add(valor);
+
+				area = rs.getString("AREA");
+			}
+
+			Color coloreEstiloArea = new Color();
+			coloreEstiloArea.setTipo("TEXT");
+			coloreEstiloArea.setUso("DEFAULT");
+			coloreEstiloArea.setDefault1(new Default("SECONDARYDARK"));
+
+			EstiloTexto estiloTextoArea = new EstiloTexto();
+			estiloTextoArea.setFuente(null);
+			estiloTextoArea.setColor(coloreEstiloArea);
+
+			Texto textoArea = new Texto();
+			textoArea.setTexto(area);
+			textoArea.setEstilo(estiloTextoArea);
+
+			item = new Directorio();
+			item.setTipo("SINGLE_LINE_AVATAR");
+			item.setArea(textoArea);
+			item.setValores(valores);
+			directorio.add(item);
 
 			rs.close();
 			listarDirectorio.close();

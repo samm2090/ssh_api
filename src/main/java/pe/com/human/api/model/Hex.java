@@ -6,9 +6,18 @@ public class Hex implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String hex;
+
+	public Hex() {
+	}
+
+	public Hex(String hex) {
+		this.hex = hex;
+	}
+
 	public String getHex() {
 		return hex;
 	}
+
 	public void setHex(String hex) {
 		this.hex = hex;
 	}

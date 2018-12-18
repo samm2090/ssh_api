@@ -155,4 +155,37 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(ExcepcionNoCumpleanos.class)
+	protected ResponseEntity<Object> handleNoCumpleanos(final ExcepcionNoCumpleanos ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.NO_CUMPLEANOS);
+		error.setMensaje("No existen cumpleaños el día de hoy");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ExcepcionNoComunicados.class)
+	protected ResponseEntity<Object> handleNoComunicados(final ExcepcionNoComunicados ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.NO_COMUNICADOS);
+		error.setMensaje("No existe comunicados");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ExcepcionNoContacto.class)
+	protected ResponseEntity<Object> handleNoContacto(final ExcepcionNoContacto ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.NO_CONTACTO);
+		error.setMensaje("No existe información de contacto");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
+
 }

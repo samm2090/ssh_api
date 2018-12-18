@@ -26,4 +26,7 @@ public interface CompaniaDAO {
 
 	public List<Directorio> buscarDirectorioCriterio(String codcia, String codsuc, String criterio,
 			ConfiguracionDataSource configuracionDataSource);
+
+	public List<Directorio> buscarDirectorioXEmpleado(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource);
 }

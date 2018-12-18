@@ -21,8 +21,8 @@ import pe.com.human.api.util.ConfiguracionDataSource;
 public class NavigationService {
 
 	private static final int TIPO_MENU = 1;
-	private static final int TIPO_TAB = 2;
-	private static final int TIPO_ITEM = 3;
+//	private static final int TIPO_TAB = 2;
+//	private static final int TIPO_ITEM = 3;
 
 	@Autowired
 	EmpleadoDAO empleadoDAO;
@@ -56,7 +56,7 @@ public class NavigationService {
 		String codcia = request.getBase().getCompania().getId();
 		int idRol = Integer.parseInt(request.getEmpleado().getRol());
 		String rol = "%";
-		int idPadre = Integer.parseInt(request.getMenu().getId());
+//		int idPadre = Integer.parseInt(request.getMenu().getId());
 
 		if (idRol == 2) {
 			rol = "2";
@@ -77,7 +77,7 @@ public class NavigationService {
 		String codcia = request.getBase().getCompania().getId();
 		int idRol = Integer.parseInt(request.getEmpleado().getRol());
 		String rol = "%";
-		int idPadre = Integer.parseInt(request.getMenu().getId());
+//		int idPadre = Integer.parseInt(request.getMenu().getId());
 
 		if (idRol == 2) {
 			rol = "2";
@@ -98,7 +98,7 @@ public class NavigationService {
 		String codcia = request.getBase().getCompania().getId();
 		int idRol = Integer.parseInt(request.getEmpleado().getRol());
 		String rol = "%";
-		int idPadre = Integer.parseInt(request.getMenu().getId());
+//		int idPadre = Integer.parseInt(request.getMenu().getId());
 
 		if (idRol == 2) {
 			rol = "2";
