@@ -14,10 +14,10 @@ cantidadColaboradores = SELECT COUNT(DISTINCT EMPCODTRA) AS CANTIDAD FROM HR_EMP
 						
 						
 buscarEmpleadoResumen = SELECT EMPCODTRA,EMPNOMBRE, EMPAPATERN, EMPAMATERN, EMPNRODOCID, EMPFOTO,                                                         \
-						(SELECT TTBDESOBJ FROM EB_TTABLE                                                                                           \
-						WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '09' AND TTBKEYOBJ = EMPTIPDOCID) AS TIPO_DOCUMENTO, \
-						(SELECT NVL(PUEDESPUE,'No contiene dato') FROM HR_PUESTO                                                                                           \
-						WHERE PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC AND PUECODPUE = EMPCODPUEST) AS PUESTO,                              \
+						NVL((SELECT TTBDESOBJ FROM EB_TTABLE                                                                                           \
+						WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '09' AND TTBKEYOBJ = EMPTIPDOCID), 'No existe dato') AS TIPO_DOCUMENTO, \
+						NVL((SELECT PUEDESPUE FROM HR_PUESTO                                                                                           \
+						WHERE PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC AND PUECODPUE = EMPCODPUEST),'No contiene dato') AS PUESTO,                              \
 						(SELECT CASE WHEN NVL(COUNT(EMPCODTRA),0) > 0 THEN '1' ELSE '2' END FROM HR_EMPLEADO                                     \
 						WHERE EMPCODTRAJEF = E.EMPCODTRA AND EMPCODCIA = E.EMPCODCIA AND EMPCODSUC = E.EMPCODSUC) AS ROL                           \
 						FROM HR_EMPLEADO E                                                                                                         \
@@ -41,14 +41,14 @@ listarFeriados =SELECT INITCAP(FERDESC) AS FERDESC, FERFECHA             \
 				AND FERCODSUC = ?
 				
 buscarInformacionGeneral = 	SELECT E.EMPNRODOCID, NVL(TO_CHAR(E.EMPFECNAC, 'dd/mm/yyyy'), 'No existe dato') as EMPFECNAC, \
-							(SELECT NVL(INITCAP(TTBDESOBJ), 'No existe dato')                                                   \
+							NVL((SELECT INITCAP(TTBDESOBJ)                                                 \
 							FROM EB_TTABLE                                                      \
 							WHERE TTBCODCIA = E.EMPCODCIA AND TTBCODSUC = E.EMPCODSUC           \
-							AND TTBCODTAB = '10' AND TTBKEYOBJ = E.EMPNACIONAL) AS NACIONALIDAD, \
-							(SELECT NVL(INITCAP(TTBDESOBJ), 'No existe dato')                                                    \
+							AND TTBCODTAB = '10' AND TTBKEYOBJ = E.EMPNACIONAL), 'No existe dato')   AS NACIONALIDAD, \
+							NVL((SELECT INITCAP(TTBDESOBJ)                                                  \
 							FROM EB_TTABLE                                                      \
 							WHERE TTBCODCIA = E.EMPCODCIA AND TTBCODSUC = E.EMPCODSUC           \
-							AND TTBCODTAB = '02' AND TTBKEYOBJ = E.EMPESTCIV) AS ESTADO_CIVIL   \
+							AND TTBCODTAB = '02' AND TTBKEYOBJ = E.EMPESTCIV), 'No existe dato') AS ESTADO_CIVIL   \
 							FROM HR_EMPLEADO E                                                  \
 							WHERE E.EMPCODCIA = ? AND E.EMPCODSUC = ? AND E.EMPCODTRA = ?
 							

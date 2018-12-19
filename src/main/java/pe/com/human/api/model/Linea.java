@@ -5,6 +5,13 @@ public class Linea {
 	private Texto texto;
 	private Action action;
 
+	public Linea() {
+	}
+
+	public Linea(Texto texto) {
+		this.texto = texto;
+	}
+
 	public Texto getTexto() {
 		return texto;
 	}

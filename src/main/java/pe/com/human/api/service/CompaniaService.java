@@ -18,11 +18,13 @@ import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Colores;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Default;
+import pe.com.human.api.model.DetalleDirectorio;
 import pe.com.human.api.model.Directorio;
 import pe.com.human.api.model.Estilo;
 import pe.com.human.api.model.EstiloTexto;
+import pe.com.human.api.model.ResItem;
 import pe.com.human.api.model.Texto;
-import pe.com.human.api.model.apirequest.DirectorioDetalleRequest;
+import pe.com.human.api.model.apirequest.Base;
 import pe.com.human.api.model.apirequest.DirectorioRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -157,37 +159,34 @@ public class CompaniaService {
 		return respuesta;
 	}
 
-	public Map<String, Object> directorioDetalle(DirectorioDetalleRequest empleado) {
+	public Map<String, Object> directorioDetalle(EmpleadoRequest empleado) {
 		Map<String, Object> respuesta = new HashMap<>();
-		Map<String, Object> data = new HashMap<>();
 
 		String codcia = empleado.getBase().getCompania().getId();
 		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
-		String codtra = empleado.getId();
+		String codtra = empleado.getEmpleado().getId();
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO
 				.buscarConfiguracionXId(Integer.parseInt(empleado.getBase().getBaseDatos()));
 
-		List<Directorio> items = companiaDAO.buscarDirectorioXEmpleado(codcia, codsuc, codtra,
-				configuracionDataSource);
+		List<DetalleDirectorio> detalle = companiaDAO.buscarDirectorioXEmpleado(codcia, codsuc, codtra, configuracionDataSource);
 
-		Color color = new Color();
-		color.setTipo("TEXT");
-		color.setUso("DEFAULT");
-		color.setDefault1(new Default("SECONDARYDARK"));
+		respuesta.put("data", detalle);
 
-		EstiloTexto estilo = new EstiloTexto();
-		estilo.setFuente(null);
-		estilo.setColor(color);
-		estilo.setCustom(null);
+		return respuesta;
+	}
 
-		Texto titulo = new Texto();
-		titulo.setTexto("Contacto");
-		titulo.setEstilo(estilo);
+	public Map<String, Object> convenios(Base base) {
+		Map<String, Object> respuesta = new HashMap<>();
 
-		data.put("titulo", titulo);
-		data.put("items", items);
+		String codcia = base.getCompania().getId();
+		String codsuc = base.getCompania().getSucursal().getId();
+		
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO
+				.buscarConfiguracionXId(Integer.parseInt(base.getBaseDatos()));
 
-		respuesta.put("data", data);
+		List<ResItem> convenios = companiaDAO.listarConvenios(codcia, codsuc, configuracionDataSource);
+		
+		respuesta.put("data", convenios);
 
 		return respuesta;
 	}

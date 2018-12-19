@@ -18,7 +18,6 @@ import pe.com.human.api.dao.EvaluacionDesempenioDAO;
 import pe.com.human.api.dao.PrestamoDAO;
 import pe.com.human.api.dao.VacacionesDAO;
 import pe.com.human.api.exception.ExcepcionAutenticacion;
-import pe.com.human.api.exception.ExcepcionNoComunicados;
 import pe.com.human.api.exception.ExcepcionNoExisteUsuario;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Compania;

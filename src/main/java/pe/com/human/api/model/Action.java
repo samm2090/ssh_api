@@ -11,14 +11,14 @@ public class Action {
 	private Navigation navigation;
 	private Linea primeraLinea;
 	private Linea segundaLinea;
-	private Extra extra;
+	private Copy copy;
 
-	public Extra getExtra() {
-		return extra;
+	public Copy getCopy() {
+		return copy;
 	}
 
-	public void setExtra(Extra extra) {
-		this.extra = extra;
+	public void setCopy(Copy copy) {
+		this.copy = copy;
 	}
 
 	public Linea getPrimeraLinea() {

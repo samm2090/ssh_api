@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import pe.com.human.api.model.Compania;
+import pe.com.human.api.model.DetalleDirectorio;
 import pe.com.human.api.model.Directorio;
+import pe.com.human.api.model.ResItem;
 import pe.com.human.api.util.ConfiguracionDataSource;
 
 
@@ -27,6 +29,8 @@ public interface CompaniaDAO {
 	public List<Directorio> buscarDirectorioCriterio(String codcia, String codsuc, String criterio,
 			ConfiguracionDataSource configuracionDataSource);
 
-	public List<Directorio> buscarDirectorioXEmpleado(String codcia, String codsuc, String codtra,
+	public List<DetalleDirectorio> buscarDirectorioXEmpleado(String codcia, String codsuc, String codtra,
 			ConfiguracionDataSource configuracionDataSource);
+
+	public List<ResItem> listarConvenios(String codcia, String codsuc, ConfiguracionDataSource configuracionDataSource);
 }

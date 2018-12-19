@@ -16,6 +16,15 @@ public class Item {
 	private Linea terceraLinea;
 	private Linea cuartaLinea;
 	private List<Action> action;
+	private Extra extra;
+
+	public Extra getExtra() {
+		return extra;
+	}
+
+	public void setExtra(Extra extra) {
+		this.extra = extra;
+	}
 
 	public List<Action> getAction() {
 		return action;

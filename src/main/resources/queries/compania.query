@@ -17,7 +17,7 @@ buscarCompaniaXId = SELECT *                                          \
 					ON C.COM_I_ID = S.SUC_I_COMPANIA                  \
 					WHERE COM_C_HUMAN = ?
 
-listarDirectorioArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN) AS NOMBRE, EMPFOTO,                                                         \
+listarDirectorioArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN) AS NOMBRE, EMPFOTO,                                                       \
 						(SELECT INITCAP(PUEDESPUE) FROM HR_PUESTO WHERE PUECODPUE = EMPCODPUEST AND PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC) AS PUESTO, \
 						(SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC) AS AREA,    \
 						EMPCODTRA,                                                                                                                              \
@@ -61,3 +61,6 @@ listarDirectorioCodArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' 
 							FROM HR_EMPLEADO                                                                                                                        \
 							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODAREA = ? AND (EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN LIKE ?) \
 							ORDER BY EMPNOMBRE ASC
+							
+listarConvenios = 	SELECT * FROM SSMG_CONVENIOS \
+					WHERE COM_I_ID = ? AND SUC_I_ID = ? AND CONV_E_EST = '1'
