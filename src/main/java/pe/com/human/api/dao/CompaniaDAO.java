@@ -29,7 +29,7 @@ public interface CompaniaDAO {
 	public List<Directorio> buscarDirectorioCriterio(String codcia, String codsuc, String criterio,
 			ConfiguracionDataSource configuracionDataSource);
 
-	public List<DetalleDirectorio> buscarDirectorioXEmpleado(String codcia, String codsuc, String codtra,
+	public DetalleDirectorio buscarDirectorioXEmpleado(String codcia, String codsuc, String codtra,
 			ConfiguracionDataSource configuracionDataSource);
 
 	public List<ResItem> listarConvenios(String codcia, String codsuc, ConfiguracionDataSource configuracionDataSource);

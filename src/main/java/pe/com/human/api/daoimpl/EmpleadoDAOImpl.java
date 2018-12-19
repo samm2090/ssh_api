@@ -252,7 +252,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				foto = rs.getString("EMPFOTO");
 			}
 
-			String url = null;
+			String url = "http://";
 			if (foto != null) {
 				url = ApiConstantes.URL_BASE_REPOSITORIO + empleado.getBase().getCompania().getId() + "/FOTO_EMPLEADO/"
 						+ foto;
@@ -318,7 +318,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				item = new Item();
 
 				String foto = rs.getString("EMPFOTO");
-				String url = null;
+				String url = "http://";
 				if (foto != null) {
 					url = ApiConstantes.URL_BASE_REPOSITORIO + idCompania + "/FOTO_EMPLEADO/" + foto;
 				}

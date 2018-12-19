@@ -168,7 +168,7 @@ public class CompaniaService {
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO
 				.buscarConfiguracionXId(Integer.parseInt(empleado.getBase().getBaseDatos()));
 
-		List<DetalleDirectorio> detalle = companiaDAO.buscarDirectorioXEmpleado(codcia, codsuc, codtra, configuracionDataSource);
+		DetalleDirectorio detalle = companiaDAO.buscarDirectorioXEmpleado(codcia, codsuc, codtra, configuracionDataSource);
 
 		respuesta.put("data", detalle);
 

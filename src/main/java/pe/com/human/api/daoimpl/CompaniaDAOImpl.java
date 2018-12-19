@@ -238,7 +238,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				Item valor = new Item();
 
 				String foto = rs.getString("EMPFOTO");
-				String url = null;
+				String url = "http://";
 				if (foto != null) {
 					url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
 				}
@@ -513,7 +513,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 					Item valor = new Item();
 
 					String foto = rs2.getString("EMPFOTO");
-					String url = null;
+					String url = "http://";
 					if (foto != null) {
 						url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
 					}
@@ -742,9 +742,9 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 	}
 
 	@Override
-	public List<DetalleDirectorio> buscarDirectorioXEmpleado(String codcia, String codsuc, String codtra,
+	public DetalleDirectorio buscarDirectorioXEmpleado(String codcia, String codsuc, String codtra,
 			ConfiguracionDataSource configuracionDataSource) {
-		List<DetalleDirectorio> directorio = null;
+		DetalleDirectorio directorio = null;
 		Connection conexion = null;
 
 		String query = lector.leerPropiedad("queries/compania.query").getProperty("listarDirectorioEmpleado");
@@ -759,12 +759,11 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 			ResultSet rs = listarDirectorio.executeQuery();
 
-			directorio = new ArrayList<>();
-			DetalleDirectorio detalle = null;
+			directorio = new DetalleDirectorio();
 			while (rs.next()) {
 
 				String foto = rs.getString("EMPFOTO");
-				String url = null;
+				String url = "http://";
 				if (foto != null) {
 					url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
 				}
@@ -852,7 +851,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				workPhone.setPhone(new Phone("WORK", rs.getString("EMPTELFFIJO")));
 
 				Action workPhoneCopy = new Action();
-				workPhoneCopy.setTipo("PHONE");
+				workPhoneCopy.setTipo("COPY");
 				workPhoneCopy.setResItem(resItemPhone);
 				workPhoneCopy.setCopy(new Copy("WORK", rs.getString("EMPTELFFIJO")));
 
@@ -862,7 +861,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				email.setEmail(new Email("PERSONAL", rs.getString("EMPEMAIL")));
 
 				Action emailCopy = new Action();
-				emailCopy.setTipo("EMAIL");
+				emailCopy.setTipo("COPY");
 				emailCopy.setResItem(resItemMail);
 				emailCopy.setCopy(new Copy("PERSONAL", rs.getString("EMPEMAIL")));
 
@@ -872,7 +871,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				emailOrg.setEmail(new Email("WORK", rs.getString("EMPEMAILORG")));
 
 				Action emailOrgCopy = new Action();
-				emailOrgCopy.setTipo("EMAIL");
+				emailOrgCopy.setTipo("COPY");
 				emailOrgCopy.setResItem(resItemMail);
 				emailOrgCopy.setCopy(new Copy("WORK", rs.getString("EMPEMAILORG")));
 
@@ -925,13 +924,10 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				items.setTipo("SINGLE_LINE_ICON");
 				items.setValores(valores);
 
-				detalle = new DetalleDirectorio();
-				detalle.setResItem(resItem);
-				detalle.setNombre(new Texto(rs.getString("NOMBRE"), secondaryDark));
-				detalle.setPuesto(new Texto(rs.getString("PUESTO"), primaryDark));
-				detalle.setItems(items);
-
-				directorio.add(detalle);
+				directorio.setResItem(resItem);
+				directorio.setNombre(new Texto(rs.getString("NOMBRE"), secondaryDark));
+				directorio.setPuesto(new Texto(rs.getString("PUESTO"), primaryDark));
+				directorio.setItems(items);
 			}
 
 			rs.close();
