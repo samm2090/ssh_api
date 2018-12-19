@@ -18,6 +18,7 @@ import pe.com.human.api.dao.EvaluacionDesempenioDAO;
 import pe.com.human.api.dao.PrestamoDAO;
 import pe.com.human.api.dao.VacacionesDAO;
 import pe.com.human.api.exception.ExcepcionAutenticacion;
+import pe.com.human.api.exception.ExcepcionCompaniaAssets;
 import pe.com.human.api.exception.ExcepcionNoExisteUsuario;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Compania;
@@ -121,6 +122,10 @@ public class EmpleadoService {
 					ConfiguracionDataSource configBaseAppMovil = new ConfiguracionDataSource();
 
 					Estilo estilo = estiloDAO.buscarEstiloXCompania(compania, configBaseAppMovil);
+					
+					if(estilo.getAssets().isEmpty() || estilo.getColores().isEmpty()){
+						throw new ExcepcionCompaniaAssets();
+					}
 					compania.setEstilo(estilo);
 				}
 			} else {

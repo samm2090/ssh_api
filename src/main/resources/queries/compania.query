@@ -44,7 +44,7 @@ listarDirectorioEmpleado = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' '
 							FROM HR_EMPLEADO                                                                                                                        \
 							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?
 						
-listarDirectorioCriterio = 	SELECT DISTINCT EMPCODAREA, \
+listarDirectorioCriterio = 	SELECT DISTINCT EMPCODAREA, EMPCODTRA, \
 							(SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC) AS AREA \
 							FROM HR_EMPLEADO \
 							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND (EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN LIKE ?) AND EMPCODAREA IS NOT NULL AND EMPFLGEST = '1' \

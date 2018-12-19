@@ -696,8 +696,9 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 					valor.setResItem(resItem);
 					valor.setPrimeraLinea(primeraLinea);
-					valor.setSegundaLinea(segundaLinea);
+					valor.setSegundaLinea(segundaLinea);	
 					valor.setAction(action);
+					valor.setExtra(new Extra(rs2.getString("EMPCODTRA")));
 					valores.add(valor);
 				}
 				Color coloreEstiloArea = new Color();
