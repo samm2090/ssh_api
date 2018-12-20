@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.com.human.api.model.apirequest.Base;
+import pe.com.human.api.model.apirequest.BaseRequest;
 import pe.com.human.api.model.apirequest.DirectorioRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.service.CompaniaService;
@@ -63,7 +63,7 @@ public class CompaniaController {
 	}
 	
 	@RequestMapping(value = "convenios", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> convenios(@RequestBody Base base) {
+	public ResponseEntity<Map<String, Object>> convenios(@RequestBody BaseRequest base) {
 		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				companiaService.convenios(base), HttpStatus.OK);
 		return respuesta;

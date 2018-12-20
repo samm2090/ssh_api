@@ -24,7 +24,7 @@ import pe.com.human.api.model.Estilo;
 import pe.com.human.api.model.EstiloTexto;
 import pe.com.human.api.model.ResItem;
 import pe.com.human.api.model.Texto;
-import pe.com.human.api.model.apirequest.Base;
+import pe.com.human.api.model.apirequest.BaseRequest;
 import pe.com.human.api.model.apirequest.DirectorioRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -168,24 +168,25 @@ public class CompaniaService {
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO
 				.buscarConfiguracionXId(Integer.parseInt(empleado.getBase().getBaseDatos()));
 
-		DetalleDirectorio detalle = companiaDAO.buscarDirectorioXEmpleado(codcia, codsuc, codtra, configuracionDataSource);
+		DetalleDirectorio detalle = companiaDAO.buscarDirectorioXEmpleado(codcia, codsuc, codtra,
+				configuracionDataSource);
 
 		respuesta.put("data", detalle);
 
 		return respuesta;
 	}
 
-	public Map<String, Object> convenios(Base base) {
+	public Map<String, Object> convenios(BaseRequest base) {
 		Map<String, Object> respuesta = new HashMap<>();
 
-		String codcia = base.getCompania().getId();
-		String codsuc = base.getCompania().getSucursal().getId();
-		
+		String codcia = base.getBase().getCompania().getId();
+		String codsuc = base.getBase().getCompania().getSucursal().getId();
+
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO
-				.buscarConfiguracionXId(Integer.parseInt(base.getBaseDatos()));
+				.buscarConfiguracionXId(Integer.parseInt(base.getBase().getBaseDatos()));
 
 		List<ResItem> convenios = companiaDAO.listarConvenios(codcia, codsuc, configuracionDataSource);
-		
+
 		respuesta.put("data", convenios);
 
 		return respuesta;
