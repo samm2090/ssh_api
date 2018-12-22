@@ -4,15 +4,15 @@ cantidadPagosMesActual = 	SELECT COUNT(C.PBKIDPBK) AS CANTIDAD FROM HR_PAYBANKD 
 							D.PBKCODTRA = ? AND C.PBKNROPER = TO_CHAR(SYSDATE, 'yyyymm')
 							
 listarBoletasXIdEmpleado =  SELECT PERCODCIA,PERCODSUC,PERCODPRO,PERCODPER, PERFECINI,PERFECFIN FROM HR_PERIODO ,                                             \
-							HR_PROCTL , HR_EMPXPROC  WHERE PCTCODCIA=PERCODCIA AND PCTCODPRO=PERCODPRO AND PCTNROPER=PERCODPER AND PCTFLGINI in ('3','4') AND \
+							HR_PROCTL , HR_EMPXPROC  WHERE PCTCODCIA=PERCODCIA AND PCTCODPRO=PERCODPRO AND PCTNROPER=PERCODPER AND \
 							EMPCODCIA=PCTCODCIA AND                                                                                                           \
 							EMPCODSUC=PCTCODSUC AND                                                                                                           \
 							EMPCODPRO=PCTCODPRO AND                                                                                                           \
 							EMPNROPER=PCTNROPER AND                                                                                                           \
-							PERCODCIA = ? AND PERCODSUC = ?  AND PERCODPRO = '01' AND EMPCODTRA=? \
+							PERCODCIA = ? AND PERCODSUC = ?  AND PERCODPRO IN ('01','21') AND EMPCODTRA=? \
 							AND SUBSTR(EMPNROPER,0,4) = ? ORDER BY PERCODPER DESC
 							
 cantidadNoLeidas = 	SELECT COUNT(*) AS CANTIDAD             \
-							FROM HR_EMPXPROC                       \
-							WHERE EMPCODCIA = ? AND EMPCODSUC = ?  \
-							AND EMPCODTRA = ? AND EMPCODPRO = '01' AND EMPFLGLEIDO = '0'
+					FROM HR_EMPXPROC                       \
+					WHERE EMPCODCIA = ? AND EMPCODSUC = ?  \
+					AND EMPCODTRA = ? AND EMPCODPRO = '01' AND EMPFLGLEIDO = '0'

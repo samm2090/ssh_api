@@ -403,14 +403,14 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				phone.setUri(telefono);
 
 				Color colorAction = new Color();
-				if (!("").equals(telefono)) {
+				if (!("").equals(telefono) && null != telefono) {
 					colorAction.setTipo("TINT");
 					colorAction.setUso("DEFAULT");
 					colorAction.setDefault1(new Default("PRIMARYDARK"));
 				} else {
 					colorAction.setTipo("TINT");
 					colorAction.setUso("CUSTOM");
-					colorAction.setCustom(new Custom(new Hex("#CCCCCC")));
+					colorAction.setCustom(new Custom(new Hex("CCCCCC")));
 				}
 
 				ResItem resItemAction = new ResItem();
