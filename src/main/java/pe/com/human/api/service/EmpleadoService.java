@@ -122,8 +122,8 @@ public class EmpleadoService {
 					ConfiguracionDataSource configBaseAppMovil = new ConfiguracionDataSource();
 
 					Estilo estilo = estiloDAO.buscarEstiloXCompania(compania, configBaseAppMovil);
-					
-					if(estilo.getAssets().isEmpty() || estilo.getColores().isEmpty()){
+
+					if (estilo.getAssets().isEmpty() || estilo.getColores().isEmpty()) {
 						throw new ExcepcionCompaniaAssets();
 					}
 					compania.setEstilo(estilo);
@@ -245,9 +245,9 @@ public class EmpleadoService {
 
 		List<Item> items = empleadoDAO.listarCumpleanos(idCompania, idSucursal, configuracionDataSource);
 
-//		if (items.isEmpty()) {
-//			throw new ExcepcionNoCumpleanos();
-//		}
+		// if (items.isEmpty()) {
+		// throw new ExcepcionNoCumpleanos();
+		// }
 
 		data.put("titulo", titulo);
 		data.put("items", items);
@@ -283,9 +283,9 @@ public class EmpleadoService {
 
 		List<Item> items = empleadoDAO.listarFeriados(idCompania, idSucursal, configuracionDataSource);
 
-//		if (items.isEmpty()) {
-//			throw new ExcepcionNoComunicados();
-//		}
+		// if (items.isEmpty()) {
+		// throw new ExcepcionNoComunicados();
+		// }
 
 		data.put("titulo", titulo);
 		data.put("items", items);
@@ -443,12 +443,13 @@ public class EmpleadoService {
 
 		List<Item> items = empleadoDAO.buscarDatosEmergencia(idCompania, idSucursal, idEmpleado,
 				configuracionDataSource);
-		
-//		if(items.isEmpty()){
-//			throw new ExcepcionNoContacto();
-//		}else if(("No existe dato").equals(items.get(0).getPrimeraLinea().getTexto().getTexto())){
-//			throw new ExcepcionNoContacto();
-//		}
+
+		// if(items.isEmpty()){
+		// throw new ExcepcionNoContacto();
+		// }else if(("No existe
+		// dato").equals(items.get(0).getPrimeraLinea().getTexto().getTexto())){
+		// throw new ExcepcionNoContacto();
+		// }
 
 		data.put("titulo", titulo);
 		data.put("items", items);
@@ -456,4 +457,278 @@ public class EmpleadoService {
 
 		return respuesta;
 	}
+
+	public Map<String, Object> personalNivelAcademico(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+		Map<String, Object> data = new HashMap<>();
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Nivel Académico");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarNivelAcademico(codcia, codsuc, codtra, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> bancariaHaberes(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+		Map<String, Object> data = new HashMap<>();
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Cuenta Haberes");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarCuentaHaberes(codcia, codsuc, codtra, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> bancariaCTS(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+		Map<String, Object> data = new HashMap<>();
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Cuenta CTS");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarCuentaCTS(codcia, codsuc, codtra, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> bancariaPension(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+		Map<String, Object> data = new HashMap<>();
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("AFP/ONP");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarPension(codcia, codsuc, codtra, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> seguros(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+		Map<String, Object> data = new HashMap<>();
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Seguros");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarSeguros(codcia, codsuc, codtra, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> bienesAsignados(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+		Map<String, Object> data = new HashMap<>();
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Bienes Asignados");
+		titulo.setEstilo(estilo);
+
+		List<Widget> items = empleadoDAO.buscarBienesAsignados(codcia, codsuc, codtra, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> dependientes(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+		Map<String, Object> data = new HashMap<>();
+
+		Default default1 = new Default();
+		default1.setNombre("SECONDARYDARK");
+
+		Color color = new Color();
+		color.setTipo("TEXT");
+		color.setUso("DEFAULT");
+		color.setDefault1(default1);
+		color.setCustom(null);
+
+		EstiloTexto estilo = new EstiloTexto();
+		estilo.setFuente(null);
+		estilo.setColor(color);
+		estilo.setCustom(null);
+
+		Texto titulo = new Texto();
+		titulo.setTexto("Dependientes");
+		titulo.setEstilo(estilo);
+
+		List<Item> items = empleadoDAO.buscarDependientesXIdEmpleado(codcia, codsuc, codtra, configuracionDataSource);
+
+		data.put("titulo", titulo);
+		data.put("items", items);
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
 }

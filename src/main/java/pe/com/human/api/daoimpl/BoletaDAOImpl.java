@@ -21,6 +21,7 @@ import pe.com.human.api.model.Custom;
 import pe.com.human.api.model.Default;
 import pe.com.human.api.model.EstiloTexto;
 import pe.com.human.api.model.Local;
+import pe.com.human.api.model.Proceso;
 import pe.com.human.api.model.Remote;
 import pe.com.human.api.model.ResItem;
 import pe.com.human.api.model.Texto;
@@ -135,7 +136,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 	}
 
 	@Override
-	public List<BoletaEmpleado> listarBoletasXIdEmpleado(String codcia, String codsuc, String codtra,
+	public List<BoletaEmpleado> listarBoletasXIdEmpleado(String codcia, String codsuc, String codtra, String idProceso,
 			ConfiguracionDataSource configuracionDataSource) {
 
 		List<BoletaEmpleado> boletas = null;
@@ -151,6 +152,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 			listarBoletas.setString(2, codsuc);
 			listarBoletas.setString(3, codtra);
 			listarBoletas.setString(4, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+			listarBoletas.setString(5, idProceso);
 
 			ResultSet rs = listarBoletas.executeQuery();
 			boletas = new ArrayList<>();
@@ -291,6 +293,50 @@ public class BoletaDAOImpl implements BoletaDAO {
 			}
 		}
 		return widget;
+	}
+
+	@Override
+	public List<Proceso> listarProcesosXIdEmpleado(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Proceso> procesos = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/boleta.query").getProperty("listarProcesosXIdEmpleado2");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement listarBoletas = conexion.prepareStatement(query);
+			listarBoletas.setString(1, codcia);
+			listarBoletas.setString(2, codsuc);
+			listarBoletas.setString(3, codtra);
+
+			ResultSet rs = listarBoletas.executeQuery();
+			procesos = new ArrayList<>();
+			Proceso proceso;
+			while (rs.next()) {
+				proceso = new Proceso();
+				proceso.setId(rs.getString("EMPCODPRO"));
+				proceso.setDescripcion(rs.getString("PROCESO"));
+
+				procesos.add(proceso);
+			}
+			rs.close();
+			listarBoletas.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return procesos;
 	}
 
 }

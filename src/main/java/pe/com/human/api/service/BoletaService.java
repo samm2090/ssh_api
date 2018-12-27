@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import pe.com.human.api.dao.BaseDatosDAO;
 import pe.com.human.api.dao.BoletaDAO;
 import pe.com.human.api.model.BoletaEmpleado;
+import pe.com.human.api.model.Proceso;
 import pe.com.human.api.model.Texto;
+import pe.com.human.api.model.apirequest.EmpleadoProcesoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
 
@@ -23,7 +25,34 @@ public class BoletaService {
 	@Autowired
 	BaseDatosDAO baseDatosDAO;
 
-	public Map<String, Object> buscarBoletasXEmpleado(EmpleadoRequest empleado) {
+	public Map<String, Object> buscarBoletasXEmpleado(EmpleadoProcesoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		Map<String, Object> data = new HashMap<>();
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+		String idProceso = empleado.getEmpleado().getIdProceso();
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		List<BoletaEmpleado> boletas = boletaDAO.listarBoletasXIdEmpleado(codcia, codsuc, codtra, idProceso,
+				configuracionDataSource);
+
+		Texto texto = new Texto();
+		texto.setTexto("Boletas de Pago");
+
+		data.put("titulo", texto);
+		data.put("boletasPago", boletas);
+
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
+
+	public Map<String, Object> buscarProcesosXEmpleado(EmpleadoRequest empleado) {
 		Map<String, Object> respuesta = new HashMap<>();
 
 		Map<String, Object> data = new HashMap<>();
@@ -35,14 +64,13 @@ public class BoletaService {
 
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
-		List<BoletaEmpleado> boletas = boletaDAO.listarBoletasXIdEmpleado(codcia, codsuc, codtra,
-				configuracionDataSource);
+		List<Proceso> procesos = boletaDAO.listarProcesosXIdEmpleado(codcia, codsuc, codtra, configuracionDataSource);
 
 		Texto texto = new Texto();
 		texto.setTexto("Boletas de Pago");
 
 		data.put("titulo", texto);
-		data.put("boletasPago", boletas);
+		data.put("procesos", procesos);
 
 		respuesta.put("data", data);
 

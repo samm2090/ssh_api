@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.com.human.api.model.apirequest.EmpleadoProcesoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.service.BoletaService;
 
@@ -29,7 +30,7 @@ public class BoletaController {
 
 	@CrossOrigin
 	@RequestMapping(value = "empleado", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> empleado(@RequestBody EmpleadoRequest empleado) {
+	public ResponseEntity<Map<String, Object>> empleado(@RequestBody EmpleadoProcesoRequest empleado) {
 
 		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				boletaService.buscarBoletasXEmpleado(empleado), HttpStatus.OK);
@@ -37,4 +38,13 @@ public class BoletaController {
 		return respuesta;
 	}
 
+	@CrossOrigin
+	@RequestMapping(value = "empleado/proceso", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> empleadoProceso(@RequestBody EmpleadoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				boletaService.buscarProcesosXEmpleado(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
 }

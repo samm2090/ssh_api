@@ -1224,4 +1224,822 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 		return items;
 	}
 
+	@Override
+	public List<Item> buscarNivelAcademico(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> nivelAcademico = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarNivelAcademico");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarNivel = conexion.prepareStatement(query);
+			buscarNivel.setString(1, codcia);
+			buscarNivel.setString(2, codsuc);
+			buscarNivel.setString(3, codtra);
+
+			ResultSet rs = buscarNivel.executeQuery();
+
+			nivelAcademico = new ArrayList<>();
+			Item item = null;
+			while (rs.next()) {
+				item = new Item();
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Local local = new Local();
+				local.setResTipo("ICON");
+				local.setNombre("cast_for_education");
+				local.setExt("xml");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("LOCAL");
+				archivo.setTipo("VECTOR");
+				archivo.setLocal(local);
+				archivo.setRemote(null);
+
+				Color colorResItem = new Color();
+				colorResItem.setTipo("TINT");
+				colorResItem.setUso("DEFAULT");
+				colorResItem.setDefault1(new Default("PRIMARYDARK"));
+
+				ResItem resItem = new ResItem();
+				resItem.setTipo("ICON");
+				resItem.setArchivo(archivo);
+				resItem.setColor(colorResItem);
+
+				Default default1 = new Default();
+				default1.setNombre("PRIMARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(rs.getString("INSTRUCCION"));
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Default default2 = new Default();
+				default2.setNombre("SECONDARYDARK");
+
+				Color colorDefault2 = new Color();
+				colorDefault2.setTipo("TEXT");
+				colorDefault2.setUso("DEFAULT");
+				colorDefault2.setDefault1(default2);
+				colorDefault2.setCustom(null);
+
+				EstiloTexto estiloTextoSegundaLinea = new EstiloTexto();
+				estiloTextoSegundaLinea.setColor(colorDefault2);
+				estiloTextoSegundaLinea.setCustom(null);
+				estiloTextoSegundaLinea.setFuente(null);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto("Institución: " + rs.getString("INSTITUCION"));
+				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				Linea lineaTitulo = new Linea();
+				lineaTitulo.setTexto(new Texto("Grado de Instrucción", estiloTextoPrimeraLinea));
+				lineaTitulo.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(resItem);
+				item.setPrimeraLinea(lineaTitulo);
+				item.setSegundaLinea(primeraLinea);
+				item.setTerceraLinea(segundaLinea);
+
+				nivelAcademico.add(item);
+			}
+
+			rs.close();
+			buscarNivel.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return nivelAcademico;
+	}
+
+	@Override
+	public List<Item> buscarCuentaHaberes(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarCuentaHaberes");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, codcia);
+			buscarEmpleado.setString(2, codsuc);
+			buscarEmpleado.setString(3, codtra);
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			items = new ArrayList<>();
+			Item item = null;
+
+			Map<String, String> datoEmpleado = new LinkedHashMap<>();
+			if (rs.next()) {
+				datoEmpleado.put("Banco", rs.getString("BANCOHAB"));
+				datoEmpleado.put("Nro. Cuenta", rs.getString("EMPNROCTHAB"));
+			}
+
+			for (String key : datoEmpleado.keySet()) {
+				item = new Item();
+
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTE");
+				archivo.setTipo("IMAGEN");
+				archivo.setLocal(null);
+				archivo.setRemote(null);
+
+				// ResItem resItem = new ResItem();
+				// resItem.setTipo("AVATAR40");
+				// resItem.setArchivo(archivo);
+				// resItem.setColor(null);
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(key);
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Default default2 = new Default();
+				default2.setNombre("PRIMARYDARK");
+
+				Color colorDefault2 = new Color();
+				colorDefault2.setTipo("TEXT");
+				colorDefault2.setUso("DEFAULT");
+				colorDefault2.setDefault1(default2);
+				colorDefault2.setCustom(null);
+
+				EstiloTexto estiloTextoSegundaLinea = new EstiloTexto();
+				estiloTextoSegundaLinea.setColor(colorDefault2);
+				estiloTextoSegundaLinea.setCustom(null);
+				estiloTextoSegundaLinea.setFuente(null);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(datoEmpleado.get(key));
+				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(null);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+
+				items.add(item);
+			}
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
+	}
+
+	@Override
+	public List<Item> buscarCuentaCTS(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarCuentaCTS");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, codcia);
+			buscarEmpleado.setString(2, codsuc);
+			buscarEmpleado.setString(3, codtra);
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			items = new ArrayList<>();
+			Item item = null;
+
+			Map<String, String> datoEmpleado = new LinkedHashMap<>();
+			if (rs.next()) {
+				datoEmpleado.put("Banco", rs.getString("BANCOCTS"));
+				datoEmpleado.put("Nro. Cuenta", rs.getString("EMPNROCTCTS"));
+			}
+
+			for (String key : datoEmpleado.keySet()) {
+				item = new Item();
+
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTE");
+				archivo.setTipo("IMAGEN");
+				archivo.setLocal(null);
+				archivo.setRemote(null);
+
+				// ResItem resItem = new ResItem();
+				// resItem.setTipo("AVATAR40");
+				// resItem.setArchivo(archivo);
+				// resItem.setColor(null);
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(key);
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Default default2 = new Default();
+				default2.setNombre("PRIMARYDARK");
+
+				Color colorDefault2 = new Color();
+				colorDefault2.setTipo("TEXT");
+				colorDefault2.setUso("DEFAULT");
+				colorDefault2.setDefault1(default2);
+				colorDefault2.setCustom(null);
+
+				EstiloTexto estiloTextoSegundaLinea = new EstiloTexto();
+				estiloTextoSegundaLinea.setColor(colorDefault2);
+				estiloTextoSegundaLinea.setCustom(null);
+				estiloTextoSegundaLinea.setFuente(null);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(datoEmpleado.get(key));
+				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(null);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+
+				items.add(item);
+			}
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
+	}
+
+	@Override
+	public List<Item> buscarPension(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarFondoPensiones");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, codcia);
+			buscarEmpleado.setString(2, codsuc);
+			buscarEmpleado.setString(3, codtra);
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			items = new ArrayList<>();
+			Item item = null;
+
+			Map<String, String> datoEmpleado = new LinkedHashMap<>();
+			if (rs.next()) {
+				datoEmpleado.put("Tipo", rs.getString("AFP"));
+				datoEmpleado.put("Código", rs.getString("EMPNROAFP"));
+			}
+
+			for (String key : datoEmpleado.keySet()) {
+				item = new Item();
+
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTE");
+				archivo.setTipo("IMAGEN");
+				archivo.setLocal(null);
+				archivo.setRemote(null);
+
+				// ResItem resItem = new ResItem();
+				// resItem.setTipo("AVATAR40");
+				// resItem.setArchivo(archivo);
+				// resItem.setColor(null);
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(key);
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Default default2 = new Default();
+				default2.setNombre("PRIMARYDARK");
+
+				Color colorDefault2 = new Color();
+				colorDefault2.setTipo("TEXT");
+				colorDefault2.setUso("DEFAULT");
+				colorDefault2.setDefault1(default2);
+				colorDefault2.setCustom(null);
+
+				EstiloTexto estiloTextoSegundaLinea = new EstiloTexto();
+				estiloTextoSegundaLinea.setColor(colorDefault2);
+				estiloTextoSegundaLinea.setCustom(null);
+				estiloTextoSegundaLinea.setFuente(null);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(datoEmpleado.get(key));
+				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(null);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+
+				items.add(item);
+			}
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
+	}
+
+	@Override
+	public List<Item> buscarSeguros(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarSeguros");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, codcia);
+			buscarEmpleado.setString(2, codsuc);
+			buscarEmpleado.setString(3, codtra);
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			items = new ArrayList<>();
+			Item item = null;
+
+			Map<String, String> datoEmpleado = new LinkedHashMap<>();
+			if (rs.next()) {
+				datoEmpleado.put("EPS", rs.getString("EPS"));
+				datoEmpleado.put("Seguro Vida", rs.getString("VIDA"));
+				datoEmpleado.put("SCTR", rs.getString("SCTR"));
+				datoEmpleado.put("Vida Ley", rs.getString("VIDA_LEY"));
+			}
+
+			for (String key : datoEmpleado.keySet()) {
+				item = new Item();
+
+				Remote remote = new Remote();
+				remote.setResTipo("");
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTE");
+				archivo.setTipo("IMAGEN");
+				archivo.setLocal(null);
+				archivo.setRemote(null);
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(key);
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Default default2 = new Default();
+				default2.setNombre("PRIMARYDARK");
+
+				Color colorDefault2 = new Color();
+				colorDefault2.setTipo("TEXT");
+				colorDefault2.setUso("DEFAULT");
+				colorDefault2.setDefault1(default2);
+				colorDefault2.setCustom(null);
+
+				EstiloTexto estiloTextoSegundaLinea = new EstiloTexto();
+				estiloTextoSegundaLinea.setColor(colorDefault2);
+				estiloTextoSegundaLinea.setCustom(null);
+				estiloTextoSegundaLinea.setFuente(null);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(datoEmpleado.get(key));
+				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(null);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+
+				items.add(item);
+			}
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
+	}
+
+	@Override
+	public List<Widget> buscarBienesAsignados(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Widget> widgets = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarBienesAsignados");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarBien = conexion.prepareStatement(query);
+			buscarBien.setString(1, codcia);
+			buscarBien.setString(2, codsuc);
+			buscarBien.setString(3, codtra);
+
+			ResultSet rs = buscarBien.executeQuery();
+
+			Map<String, String> datoEmpleado = new LinkedHashMap<>();
+
+			if (rs.next()) {
+				datoEmpleado.put("Fotocheck", rs.getString("EMPFOTOCHCK"));
+				datoEmpleado.put("Minutos Asignados", rs.getString("EMPMINASIGCEL"));
+				datoEmpleado.put("Auto", rs.getString("EMPAUTO"));
+				datoEmpleado.put("Soat", rs.getString("EMPSOAT"));
+				datoEmpleado.put("Laptop", rs.getString("EMPLAPTOP"));
+				datoEmpleado.put("Vale Gasolina", rs.getString("EMPVALESGAS"));
+				datoEmpleado.put("Pension", rs.getString("EMPPENSION"));
+				datoEmpleado.put("Uniforme", rs.getString("EMPUNIFORM"));
+			}
+
+			Widget widget = null;
+			widgets = new ArrayList<>();
+			for (String key : datoEmpleado.keySet()) {
+				String indicador = datoEmpleado.get(key);
+				if (indicador != null) {
+
+					Custom custom = new Custom();
+					custom.setHex(null);
+
+					Default default1 = new Default();
+					default1.setNombre("SECONDARYDARK");
+
+					Color colorTitulo = new Color();
+					colorTitulo.setTipo("TEXT");
+					colorTitulo.setUso("DEFAULT");
+					colorTitulo.setDefault1(default1);
+					colorTitulo.setCustom(custom);
+
+					EstiloTexto estiloTitulo = new EstiloTexto();
+					estiloTitulo.setFuente(null);
+					estiloTitulo.setColor(colorTitulo);
+					estiloTitulo.setCustom(custom);
+
+					Texto titulo = new Texto();
+					titulo.setTexto(key);
+					titulo.setEstilo(estiloTitulo);
+
+					Local local = new Local();
+					local.setResTipo("ICON");
+					local.setNombre("supervisor_account");
+					local.setExt("");
+
+					Archivo archivo = new Archivo();
+					archivo.setAlmaTipo("LOCAL");
+					archivo.setTipo("VECTOR");
+					archivo.setLocal(local);
+					archivo.setRemote(null);
+
+					Color colorResItem = new Color();
+					colorResItem.setTipo("TINT");
+					colorResItem.setUso("DEFAULT");
+					colorResItem.setDefault1(default1);
+					colorResItem.setCustom(custom);
+
+					ResItem resItem = new ResItem();
+					resItem.setTipo("ICON");
+					resItem.setArchivo(archivo);
+					resItem.setColor(colorResItem);
+
+					Texto valor = new Texto();
+					valor.setTexto(indicador);
+					valor.setEstilo(estiloTitulo);
+
+					Texto subtitulo = new Texto();
+					subtitulo.setTexto("");
+					subtitulo.setEstilo(estiloTitulo);
+
+					widget = new Widget();
+					widget.setTitulo(titulo);
+					widget.setResItem(resItem);
+					widget.setValor(valor);
+					widget.setSubtitulo(null);
+					widget.setColor(colorResItem);
+
+					widgets.add(widget);
+				}
+			}
+			if (rs.next()) {
+
+			}
+			rs.close();
+			buscarBien.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return widgets;
+	}
+
+	@Override
+	public List<Item> buscarDependientesXIdEmpleado(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		List<Item> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("listarDependientes");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement buscarEmpleado = conexion.prepareStatement(query);
+			buscarEmpleado.setString(1, codcia);
+			buscarEmpleado.setString(2, codsuc);
+			buscarEmpleado.setString(3, codtra);
+
+			ResultSet rs = buscarEmpleado.executeQuery();
+
+			items = new ArrayList<>();
+			Item item = null;
+
+			if (rs.next()) {
+				item = new Item();
+
+				String foto = rs.getString("DEPFOTO");
+				String url = "http://";
+				if (foto != null) {
+					url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
+				}
+
+				Remote remote = new Remote();
+				remote.setResTipo("AVATAR40");
+				remote.setUrl(url);
+				remote.setNombre(foto);
+				remote.setDimensionRatio(new DimensionRatio("W,40:40", "40", "40"));
+				remote.setExt("JPG");
+
+				Default default1 = new Default();
+				default1.setNombre("SECONDARYDARK");
+
+				Color colorDefault = new Color();
+				colorDefault.setTipo("TEXT");
+				colorDefault.setUso("DEFAULT");
+				colorDefault.setDefault1(default1);
+				colorDefault.setCustom(null);
+
+				Archivo archivo = new Archivo();
+				archivo.setAlmaTipo("REMOTE");
+				archivo.setTipo("IMAGEN");
+				archivo.setRemote(remote);
+
+				ResItem resItem = new ResItem();
+				resItem.setTipo("AVATAR40");
+				resItem.setArchivo(archivo);
+
+				EstiloTexto estiloTextoPrimeraLinea = new EstiloTexto();
+				estiloTextoPrimeraLinea.setColor(colorDefault);
+				estiloTextoPrimeraLinea.setCustom(null);
+				estiloTextoPrimeraLinea.setFuente(null);
+
+				Default default2 = new Default();
+				default2.setNombre("PRIMARYDARK");
+
+				Color colorDefault2 = new Color();
+				colorDefault2.setTipo("TEXT");
+				colorDefault2.setUso("DEFAULT");
+				colorDefault2.setDefault1(default2);
+				colorDefault2.setCustom(null);
+
+				EstiloTexto estiloTextoSegundaLinea = new EstiloTexto();
+				estiloTextoSegundaLinea.setColor(colorDefault2);
+				estiloTextoSegundaLinea.setCustom(null);
+				estiloTextoSegundaLinea.setFuente(null);
+
+				Texto textoPrimeraLinea = new Texto();
+				textoPrimeraLinea.setTexto(rs.getString("NOMBRE"));
+				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
+
+				Texto textoSegundaLinea = new Texto();
+				textoSegundaLinea.setTexto(rs.getString("VINCULO"));
+				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
+
+				Texto textoTercerLinea = new Texto();
+				textoTercerLinea.setTexto(rs.getString("EDAD") + " años");
+				textoTercerLinea.setEstilo(estiloTextoSegundaLinea);
+
+				Linea primeraLinea = new Linea();
+				primeraLinea.setTexto(textoPrimeraLinea);
+				primeraLinea.setAction(null);
+
+				Linea segundaLinea = new Linea();
+				segundaLinea.setTexto(textoSegundaLinea);
+				segundaLinea.setAction(null);
+
+				Linea tercerLinea = new Linea();
+				tercerLinea.setTexto(textoTercerLinea);
+				tercerLinea.setAction(null);
+
+				item.setTipo("SINGLE_LINE_ACTION");
+				item.setResItem(resItem);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+				item.setTerceraLinea(tercerLinea);
+
+				items.add(item);
+			}
+
+			rs.close();
+			buscarEmpleado.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
+	}
+
 }

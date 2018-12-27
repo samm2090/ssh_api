@@ -10,9 +10,22 @@ listarBoletasXIdEmpleado =  SELECT PERCODCIA,PERCODSUC,PERCODPRO,PERCODPER, PERF
 							EMPCODPRO=PCTCODPRO AND                                                                                                           \
 							EMPNROPER=PCTNROPER AND                                                                                                           \
 							PERCODCIA = ? AND PERCODSUC = ?  AND PERCODPRO IN ('01','21') AND EMPCODTRA=? \
-							AND SUBSTR(EMPNROPER,0,4) = ? ORDER BY PERCODPER DESC
+							AND SUBSTR(EMPNROPER,0,4) = ? AND EMPCODPRO = ? ORDER BY PERCODPER DESC
 							
 cantidadNoLeidas = 	SELECT COUNT(*) AS CANTIDAD             \
 					FROM HR_EMPXPROC                       \
 					WHERE EMPCODCIA = ? AND EMPCODSUC = ?  \
 					AND EMPCODTRA = ? AND EMPCODPRO = '01' AND EMPFLGLEIDO = '0'
+					
+listarProcesosXIdEmpleado = SELECT DISTINCT EMPCODPRO,                                                       \
+							(SELECT TTBDESOBJ FROM EB_TTABLE WHERE TTBCODCIA = '038'                         \
+							AND TTBCODSUC = '001' AND TTBCODTAB = '16' AND TTBKEYOBJ = EMPCODPRO) AS PROCESO \
+							FROM HR_EMPXPROC                                                                 \
+							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?
+							
+listarProcesosXIdEmpleado2 = 	SELECT TTBKEYOBJ AS EMPCODPRO, TTBDESOBJ AS PROCESO FROM EB_TTABLE                                    \
+								WHERE TTBCODCIA = ? AND TTBCODSUC = ? AND TTBCODTAB = 16 AND TTBNUMOBJ6 = '1' \
+								AND TTBKEYOBJ IN (SELECT XTIPCODPRO FROM HR_PROCXTIPTRA,HR_EMPLEADO           \
+								WHERE EMPCODTRA = ? AND EMPCODCIA= ttbcodcia                                  \
+								AND EMPCODSUC = ttbcodsuc AND EMPCODCIA = XTIPCODCIA                          \
+								AND EMPCODSUC = XTIPCODSUC AND EMPTIPOEMP=XTIPCODTIP)

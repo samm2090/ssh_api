@@ -79,3 +79,52 @@ buscarDatosEmergencia = SELECT NVL(INITCAP(EMPNOMEMER), 'No existe dato') AS EMP
 						NVL(EMPTELFCE, 'No existe dato') AS EMPTELFCE, NVL(EMPCELCE, 'No existe dato') AS EMPCELCE \
 						FROM HR_EMPLEADO                                                 \
 						WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?
+						
+buscarNivelAcademico = 	SELECT                                                                                                             \
+						NVL((SELECT INITCAP(TTBDESOBJ) FROM EB_TTABLE                                                                                   \
+						WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '11' AND TTBKEYOBJ = EMPINSTRUCCION),'No existe dato') AS INSTRUCCION, \
+						NVL((SELECT DISTINCT INITCAP(DES) FROM EB_TINSTITUCION WHERE COD = EMPINSTITUCION),'No existe dato') AS INSTITUCION,                              \
+						NVL((SELECT DISTINCT INITCAP(DES) FROM EB_TCARRERA WHERE COD = EMPCARRERA),'No existe dato') AS CARRERA,                                          \
+						NVL(EMPANIOEGRESO, 'No existe dato') AS EMPANIOEGRESO                                                              \
+						FROM HR_EMPLEADO WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA= ?
+						
+buscarCuentaHaberes = 	SELECT                                                                                                                                        \
+						NVL((SELECT INITCAP(TTBDESOBJ) FROM EB_TTABLE WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '08' AND TTBKEYOBJ = EMPBANCTHAB),'No existe dato') AS BANCOHAB, \
+						NVL(EMPNROCTHAB,'No existe dato') AS EMPNROCTHAB                                                                                                                                 \
+						FROM HR_EMPLEADO WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA= ?
+						
+buscarCuentaCTS = 	SELECT                                                                                                                                        \
+					NVL((SELECT INITCAP(TTBDESOBJ) FROM EB_TTABLE WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '08' AND TTBKEYOBJ = EMPBANCTCTS),'No existe dato') AS BANCOCTS, \
+					NVL(EMPNROCTCTS,'No existe dato') AS EMPNROCTCTS                                                                                                                                  \
+					FROM HR_EMPLEADO WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA= ?
+					
+buscarFondoPensiones = 	SELECT                                                                                                                                        \
+						NVL((SELECT INITCAP(TTBDESOBJ) FROM EB_TTABLE WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '18' AND TTBKEYOBJ = EMPCODAFP),'No existe dato') AS AFP,        \
+						NVL(EMPNROAFP,'No existe dato') AS EMPNROAFP                                                                                                                                     \
+						FROM HR_EMPLEADO WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA= ?
+						
+buscarSeguros = SELECT (CASE WHEN EMPAFILEPS = 1 THEN 'Si' ELSE 'No' END) AS EPS,       \
+				(CASE WHEN EMPSEGVIDA = 1 THEN 'Si' ELSE 'No' END) AS VIDA,             \
+				(CASE WHEN EMPSCTRPEN = 1 THEN 'Si' ELSE 'No' END) AS SCTR,             \
+				(CASE WHEN EMPMASVIDA = 1 THEN 'Si' ELSE 'No' END) AS VIDA_LEY          \
+				FROM HR_EMPLEADO WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA= ?
+				
+buscarBienesAsignados = SELECT (CASE WHEN EMPFOTOCHCK is not null AND EMPFOTOCHCK <> 0 THEN 'Si' ELSE null END) AS EMPFOTOCHCK, \
+						(CASE WHEN EMPMINASIGCEL is not null AND EMPMINASIGCEL <> 0 THEN 'Si' ELSE null END) AS EMPMINASIGCEL,  \
+						(CASE WHEN EMPAUTO is not null AND EMPAUTO <> 0 THEN 'Si' ELSE null END) AS EMPAUTO,                    \
+						(CASE WHEN EMPSOAT is not null AND EMPSOAT <> 0 THEN 'Si' ELSE null END) AS EMPSOAT,                    \
+						(CASE WHEN EMPLAPTOP is not null AND EMPLAPTOP <> 0 THEN 'Si' ELSE null END) AS EMPLAPTOP,              \
+						(CASE WHEN EMPVALESGAS is not null AND EMPVALESGAS <> 0 THEN 'Si' ELSE null END) AS EMPVALESGAS,        \
+						(CASE WHEN EMPPENSION is not null AND EMPPENSION <> 0 THEN 'Si' ELSE null END) AS EMPPENSION,           \
+						(CASE WHEN EMPUNIFORM is not null AND EMPUNIFORM <> 0 THEN 'Si' ELSE null END) AS EMPUNIFORM            \
+						FROM HR_EMPLEADO                                                                                        \
+						WHERE EMPCODCIA = ? AND EMPCODSUC = ?                                                                   \
+						AND EMPCODTRA= ?
+						
+listarDependientes = SELECT INITCAP(DEPNOMBRE || ' ' || DEPAPATERN || ' ' || DEPAMATERN) AS NOMBRE,              \
+					(SELECT INITCAP(TTBDESOBJ) FROM EB_TTABLE WHERE TTBCODCIA = DEPCODCIA AND                   \
+					TTBCODSUC = DEPCODSUC AND TTBCODTAB = '26' AND TTBKEYOBJ = DEPCODVINC) AS VINCULO, DEPFOTO, \
+					(TRUNC(MONTHS_BETWEEN(SYSDATE,DEPFECNAC)/12)) AS EDAD                              \
+					FROM HR_DEPENDIENTE                                                                \
+					WHERE DEPCODCIA = ? AND DEPCODSUC = ? AND DEPCODTRA = ?
+						
