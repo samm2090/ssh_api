@@ -1307,22 +1307,27 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				estiloTextoSegundaLinea.setFuente(null);
 
 				Texto textoSegundaLinea = new Texto();
-				textoSegundaLinea.setTexto("Institución: " + rs.getString("INSTITUCION"));
+				textoSegundaLinea.setTexto(rs.getString("INSTITUCION"));
 				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
 
 				Linea segundaLinea = new Linea();
 				segundaLinea.setTexto(textoSegundaLinea);
 				segundaLinea.setAction(null);
 
-				Linea lineaTitulo = new Linea();
-				lineaTitulo.setTexto(new Texto("Grado de Instrucción", estiloTextoPrimeraLinea));
-				lineaTitulo.setAction(null);
+				Linea terceraLinea = new Linea();
+				terceraLinea.setTexto(new Texto(rs.getString("CARRERA"), estiloTextoSegundaLinea));
+				terceraLinea.setAction(null);
+
+				Linea cuartaLinea = new Linea();
+				cuartaLinea.setTexto(new Texto(rs.getString("EMPANIOEGRESO"), estiloTextoSegundaLinea));
+				cuartaLinea.setAction(null);
 
 				item.setTipo("SINGLE_LINE_ACTION");
 				item.setResItem(resItem);
-				item.setPrimeraLinea(lineaTitulo);
-				item.setSegundaLinea(primeraLinea);
-				item.setTerceraLinea(segundaLinea);
+				item.setPrimeraLinea(primeraLinea);
+				item.setSegundaLinea(segundaLinea);
+				item.setTerceraLinea(terceraLinea);
+				item.setCuartaLinea(cuartaLinea);
 
 				nivelAcademico.add(item);
 			}
@@ -1938,7 +1943,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			items = new ArrayList<>();
 			Item item = null;
 
-			if (rs.next()) {
+			while (rs.next()) {
 				item = new Item();
 
 				String foto = rs.getString("DEPFOTO");
@@ -1996,11 +2001,17 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				textoPrimeraLinea.setEstilo(estiloTextoPrimeraLinea);
 
 				Texto textoSegundaLinea = new Texto();
-				textoSegundaLinea.setTexto(rs.getString("VINCULO"));
+				textoSegundaLinea.setTexto("FE - " + rs.getString("DEPFECNAC"));
 				textoSegundaLinea.setEstilo(estiloTextoSegundaLinea);
 
+				String edad = rs.getString("EDAD");
+
 				Texto textoTercerLinea = new Texto();
-				textoTercerLinea.setTexto(rs.getString("EDAD") + " años");
+				if (!("0").equals(edad)) {
+					textoTercerLinea.setTexto(edad + " años");
+				}else{
+					textoTercerLinea.setTexto("No contiene dato");
+				}
 				textoTercerLinea.setEstilo(estiloTextoSegundaLinea);
 
 				Linea primeraLinea = new Linea();
@@ -2015,11 +2026,14 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				tercerLinea.setTexto(textoTercerLinea);
 				tercerLinea.setAction(null);
 
+				Linea cuartaLinea = new Linea(new Texto(rs.getString("VINCULO"), estiloTextoSegundaLinea));
+
 				item.setTipo("SINGLE_LINE_ACTION");
 				item.setResItem(resItem);
 				item.setPrimeraLinea(primeraLinea);
 				item.setSegundaLinea(segundaLinea);
 				item.setTerceraLinea(tercerLinea);
+				item.setCuartaLinea(cuartaLinea);
 
 				items.add(item);
 			}

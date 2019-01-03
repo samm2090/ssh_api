@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +141,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 		List<BoletaEmpleado> boletas = null;
 		Connection conexion = null;
 
-		String query = lector.leerPropiedad("queries/boleta.query").getProperty("listarBoletasXIdEmpleado");
+		String query = lector.leerPropiedad("queries/boleta.query").getProperty("listarBoletasXIdEmpleado2");
 
 		try {
 			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
@@ -151,7 +150,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 			listarBoletas.setString(1, codcia);
 			listarBoletas.setString(2, codsuc);
 			listarBoletas.setString(3, codtra);
-			listarBoletas.setString(4, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+			listarBoletas.setString(4, "2018");
 			listarBoletas.setString(5, idProceso);
 
 			ResultSet rs = listarBoletas.executeQuery();

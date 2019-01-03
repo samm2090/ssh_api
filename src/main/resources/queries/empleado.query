@@ -80,12 +80,11 @@ buscarDatosEmergencia = SELECT NVL(INITCAP(EMPNOMEMER), 'No existe dato') AS EMP
 						FROM HR_EMPLEADO                                                 \
 						WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?
 						
-buscarNivelAcademico = 	SELECT                                                                                                             \
-						NVL((SELECT INITCAP(TTBDESOBJ) FROM EB_TTABLE                                                                                   \
+buscarNivelAcademico = 	SELECT NVL((SELECT INITCAP(TTBDESOBJ) FROM EB_TTABLE                                                                                         \
 						WHERE TTBCODCIA = EMPCODCIA AND TTBCODSUC = EMPCODSUC AND TTBCODTAB = '11' AND TTBKEYOBJ = EMPINSTRUCCION),'No existe dato') AS INSTRUCCION, \
-						NVL((SELECT DISTINCT INITCAP(DES) FROM EB_TINSTITUCION WHERE COD = EMPINSTITUCION),'No existe dato') AS INSTITUCION,                              \
-						NVL((SELECT DISTINCT INITCAP(DES) FROM EB_TCARRERA WHERE COD = EMPCARRERA),'No existe dato') AS CARRERA,                                          \
-						NVL(EMPANIOEGRESO, 'No existe dato') AS EMPANIOEGRESO                                                              \
+						NVL((SELECT DISTINCT INITCAP(DES) FROM EB_TINSTITUCION WHERE COD = EMPINSTITUCION),'No existe dato') AS INSTITUCION,                         \
+						NVL((SELECT DISTINCT INITCAP(DES) FROM EB_TCARRERA WHERE COD = EMPCARRERA AND CODINS = EMPINSTITUCION),'No existe dato') AS CARRERA,         \
+						NVL(EMPANIOEGRESO, 'No existe dato') AS EMPANIOEGRESO                                                                                        \
 						FROM HR_EMPLEADO WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA= ?
 						
 buscarCuentaHaberes = 	SELECT                                                                                                                                        \
@@ -121,10 +120,10 @@ buscarBienesAsignados = SELECT (CASE WHEN EMPFOTOCHCK is not null AND EMPFOTOCHC
 						WHERE EMPCODCIA = ? AND EMPCODSUC = ?                                                                   \
 						AND EMPCODTRA= ?
 						
-listarDependientes = SELECT INITCAP(DEPNOMBRE || ' ' || DEPAPATERN || ' ' || DEPAMATERN) AS NOMBRE,              \
-					(SELECT INITCAP(TTBDESOBJ) FROM EB_TTABLE WHERE TTBCODCIA = DEPCODCIA AND                   \
-					TTBCODSUC = DEPCODSUC AND TTBCODTAB = '26' AND TTBKEYOBJ = DEPCODVINC) AS VINCULO, DEPFOTO, \
-					(TRUNC(MONTHS_BETWEEN(SYSDATE,DEPFECNAC)/12)) AS EDAD                              \
-					FROM HR_DEPENDIENTE                                                                \
-					WHERE DEPCODCIA = ? AND DEPCODSUC = ? AND DEPCODTRA = ?
-						
+listarDependientes = 	SELECT NVL(INITCAP(DEPNOMBRE || ' ' || DEPAPATERN || ' ' || DEPAMATERN),' ') AS NOMBRE,          \
+						NVL(TO_CHAR(DEPFECNAC, 'dd/mm/yyyy'),' ') AS DEPFECNAC,                                          \
+						NVL((SELECT INITCAP(TTBDESOBJ) FROM EB_TTABLE WHERE TTBCODCIA = DEPCODCIA AND                   \
+						TTBCODSUC = DEPCODSUC AND TTBCODTAB = '26' AND TTBKEYOBJ = DEPCODVINC),' ') AS VINCULO, DEPFOTO, \
+						NVL((TRUNC(MONTHS_BETWEEN(SYSDATE,DEPFECNAC)/12)),'0') AS EDAD                                   \
+						FROM HR_DEPENDIENTE                                                                             \
+						WHERE DEPCODCIA = ? AND DEPCODSUC = ? AND DEPCODTRA = ?

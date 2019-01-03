@@ -10,6 +10,15 @@ listarBoletasXIdEmpleado =  SELECT PERCODCIA,PERCODSUC,PERCODPRO,PERCODPER, PERF
 							EMPCODPRO=PCTCODPRO AND                                                                                                           \
 							EMPNROPER=PCTNROPER AND                                                                                                           \
 							PERCODCIA = ? AND PERCODSUC = ?  AND PERCODPRO IN ('01','21') AND EMPCODTRA=? \
+							AND SUBSTR(EMPNROPER,0,4) = ? ORDER BY PERCODPER DESC
+							
+listarBoletasXIdEmpleado2 = SELECT PERCODCIA,PERCODSUC,PERCODPRO,PERCODPER, PERFECINI,PERFECFIN FROM HR_PERIODO ,                                             \
+							HR_PROCTL , HR_EMPXPROC  WHERE PCTCODCIA=PERCODCIA AND PCTCODPRO=PERCODPRO AND PCTNROPER=PERCODPER AND \
+							EMPCODCIA=PCTCODCIA AND                                                                                                           \
+							EMPCODSUC=PCTCODSUC AND                                                                                                           \
+							EMPCODPRO=PCTCODPRO AND                                                                                                           \
+							EMPNROPER=PCTNROPER AND                                                                                                           \
+							PERCODCIA = ? AND PERCODSUC = ? AND EMPCODTRA=? \
 							AND SUBSTR(EMPNROPER,0,4) = ? AND EMPCODPRO = ? ORDER BY PERCODPER DESC
 							
 cantidadNoLeidas = 	SELECT COUNT(*) AS CANTIDAD             \
