@@ -300,7 +300,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 		List<Proceso> procesos = null;
 		Connection conexion = null;
 
-		String query = lector.leerPropiedad("queries/boleta.query").getProperty("listarProcesosXIdEmpleado2");
+		String query = lector.leerPropiedad("queries/boleta.query").getProperty("listarProcesosXIdEmpleado");
 
 		try {
 			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);

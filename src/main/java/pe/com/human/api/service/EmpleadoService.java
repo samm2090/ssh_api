@@ -20,6 +20,7 @@ import pe.com.human.api.dao.VacacionesDAO;
 import pe.com.human.api.exception.ExcepcionAutenticacion;
 import pe.com.human.api.exception.ExcepcionCompaniaAssets;
 import pe.com.human.api.exception.ExcepcionNoExisteUsuario;
+import pe.com.human.api.model.Aprobador;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Default;
@@ -29,6 +30,7 @@ import pe.com.human.api.model.Estilo;
 import pe.com.human.api.model.EstiloTexto;
 import pe.com.human.api.model.Item;
 import pe.com.human.api.model.Texto;
+import pe.com.human.api.model.Vacaciones;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -727,6 +729,29 @@ public class EmpleadoService {
 
 		data.put("titulo", titulo);
 		data.put("items", items);
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> vacacionesDisponibles(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Vacaciones vacaciones = empleadoDAO.resumenVacaciones(codcia, codsuc, codtra, configuracionDataSource);
+		Aprobador aprobador = empleadoDAO.buscarAprobador(codcia, codsuc, codtra, configuracionDataSource);
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("vacaciones", vacaciones);
+		data.put("aprobador", aprobador);
+
 		respuesta.put("data", data);
 		return respuesta;
 	}

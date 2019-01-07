@@ -313,4 +313,14 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "vacaciones/disponibles", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> vacacionesDisponibles(@RequestBody EmpleadoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.vacacionesDisponibles(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
 }

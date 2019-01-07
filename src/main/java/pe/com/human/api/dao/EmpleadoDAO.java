@@ -2,9 +2,11 @@ package pe.com.human.api.dao;
 
 import java.util.List;
 
+import pe.com.human.api.model.Aprobador;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.Item;
+import pe.com.human.api.model.Vacaciones;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -62,6 +64,12 @@ public interface EmpleadoDAO {
 			ConfiguracionDataSource configuracionDataSource);
 
 	public List<Item> buscarDependientesXIdEmpleado(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource);
+
+	public Vacaciones resumenVacaciones(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource);
+
+	public Aprobador buscarAprobador(String codcia, String codsuc, String codtra,
 			ConfiguracionDataSource configuracionDataSource);
 
 }

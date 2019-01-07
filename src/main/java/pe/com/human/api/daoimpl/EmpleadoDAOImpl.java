@@ -20,6 +20,7 @@ import pe.com.human.api.constants.ApiConstantes;
 import pe.com.human.api.dao.EmpleadoDAO;
 import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.model.Action;
+import pe.com.human.api.model.Aprobador;
 import pe.com.human.api.model.Archivo;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Custom;
@@ -41,6 +42,7 @@ import pe.com.human.api.model.Phone;
 import pe.com.human.api.model.Remote;
 import pe.com.human.api.model.ResItem;
 import pe.com.human.api.model.Texto;
+import pe.com.human.api.model.Vacaciones;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConexionBaseDatos;
@@ -2009,7 +2011,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				Texto textoTercerLinea = new Texto();
 				if (!("0").equals(edad)) {
 					textoTercerLinea.setTexto(edad + " años");
-				}else{
+				} else {
 					textoTercerLinea.setTexto("No contiene dato");
 				}
 				textoTercerLinea.setEstilo(estiloTextoSegundaLinea);
@@ -2054,6 +2056,134 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			}
 		}
 		return items;
+	}
+
+	@Override
+	public Vacaciones resumenVacaciones(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+		Vacaciones vacaciones = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("resumenVacaciones");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement resumen = conexion.prepareStatement(query);
+			resumen.setString(1, codcia);
+			resumen.setString(2, codsuc);
+			resumen.setString(3, codtra);
+			resumen.setString(4, codcia);
+			resumen.setString(5, codsuc);
+			resumen.setString(6, codtra);
+			resumen.setString(7, codcia);
+			resumen.setString(8, codsuc);
+			resumen.setString(9, codtra);
+
+			ResultSet rs = resumen.executeQuery();
+
+			if (rs.next()) {
+				vacaciones = new Vacaciones();
+
+				int total = rs.getInt("TOTAL");
+				int solicitadas = rs.getInt("SOLICITADAS");
+
+				vacaciones.setTotal(total);
+				vacaciones.setSolicitadas(solicitadas);
+				vacaciones.setDisponibles(total - solicitadas);
+			}
+
+			rs.close();
+			resumen.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return vacaciones;
+	}
+
+	@Override
+	public Aprobador buscarAprobador(String codcia, String codsuc, String codtra,
+			ConfiguracionDataSource configuracionDataSource) {
+
+		Aprobador aprobador = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarAprobador");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement resumen = conexion.prepareStatement(query);
+			resumen.setString(1, codcia);
+			resumen.setString(2, codsuc);
+			resumen.setString(3, codcia);
+			resumen.setString(4, codsuc);
+			resumen.setString(5, codtra);
+
+			ResultSet rs = resumen.executeQuery();
+
+			if (rs.next()) {
+				aprobador = new Aprobador();
+
+				String foto = rs.getString("EMPFOTO");
+				String url = "http://";
+				if (foto != null) {
+					url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + "/FOTO_EMPLEADO/" + foto;
+				}
+
+				Remote remote = new Remote();
+				remote.setResTipo("AVATAR40");
+				remote.setUrl(url);
+				remote.setNombre(foto);
+				remote.setExt("JPG");
+
+				Archivo archivo = new Archivo();
+				archivo.setTipo("IMAGEN");
+				archivo.setAlmaTipo("REMOTE");
+				archivo.setRemote(remote);
+
+				ResItem resItem = new ResItem();
+				resItem.setArchivo(archivo);
+				resItem.setTipo("AVATAR40");
+
+				Color color = new Color();
+				color.setTipo("TEXT");
+				color.setUso("DEFAULT");
+				color.setDefault1(new Default("PRIMARYDARK"));
+
+				EstiloTexto estilo = new EstiloTexto();
+				estilo.setColor(color);
+
+				aprobador.setResItem(resItem);
+				aprobador.setTexto(new Texto(rs.getString("NOMBRE"), estilo));
+			}
+
+			rs.close();
+			resumen.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return aprobador;
 	}
 
 }
