@@ -7,6 +7,7 @@ import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.Item;
 import pe.com.human.api.model.Vacaciones;
+import pe.com.human.api.model.VacacionesSolicitadas;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -71,5 +72,11 @@ public interface EmpleadoDAO {
 
 	public Aprobador buscarAprobador(String codcia, String codsuc, String codtra,
 			ConfiguracionDataSource configuracionDataSource);
+
+	public VacacionesSolicitadas listarSolicitudVacaciones(String codcia, String codsuc, String codtra, String[] flgEst,
+			int rownum, ConfiguracionDataSource configuracionDataSource);
+	
+	public VacacionesSolicitadas listarSolicitudVacacionesSimple(String codcia, String codsuc, String codtra, String[] flgEst,
+			int rownum, ConfiguracionDataSource configuracionDataSource);
 
 }

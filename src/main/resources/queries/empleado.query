@@ -167,3 +167,14 @@ buscarAprobador = 	SELECT EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN AS
 					EMPCODTRA = (SELECT EMPCODTRAJEF                                      \
 					FROM HR_EMPLEADO WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND            \
 					EMPCODTRA = ?)
+
+listarSolicitudVacaciones = 	SELECT VACFECINI, VACDIASPRO, VACFECFIN,             \
+								CASE WHEN VACFLGEST = '1' THEN 'SOLICITUD PENDIENTE' \
+								WHEN VACFLGEST = '4' THEN 'SOLICITUD APROBADA'       \
+								ELSE 'SOLICITUD RECHAZADA' END AS ESTADO, VACFLGEST  \
+								FROM HR_CTLVAC                                       \
+								WHERE VACCODCIA = ? AND                              \
+								VACCODSUC = ?                                        \
+								AND VACCODTRA = ?                                    \
+								AND ROWNUM <= ?                                   \
+								ORDER BY VACNROCTL DESC

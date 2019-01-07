@@ -238,9 +238,9 @@ public class EmpleadoController {
 		int baseDatos = Integer.parseInt(base.get("baseDatos").toString());
 		String idEmpleado = empleado.get("id").toString();
 
-		ResponseEntity<Map<String, Object>> respuesta =  new ResponseEntity<Map<String, Object>>(
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.contactoEmergencia(idCompania, idSucursal, idEmpleado, baseDatos), HttpStatus.OK);
-		
+
 		return respuesta;
 	}
 
@@ -253,7 +253,7 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "personal/bancaria/haberes", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> bancariaHaberes(@RequestBody EmpleadoRequest empleado) {
@@ -263,7 +263,7 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "personal/bancaria/cts", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> bancariaCTS(@RequestBody EmpleadoRequest empleado) {
@@ -273,7 +273,7 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "personal/bancaria/pension", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> bancariaPension(@RequestBody EmpleadoRequest empleado) {
@@ -283,7 +283,7 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "personal/seguros", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> seguros(@RequestBody EmpleadoRequest empleado) {
@@ -293,7 +293,7 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "laboral/bienesAsignados", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> bienesAsignados(@RequestBody EmpleadoRequest empleado) {
@@ -303,7 +303,7 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "personal/dependientes", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> dependientes(@RequestBody EmpleadoRequest empleado) {
@@ -313,13 +313,43 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "vacaciones/disponibles", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> vacacionesDisponibles(@RequestBody EmpleadoRequest empleado) {
 
 		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.vacacionesDisponibles(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
+
+	@CrossOrigin
+	@RequestMapping(value = "vacaciones/solicitudes/recientes", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> vacacionesSolicitudesRecientes(@RequestBody EmpleadoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.vacacionesSolicitudesRecientes(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
+
+	@CrossOrigin
+	@RequestMapping(value = "vacaciones/solicitudes/historial", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> vacacionesSolicitudesHistorial(@RequestBody EmpleadoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.vacacionesSolicitudesHistorial(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
+
+	@CrossOrigin
+	@RequestMapping(value = "vacaciones/solicitudes/gozar", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> vacacionesSolicitudesGozar(@RequestBody EmpleadoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.vacacionesSolicitudesGozar(empleado), HttpStatus.OK);
 
 		return respuesta;
 	}

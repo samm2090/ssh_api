@@ -31,6 +31,7 @@ import pe.com.human.api.model.EstiloTexto;
 import pe.com.human.api.model.Item;
 import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Vacaciones;
+import pe.com.human.api.model.VacacionesSolicitadas;
 import pe.com.human.api.model.Widget;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -751,6 +752,91 @@ public class EmpleadoService {
 		Map<String, Object> data = new HashMap<>();
 		data.put("vacaciones", vacaciones);
 		data.put("aprobador", aprobador);
+
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> vacacionesSolicitudesRecientes(EmpleadoRequest empleado) {
+
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		String[] flgEst = { "1", "4", "5" };
+		int rownum = 3;
+
+		Map<String, Object> vacaciones = new HashMap<>();
+		VacacionesSolicitadas solicitidas = empleadoDAO.listarSolicitudVacaciones(codcia, codsuc, codtra, flgEst,
+				rownum, configuracionDataSource);
+
+		vacaciones.put("porGozar", solicitidas);
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("vacaciones", vacaciones);
+
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> vacacionesSolicitudesHistorial(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		String[] flgEst = { "4", "5" };
+		int rownum = 100;
+
+		Map<String, Object> vacaciones = new HashMap<>();
+		VacacionesSolicitadas historial = empleadoDAO.listarSolicitudVacacionesSimple(codcia, codsuc, codtra, flgEst,
+				rownum, configuracionDataSource);
+
+		vacaciones.put("historial", historial);
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("vacaciones", vacaciones);
+
+		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> vacacionesSolicitudesGozar(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		requestValidator.validarEmpleadoRequest(empleado);
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		String[] flgEst = { "1" };
+		int rownum = 100;
+
+		Map<String, Object> vacaciones = new HashMap<>();
+		VacacionesSolicitadas porGozar = empleadoDAO.listarSolicitudVacacionesSimple(codcia, codsuc, codtra, flgEst,
+				rownum, configuracionDataSource);
+
+		vacaciones.put("porGozar", porGozar);
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("vacaciones", vacaciones);
 
 		respuesta.put("data", data);
 		return respuesta;

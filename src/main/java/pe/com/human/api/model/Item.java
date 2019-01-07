@@ -17,6 +17,15 @@ public class Item {
 	private Linea cuartaLinea;
 	private List<Action> action;
 	private Extra extra;
+	private Alerta alerta;
+
+	public Alerta getAlerta() {
+		return alerta;
+	}
+
+	public void setAlerta(Alerta alerta) {
+		this.alerta = alerta;
+	}
 
 	public Extra getExtra() {
 		return extra;
