@@ -364,4 +364,44 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "prestamos/balance", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> prestamosBalance(@RequestBody EmpleadoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.prestamosBalance(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "prestamos/pagos", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> prestamosPagos(@RequestBody EmpleadoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.prestamosPagos(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "prestamos/actuales", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> prestamosActuales(@RequestBody EmpleadoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.prestamosActuales(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "prestamos/pagados", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> prestamosPagados(@RequestBody EmpleadoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.prestamosPagados(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
 }

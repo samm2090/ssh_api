@@ -1,1 +1,30 @@
 cantidadCuotasPendientes = select 1 from dual where 1=0
+
+deudaTotal =	SELECT (SUM(NVL(CTLPMONTOP,0)) - SUM (NVL(CTLPAGADO,0))) AS BALANCE  \
+				FROM HR_CTLPREC                                                      \
+				WHERE CTLPCODCIA= ? and CTLPCODSUC = ? and CTLPCODTRA = ?
+				
+deudaPorMes = 	SELECT SUM(CTLPCUOTA) AS CUOTA,                                         \
+				MAX(TO_CHAR(CTLFECVIG, 'Month', 'NLS_DATE_LANGUAGE = SPANISH')) AS MES, \
+				MAX(TO_CHAR(CTLFECVIG, 'YYYY')) AS ANO                                  \
+				FROM HR_CTLPRED                                                         \
+				WHERE                                                                   \
+				CTLCODCIA= ? AND CTLCODSUC = ?                                          \
+				AND CTLCODTRA = ? AND CTLFLGEST = '0'                                   \
+				GROUP BY TO_CHAR(CTLFECVIG, 'YYYY-MM')
+				
+listarCuotas = 	SELECT TO_CHAR(D.CTLFECPRE, 'DD/MM/YYYY') AS CTLFECPRE,                    \
+				TO_CHAR(D.CTLFECVIG, 'DD/MM/YYYY') AS CTLFECVIG,                           \
+				(CASE WHEN D.CTLCODMON = 'S/.' THEN 'SOLES' ELSE 'DOLARES' END) AS MONEDA, \
+				D.CTLPCUOTA, D.CTLNUMCUO,                                                  \
+				C.CTLPMONTOP,                                                              \
+				DECODE(C.CTLDIASFR,30,'Mensual',15,'Quincenal','7','Semanal') as CTLDIASFR, \
+				(SELECT TIPDESPRE FROM HR_TIPPRE                                           \
+				WHERE TIPCODCIA = D.CTLCODCIA AND TIPCODSUC = D.CTLCODSUC                  \
+				AND TIPCODPRE = C.CTLPTIPPRE) AS TIPO                                      \
+				FROM HR_CTLPRED D INNER JOIN HR_CTLPREC C                                  \
+				ON C.CTLPCODPRE = D.CTLCODPRE AND C.CTLPCODCIA = D.CTLCODCIA               \
+				AND C.CTLPCODSUC = D.CTLCODSUC                                             \
+				WHERE D.CTLCODCIA= ? AND D.CTLCODSUC = ?                                   \
+				AND D.CTLCODTRA = ? AND D.CTLFLGEST = ?                                    \
+				ORDER BY D.CTLFECVIG ASC

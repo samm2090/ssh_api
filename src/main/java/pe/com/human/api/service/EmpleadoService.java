@@ -24,16 +24,17 @@ import pe.com.human.api.model.Aprobador;
 import pe.com.human.api.model.Color;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Default;
+import pe.com.human.api.model.DeudaMes;
 import pe.com.human.api.model.Empleado;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.Estilo;
 import pe.com.human.api.model.EstiloTexto;
 import pe.com.human.api.model.Item;
+import pe.com.human.api.model.Prestamo;
 import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Vacaciones;
 import pe.com.human.api.model.VacacionesSolicitadas;
 import pe.com.human.api.model.Widget;
-import pe.com.human.api.model.apirequest.EmpleadoProcesoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoVacSolRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -748,7 +749,7 @@ public class EmpleadoService {
 
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
-		Vacaciones vacaciones = empleadoDAO.resumenVacaciones(codcia, codsuc, codtra, configuracionDataSource);
+		Vacaciones vacaciones = vacacionesDAO.resumenVacaciones(codcia, codsuc, codtra, configuracionDataSource);
 		Aprobador aprobador = empleadoDAO.buscarAprobador(codcia, codsuc, codtra, configuracionDataSource);
 
 		Map<String, Object> data = new HashMap<>();
@@ -776,10 +777,10 @@ public class EmpleadoService {
 		int rownum = 3;
 
 		Map<String, Object> vacaciones = new HashMap<>();
-		VacacionesSolicitadas solicitidas = empleadoDAO.listarSolicitudVacaciones(codcia, codsuc, codtra, flgEst,
+		VacacionesSolicitadas solicitidas = vacacionesDAO.listarSolicitudVacaciones(codcia, codsuc, codtra, flgEst,
 				rownum, configuracionDataSource);
 
-		vacaciones.put("porGozar", solicitidas);
+		vacaciones.put("solicitadas", solicitidas);
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("vacaciones", vacaciones);
@@ -804,7 +805,7 @@ public class EmpleadoService {
 		int rownum = 100;
 
 		Map<String, Object> vacaciones = new HashMap<>();
-		VacacionesSolicitadas historial = empleadoDAO.listarSolicitudVacacionesSimple(codcia, codsuc, codtra, flgEst,
+		VacacionesSolicitadas historial = vacacionesDAO.listarSolicitudVacacionesSimple(codcia, codsuc, codtra, flgEst,
 				rownum, configuracionDataSource);
 
 		vacaciones.put("historial", historial);
@@ -832,7 +833,7 @@ public class EmpleadoService {
 		int rownum = 100;
 
 		Map<String, Object> vacaciones = new HashMap<>();
-		VacacionesSolicitadas porGozar = empleadoDAO.listarSolicitudVacacionesSimple(codcia, codsuc, codtra, flgEst,
+		VacacionesSolicitadas porGozar = vacacionesDAO.listarSolicitudVacacionesSimple(codcia, codsuc, codtra, flgEst,
 				rownum, configuracionDataSource);
 
 		vacaciones.put("porGozar", porGozar);
@@ -851,13 +852,112 @@ public class EmpleadoService {
 		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
 		String codtra = empleado.getEmpleado().getId();
 		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
-		
+
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("mensaje", "Se envió solicitud de vacaciones con éxito");
 		respuesta.put("data", data);
+
+		return respuesta;
+	}
+
+	public Map<String, Object> prestamosBalance(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Map<String, Object> balance = new HashMap<>();
+		Map<String, Object> deudaTotal = prestamoDAO.deudaTotal(codcia, codsuc, codtra, configuracionDataSource);
+
+		balance.put("deudaTotal", deudaTotal);
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("balance", balance);
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
+
+	public Map<String, Object> prestamosPagos(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Map<String, Object> proximos = new HashMap<>();
+		List<DeudaMes> items = prestamoDAO.deudaPorMes(codcia, codsuc, codtra, configuracionDataSource);
+
+		proximos.put("items", items);
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("pagos", proximos);
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
+
+	public Map<String, Object> prestamosActuales(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		String estado = "0";
+
+		Map<String, Object> vigentes = new HashMap<>();
+		List<Prestamo> items = prestamoDAO.listarCuotas(codcia, codsuc, codtra, estado, configuracionDataSource);
+
+		vigentes.put("items", items);
+
+		Map<String, Object> data = new HashMap<>();
 		
+		Map<String, Object> prestamos = new HashMap<>();
+		prestamos.put("vigentes", vigentes);
+		
+		data.put("prestamos", prestamos);
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
+
+	public Map<String, Object> prestamosPagados(EmpleadoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		String estado = "1";
+		Map<String, Object> pagados = new HashMap<>();
+		List<Prestamo> items = prestamoDAO.listarCuotas(codcia, codsuc, codtra, estado, configuracionDataSource);
+
+		pagados.put("items", items);
+
+		
+		Map<String, Object> data = new HashMap<>();
+		Map<String, Object> prestamos = new HashMap<>();
+		prestamos.put("pagados", pagados);
+		
+		data.put("prestamos", prestamos);
+		respuesta.put("data", data);
+
 		return respuesta;
 	}
 

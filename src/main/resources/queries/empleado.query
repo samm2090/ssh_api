@@ -128,38 +128,6 @@ listarDependientes = 	SELECT NVL(INITCAP(DEPNOMBRE || ' ' || DEPAPATERN || ' ' |
 						FROM HR_DEPENDIENTE                                                                             \
 						WHERE DEPCODCIA = ? AND DEPCODSUC = ? AND DEPCODTRA = ?
 						
-resumenVacaciones = SELECT                                                                                                      \
-					NVL((SELECT                                                                                                 \
-					TRUNC(TRUNC(MONTHS_BETWEEN(SYSDATE, EMPFECING)) * 2.5)                                                      \
-					+ 1                                                                                                         \
-					FROM HR_EMPLEADO                                                                                            \
-					WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?)                                        \
-					-                                                                                                           \
-					(SELECT                                                                                                     \
-					 TRUNC(                                                                                                     \
-					SUM(CASE WHEN VACFECFIN < SYSDATE THEN VACDIASPRO ELSE 0 END)                                               \
-					+                                                                                                           \
-					SUM(CASE WHEN SYSDATE BETWEEN VACFECINI AND VACFECFIN THEN VACDIASPRO-(VACFECFIN - SYSDATE + 1) ELSE 0 END) \
-					)                                                                                                           \
-					FROM HR_CTLVAC                                                                                              \
-					WHERE VACCODCIA = ?                                                                                     \
-					AND VACCODSUC = ?                                                                                       \
-					AND VACCODTRA = ?                                                                                     \
-					AND VACFLGEST = '4'                                                                                         \
-					),0) AS TOTAL,                                                                                       \
-					NVL((SELECT                                                                                                 \
-					SUM(CASE WHEN SYSDATE BETWEEN VACFECINI AND VACFECFIN THEN VACFECFIN - SYSDATE + 1 ELSE 0 END)              \
-					+                                                                                                           \
-					SUM(CASE WHEN VACFECINI > SYSDATE THEN VACFECFIN - VACFECINI + 1 ELSE 0 END)                                \
-					AS DIAS_PROGRAMADOS                                                                                         \
-					FROM HR_CTLVAC                                                                                              \
-					WHERE                                                                                                       \
-					VACCODCIA = ?                                                                                        \
-					AND VACCODSUC = ?                                                                                       \
-					AND VACCODTRA = ?                                                                                        \
-					AND VACFLGEST = '4'),0) AS SOLICITADAS                                                                      \
-					FROM DUAL
-
 buscarAprobador = 	SELECT EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN AS NOMBRE, \
 					EMPFOTO                                                               \
 					FROM HR_EMPLEADO                                                      \
@@ -167,14 +135,3 @@ buscarAprobador = 	SELECT EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN AS
 					EMPCODTRA = (SELECT EMPCODTRAJEF                                      \
 					FROM HR_EMPLEADO WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND            \
 					EMPCODTRA = ?)
-
-listarSolicitudVacaciones = 	SELECT VACFECINI, VACDIASPRO, VACFECFIN,             \
-								CASE WHEN VACFLGEST = '1' THEN 'SOLICITUD PENDIENTE' \
-								WHEN VACFLGEST = '4' THEN 'SOLICITUD APROBADA'       \
-								ELSE 'SOLICITUD RECHAZADA' END AS ESTADO, VACFLGEST  \
-								FROM HR_CTLVAC                                       \
-								WHERE VACCODCIA = ? AND                              \
-								VACCODSUC = ?                                        \
-								AND VACCODTRA = ?                                    \
-								AND ROWNUM <= ?                                   \
-								ORDER BY VACNROCTL DESC
