@@ -15,6 +15,7 @@ import pe.com.human.api.model.Default;
 import pe.com.human.api.model.EstiloTexto;
 import pe.com.human.api.model.Proceso;
 import pe.com.human.api.model.Texto;
+import pe.com.human.api.model.apirequest.EmpleadoVacSolRequest;
 import pe.com.human.api.model.apirequest.EmpleadoProcesoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;

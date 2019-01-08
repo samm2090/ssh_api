@@ -33,7 +33,9 @@ import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Vacaciones;
 import pe.com.human.api.model.VacacionesSolicitadas;
 import pe.com.human.api.model.Widget;
+import pe.com.human.api.model.apirequest.EmpleadoProcesoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
+import pe.com.human.api.model.apirequest.EmpleadoVacSolRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
 import pe.com.human.api.util.RequestValidator;
 
@@ -839,6 +841,23 @@ public class EmpleadoService {
 		data.put("vacaciones", vacaciones);
 
 		respuesta.put("data", data);
+		return respuesta;
+	}
+
+	public Map<String, Object> vacacionesSolicitudesEnviar(EmpleadoVacSolRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String codtra = empleado.getEmpleado().getId();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+		
+		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("mensaje", "Se envió solicitud de vacaciones con éxito");
+		respuesta.put("data", data);
+		
 		return respuesta;
 	}
 

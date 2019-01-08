@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.human.api.exception.ExcepcionContrasenaVacia;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
+import pe.com.human.api.model.apirequest.EmpleadoVacSolRequest;
 import pe.com.human.api.service.EmpleadoService;
 
 /**
@@ -350,6 +351,16 @@ public class EmpleadoController {
 
 		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.vacacionesSolicitudesGozar(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "vacaciones/solicitudes/enviar", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> vacacionesSolicitudesEnviar(@RequestBody EmpleadoVacSolRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.vacacionesSolicitudesEnviar(empleado), HttpStatus.OK);
 
 		return respuesta;
 	}
