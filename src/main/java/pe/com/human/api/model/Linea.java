@@ -3,6 +3,7 @@ package pe.com.human.api.model;
 public class Linea {
 
 	private Texto texto;
+	private Textos textos;
 	private Action action;
 
 	public Linea() {
@@ -10,6 +11,18 @@ public class Linea {
 
 	public Linea(Texto texto) {
 		this.texto = texto;
+	}
+
+	public Linea(Textos textos) {
+		this.textos = textos;
+	}
+
+	public Textos getTextos() {
+		return textos;
+	}
+
+	public void setTextos(Textos textos) {
+		this.textos = textos;
 	}
 
 	public Texto getTexto() {

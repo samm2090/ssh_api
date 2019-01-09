@@ -248,15 +248,15 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 				if (("1").equals(flag)) {
 					alerta.setTipo("PENDING");
 					colorAlerta.setDefault1(new Default("PRIMARYDARK"));
-					archivo.setLocal(new Local("ICON", "time", "xml"));
+					archivo.setLocal(new Local("ICON", "access_time", "xml"));
 				} else if (("4").equals(flag)) {
 					alerta.setTipo("APPROVED");
 					colorAlerta.setDefault1(new Default("SECONDARYDARK"));
-					archivo.setLocal(new Local("ICON", "approved", "xml"));
+					archivo.setLocal(new Local("ICON", "check_circle", "xml"));
 				} else {
 					alerta.setTipo("REJECTED");
 					colorAlerta.setDefault1(new Default("TERTIARYDARK"));
-					archivo.setLocal(new Local("ICON", "cross", "xml"));
+					archivo.setLocal(new Local("ICON", "close", "xml"));
 				}
 
 				estiloAlerta.setColor(colorAlerta);
@@ -357,15 +357,15 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 				if (("1").equals(flag)) {
 					alerta.setTipo("PENDING");
 					colorAlerta.setDefault1(new Default("PRIMARYDARK"));
-					archivo.setLocal(new Local("ICON", "time", "xml"));
+					archivo.setLocal(new Local("ICON", "access_time", "xml"));
 				} else if (("4").equals(flag)) {
 					alerta.setTipo("APPROVED");
 					colorAlerta.setDefault1(new Default("SECONDARYDARK"));
-					archivo.setLocal(new Local("ICON", "approved", "xml"));
+					archivo.setLocal(new Local("ICON", "check_circle", "xml"));
 				} else {
 					alerta.setTipo("REJECTED");
 					colorAlerta.setDefault1(new Default("TERTIARYDARK"));
-					archivo.setLocal(new Local("ICON", "cross", "xml"));
+					archivo.setLocal(new Local("ICON", "close", "xml"));
 				}
 
 				estiloAlerta.setColor(colorAlerta);

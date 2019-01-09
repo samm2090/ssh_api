@@ -18,6 +18,10 @@ public class Texto implements Serializable {
 		this.estilo = estilo;
 	}
 
+	public Texto(String texto) {
+		this.texto = texto;
+	}
+
 	public Texto() {
 	}
 

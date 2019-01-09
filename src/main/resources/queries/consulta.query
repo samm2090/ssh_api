@@ -1,0 +1,51 @@
+listarConsultas = 	SELECT CON_I_CONSULTA, CON_HR_MENSAJE,CON_HR_RESPUESTA,         \
+					(SELECT TTBDESOBJ FROM EB_TTABLE                                \
+					WHERE TTBCODCIA = '016' AND TTBCODSUC = '001'                   \
+					AND  TTBCODTAB = '909' AND TTBKEYOBJ = CON_C_TIP_CONS) AS TIPO, \
+					TO_CHAR(CON_F_CREA, 'DD/MM/YYYY') AS CON_F_CREA,                \
+					TO_CHAR(CON_F_MOD, 'DD/MM/YYYY') AS CON_F_MOD                  \
+					FROM SSHRG_CONSULTA_EMPLEADO                                    \
+					WHERE CON_C_CIA = ?                                             \
+					AND CON_C_SUC = ?                                               \
+					AND CON_C_EMPLEADO = ?                                          \
+					AND ROWNUM <= ?                                                 \
+					ORDER BY CON_I_CONSULTA ASC
+					
+listarTipos = 	SELECT TTBKEYOBJ, TTBDESOBJ \
+				FROM EB_TTABLE              \
+				WHERE TTBCODCIA = '016'     \
+				AND TTBCODSUC = '001'       \
+				AND TTBCODTAB = '909'
+				
+listarConsultasEstado = 	SELECT CON_I_CONSULTA, CON_HR_MENSAJE,CON_HR_RESPUESTA,         \
+							(SELECT TTBDESOBJ FROM EB_TTABLE                                \
+							WHERE TTBCODCIA = '016' AND TTBCODSUC = '001'                   \
+							AND  TTBCODTAB = '909' AND TTBKEYOBJ = CON_C_TIP_CONS) AS TIPO, \
+							TO_CHAR(CON_F_CREA, 'DD/MM/YYYY') AS CON_F_CREA,                \
+							TO_CHAR(CON_F_MOD, 'DD/MM/YYYY') AS CON_F_MOD                  \
+							FROM SSHRG_CONSULTA_EMPLEADO                                    \
+							WHERE CON_C_CIA = ?                                             \
+							AND CON_C_SUC = ?                                               \
+							AND CON_C_EMPLEADO = ?                                          \
+							AND CON_E_ESTADO like ?                                         \
+							ORDER BY CON_I_CONSULTA ASC			
+							
+buscarConsultaId = 	SELECT CON_I_CONSULTA, CON_HR_MENSAJE,CON_HR_RESPUESTA,                      \
+					(SELECT TTBDESOBJ FROM EB_TTABLE                                             \
+					WHERE TTBCODCIA = '016' AND TTBCODSUC = '001'                                \
+					AND  TTBCODTAB = '909' AND TTBKEYOBJ = CON_C_TIP_CONS) AS TIPO,              \
+					CON_F_CREA, CON_C_USU_EMI,CON_C_USU_REC,                                     \
+					CON_F_MOD,CON_E_ESTADO,                                                      \
+					(SELECT EBDESUSU FROM EBUSUARIOS WHERE EBCODUSU = CON_C_USU_EMI) AS EMISOR,  \
+					(SELECT EBDESUSU FROM EBUSUARIOS WHERE EBCODUSU = CON_C_USU_REC) AS RECEPTOR \
+					FROM SSHRG_CONSULTA_EMPLEADO                                                 \
+					WHERE CON_C_CIA = ?                                                          \
+					AND CON_C_SUC = ?                                                            \
+					AND CON_C_EMPLEADO = ?                                                       \
+					AND CON_I_CONSULTA = ?
+					
+insertarConsulta = 	INSERT INTO SSHRG_CONSULTA_EMPLEADO       \
+					(CON_C_CIA,CON_C_SUC,CON_C_EMPLEADO,      \
+					CON_C_USU_EMI,CON_C_USU_REC,              \
+					CON_HR_MENSAJE,CON_C_TIP_CONS,CON_F_CREA, CON_E_ESTADO) \
+					VALUES (?,?,?,?,?,?,?,SYSDATE, 0)
