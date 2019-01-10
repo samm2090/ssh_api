@@ -25,22 +25,23 @@ resumenVacaciones = SELECT                                                      
 					SUM(CASE WHEN SYSDATE BETWEEN VACFECINI AND VACFECFIN THEN VACFECFIN - SYSDATE + 1 ELSE 0 END)              \
 					+                                                                                                           \
 					SUM(CASE WHEN VACFECINI > SYSDATE THEN VACFECFIN - VACFECINI + 1 ELSE 0 END)                                \
-					AS DIAS_PROGRAMADOS                                                                                         \
-					FROM HR_CTLVAC                                                                                              \
+					FROM HR_CTLVAC_SS                                                                                              \
 					WHERE                                                                                                       \
 					VACCODCIA = ?                                                                                        \
 					AND VACCODSUC = ?                                                                                       \
 					AND VACCODTRA = ?                                                                                        \
-					AND VACFLGEST = '4'),0) AS SOLICITADAS                                                                      \
+					AND VACFLGEST IN ('1','4')),0) AS SOLICITADAS                                                                      \
 					FROM DUAL
 					
 listarSolicitudVacaciones = 	SELECT VACFECINI, VACDIASPRO, VACFECFIN,             \
 								CASE WHEN VACFLGEST = '1' THEN 'SOLICITUD PENDIENTE' \
 								WHEN VACFLGEST = '4' THEN 'SOLICITUD APROBADA'       \
 								ELSE 'SOLICITUD RECHAZADA' END AS ESTADO, VACFLGEST  \
-								FROM HR_CTLVAC                                       \
+								FROM HR_CTLVAC_SS                                       \
 								WHERE VACCODCIA = ? AND                              \
 								VACCODSUC = ?                                        \
 								AND VACCODTRA = ?                                    \
 								AND ROWNUM <= ?                                   \
 								ORDER BY VACNROCTL DESC
+								
+insertarSolicitud = CALL EBBD.PKG_RH_VACACION.agregar_vacacion_cab_ss(?,?,?,?,?,?)

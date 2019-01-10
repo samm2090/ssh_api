@@ -141,7 +141,6 @@ public class ConsultaService {
 	}
 
 	public Map<String, Object> enviar(EmpleadoConsultaRequest empleado) {
-
 		boolean resultado = false;
 		Map<String, Object> respuesta = new HashMap<>();
 

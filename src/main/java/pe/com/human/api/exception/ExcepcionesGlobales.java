@@ -188,4 +188,36 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(ExcepcionFechaInicioMenor.class)
+	protected ResponseEntity<Object> handleFechaInicioMenor(final ExcepcionFechaInicioMenor ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.FECHA_MENOR);
+		error.setMensaje("La fecha de inicio debe de ser menor a la fecha final");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(ExcepcionFechaMenorActual.class)
+	protected ResponseEntity<Object> handleFechaInicioMenorActual(final ExcepcionFechaMenorActual ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.FECHA_MENOR_ACTUAL);
+		error.setMensaje("La fecha de inicio debe de ser mayor a la fecha actual");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(ExcepcionNoDiasVacaciones.class)
+	protected ResponseEntity<Object> handleNoDiasVacaciones (final ExcepcionNoDiasVacaciones ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.VACACIONES_NO_DIAS);
+		error.setMensaje("La solicitud sobrepasa los días disponibles de vacaciones");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
 }

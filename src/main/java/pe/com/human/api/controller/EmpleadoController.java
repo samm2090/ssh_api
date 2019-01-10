@@ -30,7 +30,7 @@ public class EmpleadoController {
 
 	@Autowired
 	EmpleadoService empleadoService;
-
+	
 	/**
 	 * Metodo que lista todas las companias a las que pertenece un empleado por
 	 * Documento Identificacion .
@@ -358,7 +358,7 @@ public class EmpleadoController {
 	@CrossOrigin
 	@RequestMapping(value = "vacaciones/solicitudes/enviar", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> vacacionesSolicitudesEnviar(@RequestBody EmpleadoVacSolRequest empleado) {
-
+		
 		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.vacacionesSolicitudesEnviar(empleado), HttpStatus.OK);
 

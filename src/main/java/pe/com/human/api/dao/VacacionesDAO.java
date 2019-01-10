@@ -24,4 +24,7 @@ public interface VacacionesDAO {
 	public VacacionesSolicitadas listarSolicitudVacacionesSimple(String codcia, String codsuc, String codtra,
 			String[] flgEst, int rownum, ConfiguracionDataSource configuracionDataSource);
 
+	boolean insertarSolicitud(String codcia, String codsuc, String codtra, String categoriaVacaciones,
+			String fechaInicial, String fechaFinal, ConfiguracionDataSource configuracionDataSource);
+
 }

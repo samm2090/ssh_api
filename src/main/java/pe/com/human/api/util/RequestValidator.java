@@ -1,14 +1,21 @@
 package pe.com.human.api.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Component;
 
 import pe.com.human.api.exception.ExcepcionCaracteresNumericos;
 import pe.com.human.api.exception.ExcepcionEspacioBlanco;
+import pe.com.human.api.exception.ExcepcionFechaInicioMenor;
+import pe.com.human.api.exception.ExcepcionFechaMenorActual;
 import pe.com.human.api.exception.ExcepcionParametroIncorrecto;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
+import pe.com.human.api.model.apirequest.EmpleadoVacSolRequest;
 
 @Component
 public class RequestValidator {
@@ -30,7 +37,7 @@ public class RequestValidator {
 		} catch (Exception e) {
 			throw new ExcepcionParametroIncorrecto();
 		}
-		
+
 		validacion = true;
 
 		return validacion;
@@ -44,11 +51,40 @@ public class RequestValidator {
 
 		if (matcher.find()) {
 			throw new ExcepcionEspacioBlanco();
-		}else if(!documento.matches("[0-9]+")){
+		} else if (!documento.matches("[0-9]+")) {
 			throw new ExcepcionCaracteresNumericos();
 		}
-		
+
 		validacion = true;
+
+		return validacion;
+	}
+
+	public boolean validarEmpleadoVacSolRequest(EmpleadoVacSolRequest empleado) {
+		boolean validacion = false;
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+		Date fechaIni = null;
+		Date fechaFin = null;
+		Date hoy = new Date();
+		try {
+			fechaIni = sdf.parse(empleado.getVacaciones().getFechaInicial());
+			fechaFin = sdf.parse(empleado.getVacaciones().getFechaFinal());
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw new HttpMessageNotReadableException(e.getMessage());
+		}
+
+		if (fechaIni.getTime() < hoy.getTime()) {
+			throw new ExcepcionFechaMenorActual();
+		} else
+
+		if (fechaIni.getTime() > fechaFin.getTime()) {
+			throw new ExcepcionFechaInicioMenor();
+		} else {
+			validacion = true;
+		}
 
 		return validacion;
 	}

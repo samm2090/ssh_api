@@ -14,6 +14,9 @@ public class ErrorConstantes {
 	public static final String NO_CUMPLEANOS = "-10";
 	public static final String NO_COMUNICADOS = "-11";
 	public static final String NO_CONTACTO = "-12";
-	public static final String NO_CRITERIO = "-13";
+	public static final String VACACIONES_NO_DIAS = "-13";
+	public static final String FECHA_MENOR_ACTUAL = "-14";
+	public static final String FECHA_MENOR = "-15";
+	public static final String NO_CRITERIO = "-16";
 
 }

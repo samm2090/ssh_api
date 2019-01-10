@@ -846,6 +846,10 @@ public class EmpleadoService {
 	}
 
 	public Map<String, Object> vacacionesSolicitudesEnviar(EmpleadoVacSolRequest empleado) {
+
+		requestValidator.validarEmpleadoVacSolRequest(empleado);
+
+		boolean resultado = false;
 		Map<String, Object> respuesta = new HashMap<>();
 
 		String codcia = empleado.getBase().getCompania().getId();
@@ -853,11 +857,27 @@ public class EmpleadoService {
 		String codtra = empleado.getEmpleado().getId();
 		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
 
+		String categoriaVacaciones = empleado.getVacaciones().getCategoriaVacaciones();
+		String fechaInicial = empleado.getVacaciones().getFechaInicial();
+		String fechaFinal = empleado.getVacaciones().getFechaFinal();
+
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
+
+		resultado = vacacionesDAO.insertarSolicitud(codcia, codsuc, codtra, categoriaVacaciones, fechaInicial,
+				fechaFinal, configuracionDataSource);
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("mensaje", "Se envió solicitud de vacaciones con éxito");
 		respuesta.put("data", data);
+
+		if (resultado) {
+			// String ruta = "/" + codcia + "/images/Logo-THR-pequeno.png";
+			// consultaEmpleado.setTipoConsulta(valorConceptualDao.find(consultaEmpleado,
+			// "909"));
+			// consultaEmpleado.setIdConsulta(resultado);
+			// new Thread(new TareaEnvioCorreoConsultasAsincrono(empleado,
+			// consultaEmpleado, ruta)).start();
+		}
 
 		return respuesta;
 	}
@@ -924,10 +944,10 @@ public class EmpleadoService {
 		vigentes.put("items", items);
 
 		Map<String, Object> data = new HashMap<>();
-		
+
 		Map<String, Object> prestamos = new HashMap<>();
 		prestamos.put("vigentes", vigentes);
-		
+
 		data.put("prestamos", prestamos);
 		respuesta.put("data", data);
 
@@ -950,11 +970,10 @@ public class EmpleadoService {
 
 		pagados.put("items", items);
 
-		
 		Map<String, Object> data = new HashMap<>();
 		Map<String, Object> prestamos = new HashMap<>();
 		prestamos.put("pagados", pagados);
-		
+
 		data.put("prestamos", prestamos);
 		respuesta.put("data", data);
 

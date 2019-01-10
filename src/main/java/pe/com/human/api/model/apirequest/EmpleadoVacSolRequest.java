@@ -48,10 +48,10 @@ public class EmpleadoVacSolRequest {
 	}
 
 	public static class Vacaciones {
-		@JsonProperty("categoriaVacaciones")
+		@JsonProperty("categoria")
 		private String categoriaVacaciones;
 
-		@JsonProperty("fechaInicial")
+		@JsonProperty("fechaInicio")
 		private String fechaInicial;
 
 		@JsonProperty("fechaFinal")

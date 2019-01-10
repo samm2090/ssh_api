@@ -11,11 +11,16 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.text.WordUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pe.com.human.api.dao.VacacionesDAO;
 import pe.com.human.api.exception.ExcepcionBDNoResponde;
+import pe.com.human.api.exception.ExcepcionNoDiasVacaciones;
 import pe.com.human.api.model.Alerta;
 import pe.com.human.api.model.Archivo;
 import pe.com.human.api.model.Color;
@@ -411,6 +416,86 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 			}
 		}
 		return vacaciones;
+	}
+
+	@Override
+	public boolean insertarSolicitud(String codcia, String codsuc, String codtra, String categoriaVacaciones,
+			String fechaInicial, String fechaFinal, ConfiguracionDataSource configuracionDataSource) {
+		String query = lector.leerPropiedad("queries/vacaciones.query").getProperty("insertarSolicitud");
+		String queryDias = lector.leerPropiedad("queries/vacaciones.query").getProperty("resumenVacaciones");
+		boolean resultado = false;
+
+		Connection conexion = null;
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement resumen = conexion.prepareStatement(queryDias);
+			resumen.setString(1, codcia);
+			resumen.setString(2, codsuc);
+			resumen.setString(3, codtra);
+			resumen.setString(4, codcia);
+			resumen.setString(5, codsuc);
+			resumen.setString(6, codtra);
+			resumen.setString(7, codcia);
+			resumen.setString(8, codsuc);
+			resumen.setString(9, codtra);
+
+			ResultSet rs = resumen.executeQuery();
+
+			int disponibles = 0;
+
+			if (rs.next()) {
+				disponibles = rs.getInt("TOTAL") - rs.getInt("SOLICITADAS");
+			}
+
+			DateTimeFormatter sdf = DateTimeFormat.forPattern("dd/MM/yyyy");
+			DateTime fechaIni = null;
+			DateTime fechaFin = null;
+
+			fechaIni = sdf.parseDateTime(fechaInicial);
+			fechaFin = sdf.parseDateTime(fechaFinal);
+
+			int dias = Days.daysBetween(fechaIni.toLocalDate(), fechaFin.toLocalDate()).getDays() + 1;
+
+			if (dias > disponibles) {
+				throw new ExcepcionNoDiasVacaciones();
+			} else {
+				PreparedStatement insertarSolicitud = conexion.prepareStatement(query);
+				insertarSolicitud.setString(1, codcia);
+				insertarSolicitud.setString(2, codsuc);
+				insertarSolicitud.setString(3, codtra);
+				insertarSolicitud.setString(4, "02");
+				insertarSolicitud.setString(5, fechaInicial);
+				insertarSolicitud.setString(6, fechaFinal);
+
+				resultado = insertarSolicitud.executeUpdate() > 0 ? true : false;
+
+				conexion.commit();
+				insertarSolicitud.close();
+			}
+
+			resumen.close();
+			rs.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conexion.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return resultado;
 	}
 
 }
