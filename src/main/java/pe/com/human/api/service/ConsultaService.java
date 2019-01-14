@@ -37,7 +37,8 @@ public class ConsultaService {
 		int rows = 2;
 		Map<String, Object> recientes = new HashMap<>();
 		List<Item> items = consultaDAO.listarConsultas(codcia, codsuc, codtra, rows, configuracionDataSource);
-
+	
+		recientes.put("tipo", "SINGLE_LINE_ICON_RIGHT");
 		recientes.put("items", items);
 
 		Map<String, Object> data = new HashMap<>();
@@ -114,7 +115,7 @@ public class ConsultaService {
 
 		Map<String, Object> data = new HashMap<>();
 
-		data.put("recientes", pendientes);
+		data.put("pendientes", pendientes);
 		respuesta.put("data", data);
 
 		return respuesta;

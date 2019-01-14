@@ -4,8 +4,8 @@ public class DeudaMes {
 
 	private String moneda;
 	private String monto;
-	private String mes;
-	private String anio;
+	private int mes;
+	private int anio;
 
 	public String getMoneda() {
 		return moneda;
@@ -23,19 +23,19 @@ public class DeudaMes {
 		this.monto = monto;
 	}
 
-	public String getMes() {
+	public int getMes() {
 		return mes;
 	}
 
-	public void setMes(String mes) {
+	public void setMes(int mes) {
 		this.mes = mes;
 	}
 
-	public String getAnio() {
+	public int getAnio() {
 		return anio;
 	}
 
-	public void setAnio(String anio) {
+	public void setAnio(int anio) {
 		this.anio = anio;
 	}
 

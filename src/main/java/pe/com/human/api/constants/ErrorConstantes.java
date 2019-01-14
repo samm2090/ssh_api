@@ -17,6 +17,8 @@ public class ErrorConstantes {
 	public static final String VACACIONES_NO_DIAS = "-13";
 	public static final String FECHA_MENOR_ACTUAL = "-14";
 	public static final String FECHA_MENOR = "-15";
-	public static final String NO_CRITERIO = "-16";
+	public static final String FECHA_SOLIC_COPADA = "-16";
+	public static final String NO_CONSULTA = "-17";
+	public static final String NO_CRITERIO = "-19";
 
 }

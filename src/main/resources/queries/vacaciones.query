@@ -36,7 +36,9 @@ resumenVacaciones = SELECT                                                      
 listarSolicitudVacaciones = 	SELECT VACFECINI, VACDIASPRO, VACFECFIN,             \
 								CASE WHEN VACFLGEST = '1' THEN 'SOLICITUD PENDIENTE' \
 								WHEN VACFLGEST = '4' THEN 'SOLICITUD APROBADA'       \
-								ELSE 'SOLICITUD RECHAZADA' END AS ESTADO, VACFLGEST  \
+								ELSE 'SOLICITUD RECHAZADA' END AS ESTADO, VACFLGEST,  \
+								(TO_CHAR(VACFECINI, 'fmMM')) AS MES,                \
+								(TO_CHAR(VACFECINI, 'YYYY')) AS ANO                    \
 								FROM HR_CTLVAC_SS                                       \
 								WHERE VACCODCIA = ? AND                              \
 								VACCODSUC = ?                                        \

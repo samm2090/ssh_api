@@ -387,7 +387,7 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 				resItem.setTipo("ICON");
 				resItem.setArchivo(archivo);
 
-				Extra extra = new Extra(WordUtils.capitalize(sdfMes.format(fecIni)), sdfAno.format(fecIni));
+				Extra extra = new Extra(rs.getInt("MES"), rs.getInt("ANO"));
 
 				item.setAlerta(alerta);
 				item.setPrimeraLinea(new Linea(new Texto(sdf.format(fecIni) + " - " + sdf.format(fecFin), null)));

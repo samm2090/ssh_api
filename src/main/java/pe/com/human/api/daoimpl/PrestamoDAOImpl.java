@@ -211,8 +211,8 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 
 				item.setMoneda(moneda);
 				item.setMonto(rs.getString("CUOTA"));
-				item.setMes(rs.getString("MES"));
-				item.setAnio(rs.getString("ANO"));
+				item.setMes(rs.getInt("MES"));
+				item.setAnio(rs.getInt("ANO"));
 
 				items.add(item);
 			}
@@ -270,14 +270,93 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 				estilo.setColor(color);
 
 				Alerta alerta = new Alerta();
-				alerta.setTipo("CURRENT");
+				String tipo = "CURRENT";
+				if (rs.getString("CTLFLGEST").equals("1")) {
+					tipo = "PAID";
+				}
+
+				alerta.setTipo(tipo);
 				alerta.setEstilo(estilo);
 
 				item.setAlerta(alerta);
 				item.setFecha(new FechaDeuda(rs.getString("CTLFECPRE"), rs.getString("CTLFECVIG")));
 				item.setTipo(rs.getString("TIPO"));
-				item.setMonto(new MontoDeuda(rs.getString("CTLDIASFR"), rs.getString("MONEDA"), rs.getString("CTLPMONTOP")));
-				item.setCuota(new CuotaDeuda(rs.getInt("CTLNUMCUO"), rs.getString("MONEDA"), rs.getString("CTLPCUOTA")));
+				item.setMonto(
+						new MontoDeuda(rs.getString("CTLDIASFR"), rs.getString("MONEDA"), rs.getString("CTLPMONTOP")));
+				item.setCuota(
+						new CuotaDeuda(rs.getInt("CTLNUMCUO"), rs.getString("MONEDA"), rs.getString("CTLPCUOTA")));
+
+				items.add(item);
+			}
+
+			rs.close();
+			listarCuotas.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return items;
+	}
+	
+	@Override
+	public List<Prestamo> listarPrestamos(String codcia, String codsuc, String codtra, String estado,
+			ConfiguracionDataSource configuracionDataSource) {
+
+		List<Prestamo> items = null;
+		Connection conexion = null;
+
+		String query = lector.leerPropiedad("queries/prestamo.query").getProperty("listarPrestamos");
+
+		try {
+			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
+
+			PreparedStatement listarCuotas = conexion.prepareStatement(query);
+			listarCuotas.setString(1, codcia);
+			listarCuotas.setString(2, codsuc);
+			listarCuotas.setString(3, codtra);
+			listarCuotas.setString(4, estado);
+
+			ResultSet rs = listarCuotas.executeQuery();
+
+			items = new ArrayList<>();
+			Prestamo item = null;
+
+			while (rs.next()) {
+				item = new Prestamo();
+
+				Color color = new Color();
+				color.setTipo("TEXT");
+				color.setUso("DEFAULT");
+				color.setDefault1(new Default("PRIMARYDARK"));
+
+				EstiloTexto estilo = new EstiloTexto();
+				estilo.setColor(color);
+
+				Alerta alerta = new Alerta();
+				String tipo = "CURRENT";
+				if (rs.getString("CTLPESTADO").equals("1")) {
+					tipo = "PAID";
+				}
+
+				alerta.setTipo(tipo);
+				alerta.setEstilo(estilo);
+
+				item.setAlerta(alerta);
+				item.setFecha(new FechaDeuda(rs.getString("CTLPFECPRE"), rs.getString("CTLPFECVIG")));
+				item.setTipo(rs.getString("TIPO"));
+				item.setMonto(
+						new MontoDeuda(rs.getString("CTLDIASFR"), rs.getString("MONEDA"), rs.getString("CTLPMONTOP")));
+				item.setCuota(
+						new CuotaDeuda(rs.getInt("CTLPNROCUO"), rs.getString("MONEDA"), rs.getString("CTLPCUOTA")));
 
 				items.add(item);
 			}

@@ -150,8 +150,7 @@ public class BoletaDAOImpl implements BoletaDAO {
 			listarBoletas.setString(1, codcia);
 			listarBoletas.setString(2, codsuc);
 			listarBoletas.setString(3, codtra);
-			listarBoletas.setString(4, "2018");
-			listarBoletas.setString(5, idProceso);
+			listarBoletas.setString(4, idProceso);
 
 			ResultSet rs = listarBoletas.executeQuery();
 			boletas = new ArrayList<>();
@@ -159,7 +158,8 @@ public class BoletaDAOImpl implements BoletaDAO {
 			while (rs.next()) {
 				String periodo = rs.getString("PERCODPER");
 
-				String url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + BOLETAS + codtra + "_" + periodo + ".pdf";
+				String url = ApiConstantes.URL_BASE_REPOSITORIO + codcia + BOLETAS + codtra + "_" + idProceso + "_"
+						+ periodo + ".pdf";
 
 				Remote remote = new Remote();
 				remote.setResTipo(null);

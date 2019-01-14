@@ -390,7 +390,7 @@ public class EmpleadoController {
 	public ResponseEntity<Map<String, Object>> prestamosActuales(@RequestBody EmpleadoRequest empleado) {
 
 		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
-				empleadoService.prestamosActuales(empleado), HttpStatus.OK);
+				empleadoService.prestamosTodos(empleado), HttpStatus.OK);
 
 		return respuesta;
 	}

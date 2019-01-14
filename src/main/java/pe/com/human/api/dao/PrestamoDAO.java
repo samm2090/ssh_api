@@ -26,4 +26,7 @@ public interface PrestamoDAO {
 
 	public List<Prestamo> listarCuotas(String codcia, String codsuc, String codtra, String estado,
 			ConfiguracionDataSource configuracionDataSource);
+	
+	public List<Prestamo> listarPrestamos(String codcia, String codsuc, String codtra, String estado,
+			ConfiguracionDataSource configuracionDataSource);
 }

@@ -220,4 +220,26 @@ public class ExcepcionesGlobales extends ResponseEntityExceptionHandler {
 		respuesta.put("error", error);
 		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(ExcepcionSolicitudCopada.class)
+	protected ResponseEntity<Object> handleSolicitudCopada (final ExcepcionSolicitudCopada ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.FECHA_SOLIC_COPADA);
+		error.setMensaje("Ya tiene una solicitud en el rango de fechas previstas");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(ExcepcionConsultaVacia.class)
+	protected ResponseEntity<Object> handleNoConsulta (final ExcepcionConsultaVacia ex, WebRequest request) {
+		Map<String, Object> respuesta = new HashMap<>();
+		ResponseError error = new ResponseError();
+
+		error.setCodigo(ErrorConstantes.NO_CONSULTA);
+		error.setMensaje("Debe de ingresar una consulta");
+		respuesta.put("error", error);
+		return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+	}
 }

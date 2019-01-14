@@ -920,13 +920,13 @@ public class EmpleadoService {
 		proximos.put("items", items);
 
 		Map<String, Object> data = new HashMap<>();
-		data.put("pagos", proximos);
+		data.put("proximos", proximos);
 		respuesta.put("data", data);
 
 		return respuesta;
 	}
 
-	public Map<String, Object> prestamosActuales(EmpleadoRequest empleado) {
+	public Map<String, Object> prestamosTodos(EmpleadoRequest empleado) {
 		Map<String, Object> respuesta = new HashMap<>();
 
 		String codcia = empleado.getBase().getCompania().getId();
@@ -936,19 +936,16 @@ public class EmpleadoService {
 
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
-		String estado = "0";
+		String estado = "%";
 
-		Map<String, Object> vigentes = new HashMap<>();
-		List<Prestamo> items = prestamoDAO.listarCuotas(codcia, codsuc, codtra, estado, configuracionDataSource);
+		Map<String, Object> todos = new HashMap<>();
+		List<Prestamo> items = prestamoDAO.listarPrestamos(codcia, codsuc, codtra, estado, configuracionDataSource);
 
-		vigentes.put("items", items);
+		todos.put("items", items);
 
 		Map<String, Object> data = new HashMap<>();
 
-		Map<String, Object> prestamos = new HashMap<>();
-		prestamos.put("vigentes", vigentes);
-
-		data.put("prestamos", prestamos);
+		data.put("todos", todos);
 		respuesta.put("data", data);
 
 		return respuesta;
@@ -971,10 +968,8 @@ public class EmpleadoService {
 		pagados.put("items", items);
 
 		Map<String, Object> data = new HashMap<>();
-		Map<String, Object> prestamos = new HashMap<>();
-		prestamos.put("pagados", pagados);
 
-		data.put("prestamos", prestamos);
+		data.put("pagados", pagados);
 		respuesta.put("data", data);
 
 		return respuesta;

@@ -3,31 +3,37 @@ package pe.com.human.api.model;
 public class Extra {
 
 	private String id;
-	private String mes;
-	private String anio;
-	
+	private int mes;
+	private int anio;
+
 	public Extra(String id) {
 		this.id = id;
 	}
-	
-	public Extra(String mes, String anio) {
+
+	public Extra(String id, int mes, int anio) {
+		this.id = id;
 		this.mes = mes;
 		this.anio = anio;
 	}
 
-	public String getMes() {
+	public Extra(int mes, int anio) {
+		this.mes = mes;
+		this.anio = anio;
+	}
+
+	public int getMes() {
 		return mes;
 	}
 
-	public void setMes(String mes) {
+	public void setMes(int mes) {
 		this.mes = mes;
 	}
 
-	public String getAnio() {
+	public int getAnio() {
 		return anio;
 	}
 
-	public void setAnio(String anio) {
+	public void setAnio(int anio) {
 		this.anio = anio;
 	}
 

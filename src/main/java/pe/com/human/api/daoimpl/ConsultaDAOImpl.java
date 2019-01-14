@@ -4,16 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -78,11 +74,11 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 
 				String envio = rs.getString("CON_F_CREA");
 				String respuesta = rs.getString("CON_F_MOD");
-				String tipo = "APPROVED";
+				String tipo = "check_circle";
 
 				if (respuesta == null) {
 					respuesta = "Pendiente";
-					tipo = "PENDING";
+					tipo = "access_time";
 				}
 
 				Alerta alerta = new Alerta();
@@ -104,7 +100,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				Archivo archivo = new Archivo();
 				archivo.setAlmaTipo("LOCAL");
 				archivo.setTipo("VECTOR");
-				archivo.setLocal(new Local("ICON", "time", "xml"));
+				archivo.setLocal(new Local("ICON", tipo, "xml"));
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("ICON");
@@ -219,11 +215,11 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 
 				String envio = rs.getString("CON_F_CREA");
 				String respuesta = rs.getString("CON_F_MOD");
-				String tipo = "APPROVED";
+				String tipo = "check_circle";
 
 				if (respuesta == null) {
 					respuesta = "Pendiente";
-					tipo = "PENDING";
+					tipo = "access_time";
 				}
 
 				Alerta alerta = new Alerta();
@@ -245,21 +241,19 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				Archivo archivo = new Archivo();
 				archivo.setAlmaTipo("LOCAL");
 				archivo.setTipo("VECTOR");
-				archivo.setLocal(new Local("ICON", "time", "xml"));
+				archivo.setLocal(new Local("ICON", "tipo", "xml"));
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("ICON");
 				resItem.setArchivo(archivo);
 
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				Date fechaEnvio = null;
-				try {
-					fechaEnvio = sdf.parse(envio);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				SimpleDateFormat sdfMes = new SimpleDateFormat("MMMM");
-				SimpleDateFormat sdfAno = new SimpleDateFormat("YYYY");
+				// SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				// Date fechaEnvio = null;
+				// try {
+				// fechaEnvio = sdf.parse(envio);
+				// } catch (ParseException e) {
+				// e.printStackTrace();
+				// }
 
 				item.setAlerta(alerta);
 				// item.setTipo("SINGLE_LINE_ICON_RIGHT");
@@ -267,8 +261,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				item.setSegundaLinea(segundaLinea);
 				item.setTerceraLinea(terceraLinea);
 				item.setResItem(resItem);
-				item.setExtra(new Extra(WordUtils.capitalize(sdfMes.format(fechaEnvio)),
-						WordUtils.capitalize(sdfAno.format(fechaEnvio))));
+				item.setExtra(new Extra(rs.getString("CON_I_CONSULTA"), rs.getInt("MES"), rs.getInt("ANO")));
 
 				items.add(item);
 			}
@@ -315,9 +308,11 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 
 				String estado = rs.getString("CON_E_ESTADO");
 				String tipo = "PENDING";
+				String icono = "access_time";
 
 				if (("1").equals(estado)) {
 					tipo = "ANSWERED";
+					icono = "check_circle";
 				}
 
 				Color color = new Color();
@@ -335,13 +330,13 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				Archivo archivo = new Archivo();
 				archivo.setAlmaTipo("LOCAL");
 				archivo.setTipo("VECTOR");
-				archivo.setLocal(new Local("ICON", "Approved", "xml"));
+				archivo.setLocal(new Local("ICON", icono, "xml"));
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("ICON");
 				resItem.setArchivo(archivo);
 
-				List<Map<String, Object>> thread = new ArrayList<>();
+				Map<String, Object> thread = new HashMap<>();
 
 				Map<String, Object> preguntaContenido = new HashMap<>();
 				preguntaContenido.put("content", rs.getString("CON_HR_MENSAJE"));
@@ -355,28 +350,16 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				respuestaContenido.put("senderID", rs.getString("CON_C_USU_REC"));
 				respuestaContenido.put("senderName", rs.getString("RECEPTOR"));
 
-				Map<String, Object> pregunta = new HashMap<>();
-				pregunta.put(idConsulta, preguntaContenido);
-
-				Map<String, Object> respuesta = new HashMap<>();
-				respuesta.put(idConsulta, respuestaContenido);
-
-				thread.add(pregunta);
-				thread.add(respuesta);
+				thread.put("pregunta", preguntaContenido);
+				thread.put("respuesta", respuestaContenido);
 
 				Map<String, Object> mensaje = new HashMap<>();
 				mensaje.put("name", rs.getString("TIPO"));
 				mensaje.put("thread", thread);
 
-				Map<String, Object> chatMap = new HashMap<>();
-				chatMap.put(idConsulta, mensaje);
-
-				List<Map<String, Object>> chat = new ArrayList<>();
-				chat.add(chatMap);
-
 				info.setAlerta(alerta);
 				info.setResItem(resItem);
-				info.setChat(chat);
+				info.setChat(mensaje);
 			}
 
 			rs.close();

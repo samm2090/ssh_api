@@ -3,7 +3,9 @@ listarConsultas = 	SELECT CON_I_CONSULTA, CON_HR_MENSAJE,CON_HR_RESPUESTA,      
 					WHERE TTBCODCIA = '016' AND TTBCODSUC = '001'                   \
 					AND  TTBCODTAB = '909' AND TTBKEYOBJ = CON_C_TIP_CONS) AS TIPO, \
 					TO_CHAR(CON_F_CREA, 'DD/MM/YYYY') AS CON_F_CREA,                \
-					TO_CHAR(CON_F_MOD, 'DD/MM/YYYY') AS CON_F_MOD                  \
+					TO_CHAR(CON_F_MOD, 'DD/MM/YYYY') AS CON_F_MOD,                  \
+					TO_CHAR(CON_F_CREA, 'fmMM') AS MES,                             \
+					TO_CHAR(CON_F_CREA, 'YYYY') AS ANO                              \
 					FROM SSHRG_CONSULTA_EMPLEADO                                    \
 					WHERE CON_C_CIA = ?                                             \
 					AND CON_C_SUC = ?                                               \
@@ -22,7 +24,9 @@ listarConsultasEstado = 	SELECT CON_I_CONSULTA, CON_HR_MENSAJE,CON_HR_RESPUESTA,
 							WHERE TTBCODCIA = '016' AND TTBCODSUC = '001'                   \
 							AND  TTBCODTAB = '909' AND TTBKEYOBJ = CON_C_TIP_CONS) AS TIPO, \
 							TO_CHAR(CON_F_CREA, 'DD/MM/YYYY') AS CON_F_CREA,                \
-							TO_CHAR(CON_F_MOD, 'DD/MM/YYYY') AS CON_F_MOD                  \
+							TO_CHAR(CON_F_MOD, 'DD/MM/YYYY') AS CON_F_MOD,                  \
+							TO_CHAR(CON_F_CREA, 'fmMM') AS MES,                             \
+							TO_CHAR(CON_F_CREA, 'YYYY') AS ANO                              \
 							FROM SSHRG_CONSULTA_EMPLEADO                                    \
 							WHERE CON_C_CIA = ?                                             \
 							AND CON_C_SUC = ?                                               \
