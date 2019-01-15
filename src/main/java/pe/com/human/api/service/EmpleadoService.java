@@ -35,6 +35,7 @@ import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.Vacaciones;
 import pe.com.human.api.model.VacacionesSolicitadas;
 import pe.com.human.api.model.Widget;
+import pe.com.human.api.model.apirequest.EmpleadoCodigoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoVacSolRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
@@ -970,6 +971,29 @@ public class EmpleadoService {
 		Map<String, Object> data = new HashMap<>();
 
 		data.put("pagados", pagados);
+		respuesta.put("data", data);
+
+		return respuesta;
+	}
+
+	public Map<String, Object> insertarCodigoFirebase(EmpleadoCodigoRequest empleado) {
+		Map<String, Object> respuesta = new HashMap<>();
+
+		String codcia = empleado.getBase().getCompania().getId();
+		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
+		String documento = empleado.getEmpleado().getDocumento();
+		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
+		String codigo = empleado.getEmpleado().getCodigo();
+
+		boolean exito = empleadoDAO.insertarCodigoFirebase(codcia, codsuc, baseDatos, documento, codigo);
+		String mensaje = "Hubo un error al momento de grabar el código";
+
+		if (exito) {
+			mensaje = "El código Firebase se grabó satisfactoriamente";
+		}
+		Map<String, Object> data = new HashMap<>();
+
+		data.put("mensaje", mensaje);
 		respuesta.put("data", data);
 
 		return respuesta;

@@ -10,10 +10,12 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Component;
 
 import pe.com.human.api.exception.ExcepcionCaracteresNumericos;
+import pe.com.human.api.exception.ExcepcionConsultaVacia;
 import pe.com.human.api.exception.ExcepcionEspacioBlanco;
 import pe.com.human.api.exception.ExcepcionFechaInicioMenor;
 import pe.com.human.api.exception.ExcepcionFechaMenorActual;
 import pe.com.human.api.exception.ExcepcionParametroIncorrecto;
+import pe.com.human.api.model.apirequest.EmpleadoConsultaRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoVacSolRequest;
 
@@ -82,6 +84,20 @@ public class RequestValidator {
 
 		if (fechaIni.getTime() > fechaFin.getTime()) {
 			throw new ExcepcionFechaInicioMenor();
+		} else {
+			validacion = true;
+		}
+
+		return validacion;
+	}
+
+	public boolean validarEmpleadoConsultaRequest(EmpleadoConsultaRequest empleado) {
+		boolean validacion = false;
+
+		String mensaje = empleado.getConsulta().getMensaje();
+
+		if (mensaje == null || ("").equals(mensaje)) {
+			throw new ExcepcionConsultaVacia();
 		} else {
 			validacion = true;
 		}

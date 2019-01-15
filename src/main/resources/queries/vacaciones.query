@@ -46,4 +46,10 @@ listarSolicitudVacaciones = 	SELECT VACFECINI, VACDIASPRO, VACFECFIN,           
 								AND ROWNUM <= ?                                   \
 								ORDER BY VACNROCTL DESC
 								
+buscarVacacionesRango = SELECT * fROM HR_CTLVAC_SS                   \
+						WHERE VACCODCIA = ? AND VACCODSUC = ?  \
+						AND VACCODTRA = ? AND                  \
+						(TO_DATE(?,'DD/MM/YYYY') <= VACFECFIN AND \
+						TO_DATE(?,'DD/MM/YYYY') >= VACFECINI)
+								
 insertarSolicitud = CALL EBBD.PKG_RH_VACACION.agregar_vacacion_cab_ss(?,?,?,?,?,?)

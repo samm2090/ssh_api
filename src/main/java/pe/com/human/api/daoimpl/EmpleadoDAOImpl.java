@@ -2056,17 +2056,16 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 		}
 		return items;
 	}
-	
+
 	@Override
 	public Aprobador buscarAprobador(String codcia, String codsuc, String codtra,
 			ConfiguracionDataSource configuracionDataSource) {
 
 		Aprobador aprobador = null;
 		Connection conexion = null;
-
-		String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarAprobador");
-
 		try {
+			String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarAprobador");
+
 			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
 
 			PreparedStatement resumen = conexion.prepareStatement(query);
@@ -2130,6 +2129,57 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 			}
 		}
 		return aprobador;
+	}
+
+	@Override
+	public boolean insertarCodigoFirebase(String codcia, String codsuc, int baseDatos, String documento,
+			String codigo) {
+		boolean resultado = false;
+		Connection conexion = null;
+
+		try {
+			String query = lector.leerPropiedad("queries/empleado.query").getProperty("insertarCodigoFirebase");
+			String queryEmpleado = lector.leerPropiedad("queries/empleado.query").getProperty("buscarEmpleadoAppMovil");
+
+			conexion = ConexionBaseDatos.obtenerConexion(new ConfiguracionDataSource());
+
+			PreparedStatement buscarEmpleadoApp = conexion.prepareStatement(queryEmpleado);
+			buscarEmpleadoApp.setString(1, codcia);
+			buscarEmpleadoApp.setString(2, codsuc);
+			buscarEmpleadoApp.setString(3, documento);
+			buscarEmpleadoApp.setInt(4, baseDatos);
+
+			ResultSet rs = buscarEmpleadoApp.executeQuery();
+
+			if (rs.next()) {
+				int empId = rs.getInt("EMP_I_ID");
+
+				PreparedStatement insertarCodigo = conexion.prepareStatement(query);
+				insertarCodigo.setString(1, codigo);
+				insertarCodigo.setInt(2, empId);
+
+				resultado = insertarCodigo.executeUpdate() > 0 ? true : false;
+
+				conexion.commit();
+
+				insertarCodigo.close();
+			}
+
+			rs.close();
+			buscarEmpleadoApp.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return resultado;
 	}
 
 }

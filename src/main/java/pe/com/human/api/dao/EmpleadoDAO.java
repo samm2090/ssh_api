@@ -67,4 +67,6 @@ public interface EmpleadoDAO {
 
 	public Aprobador buscarAprobador(String codcia, String codsuc, String codtra,
 			ConfiguracionDataSource configuracionDataSource);
+
+	public boolean insertarCodigoFirebase(String codcia, String codsuc, int baseDatos, String documento, String codigo);
 }

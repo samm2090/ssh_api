@@ -8,12 +8,17 @@ cantidadNoLeidas = 	SELECT COUNT(*) AS CANTIDAD             \
 					WHERE EMPCODCIA = ? AND EMPCODSUC = ?  \
 					AND EMPCODTRA = ? AND EMPCODPRO = '01' AND EMPFLGLEIDO = '0'
 					
-listarProcesosXIdEmpleado = 	SELECT TTBKEYOBJ AS EMPCODPRO, TTBDESOBJ AS PROCESO FROM EB_TTABLE                                    \
-								WHERE TTBCODCIA = ? AND TTBCODSUC = ? AND TTBCODTAB = 16 AND TTBNUMOBJ6 = '1' \
-								AND TTBKEYOBJ IN (SELECT XTIPCODPRO FROM HR_PROCXTIPTRA,HR_EMPLEADO           \
-								WHERE EMPCODTRA = ? AND EMPCODCIA= ttbcodcia                                  \
-								AND EMPCODSUC = ttbcodsuc AND EMPCODCIA = XTIPCODCIA                          \
-								AND EMPCODSUC = XTIPCODSUC AND EMPTIPOEMP=XTIPCODTIP)
+listarProcesosXIdEmpleado = SELECT TTBKEYOBJ,TTBDESOBJ FROM EB_TTABLE                    \
+							WHERE TTBCODCIA = ? AND TTBCODSUC = ?                  \
+							AND TRIM(TTBCODTAB) = '16'                                   \
+							AND TTBNUMOBJ6 = '1' AND                                     \
+							TTBKEYOBJ IN (                                               \
+							SELECT XTIPCODPRO                                            \
+							FROM HR_PROCXTIPTRA P INNER JOIN HR_EMPLEADO E               \
+							ON E.EMPCODCIA = P.XTIPCODCIA AND E.EMPCODSUC = P.XTIPCODSUC \
+							AND E.EMPTIPOEMP = P.XTIPCODTIP                              \
+							WHERE EMPCODTRA = ?                                    \
+							AND EMPCODCIA = TTBCODCIA AND EMPCODSUC = TTBCODSUC)
 								
 listarBoletasXIdEmpleado =  SELECT PERCODCIA,PERCODSUC,PERCODPRO,PERCODPER, PERFECINI,PERFECFIN FROM HR_PERIODO ,                                             \
 							HR_PROCTL , HR_EMPXPROC  WHERE PCTCODCIA=PERCODCIA AND PCTCODPRO=PERCODPRO AND PCTNROPER=PERCODPER AND \

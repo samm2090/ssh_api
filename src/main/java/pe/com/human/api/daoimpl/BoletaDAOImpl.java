@@ -315,8 +315,8 @@ public class BoletaDAOImpl implements BoletaDAO {
 			Proceso proceso;
 			while (rs.next()) {
 				proceso = new Proceso();
-				proceso.setId(rs.getString("EMPCODPRO"));
-				proceso.setDescripcion(rs.getString("PROCESO"));
+				proceso.setId(rs.getString("TTBKEYOBJ"));
+				proceso.setDescripcion(rs.getString("TTBDESOBJ"));
 
 				procesos.add(proceso);
 			}

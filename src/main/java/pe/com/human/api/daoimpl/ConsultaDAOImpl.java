@@ -344,17 +344,23 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				preguntaContenido.put("senderID", rs.getString("CON_C_USU_EMI"));
 				preguntaContenido.put("senderName", rs.getString("EMISOR"));
 
-				Map<String, Object> respuestaContenido = new HashMap<>();
-				respuestaContenido.put("content", rs.getString("CON_HR_RESPUESTA"));
-				respuestaContenido.put("created", rs.getString("CON_F_MOD"));
-				respuestaContenido.put("senderID", rs.getString("CON_C_USU_REC"));
-				respuestaContenido.put("senderName", rs.getString("RECEPTOR"));
+				String respuesta = rs.getString("CON_HR_RESPUESTA");
+
+				Map<String, Object> respuestaContenido = null;
+				if (!(respuesta == null || ("").equals(respuesta))) {
+					respuestaContenido = new HashMap<>();	
+
+					respuestaContenido.put("content", rs.getString("CON_HR_RESPUESTA"));
+					respuestaContenido.put("created", rs.getString("CON_F_MOD"));
+					respuestaContenido.put("senderID", rs.getString("CON_C_USU_REC"));
+					respuestaContenido.put("senderName", rs.getString("RECEPTOR"));
+				}
 
 				thread.put("pregunta", preguntaContenido);
 				thread.put("respuesta", respuestaContenido);
 
 				Map<String, Object> mensaje = new HashMap<>();
-				mensaje.put("name", rs.getString("TIPO"));
+				mensaje.put("idTipoConsulta", rs.getString("CON_C_TIP_CONS"));
 				mensaje.put("thread", thread);
 
 				info.setAlerta(alerta);

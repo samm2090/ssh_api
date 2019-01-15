@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.text.WordUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import pe.com.human.api.dao.VacacionesDAO;
 import pe.com.human.api.exception.ExcepcionBDNoResponde;
 import pe.com.human.api.exception.ExcepcionNoDiasVacaciones;
+import pe.com.human.api.exception.ExcepcionSolicitudCopada;
 import pe.com.human.api.model.Alerta;
 import pe.com.human.api.model.Archivo;
 import pe.com.human.api.model.Color;
@@ -380,8 +380,8 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 				Date fecFin = rs.getDate("VACFECFIN");
 
 				SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMM',' YYYY", new Locale("es", "PE"));
-				SimpleDateFormat sdfMes = new SimpleDateFormat("MMMM");
-				SimpleDateFormat sdfAno = new SimpleDateFormat("YYYY");
+//				SimpleDateFormat sdfMes = new SimpleDateFormat("MMMM");
+//				SimpleDateFormat sdfAno = new SimpleDateFormat("YYYY");
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("ICON");
@@ -423,6 +423,7 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 			String fechaInicial, String fechaFinal, ConfiguracionDataSource configuracionDataSource) {
 		String query = lector.leerPropiedad("queries/vacaciones.query").getProperty("insertarSolicitud");
 		String queryDias = lector.leerPropiedad("queries/vacaciones.query").getProperty("resumenVacaciones");
+		String queryBuscarVac = lector.leerPropiedad("queries/vacaciones.query").getProperty("buscarVacacionesRango");
 		boolean resultado = false;
 
 		Connection conexion = null;
@@ -460,18 +461,39 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 			if (dias > disponibles) {
 				throw new ExcepcionNoDiasVacaciones();
 			} else {
-				PreparedStatement insertarSolicitud = conexion.prepareStatement(query);
-				insertarSolicitud.setString(1, codcia);
-				insertarSolicitud.setString(2, codsuc);
-				insertarSolicitud.setString(3, codtra);
-				insertarSolicitud.setString(4, "02");
-				insertarSolicitud.setString(5, fechaInicial);
-				insertarSolicitud.setString(6, fechaFinal);
 
-				resultado = insertarSolicitud.executeUpdate() > 0 ? true : false;
+				PreparedStatement buscarVacas = conexion.prepareStatement(queryBuscarVac);
+				buscarVacas.setString(1, codcia);
+				buscarVacas.setString(2, codsuc);
+				buscarVacas.setString(3, codtra);
+				buscarVacas.setString(4, fechaInicial);
+				buscarVacas.setString(5, fechaFinal);
 
-				conexion.commit();
-				insertarSolicitud.close();
+				ResultSet rsVacas = buscarVacas.executeQuery();
+
+				if (!rsVacas.next()) {
+
+					PreparedStatement insertarSolicitud = conexion.prepareStatement(query);
+					insertarSolicitud.setString(1, codcia);
+					insertarSolicitud.setString(2, codsuc);
+					insertarSolicitud.setString(3, codtra);
+					insertarSolicitud.setString(4, "02");
+					insertarSolicitud.setString(5, fechaInicial);
+					insertarSolicitud.setString(6, fechaFinal);
+
+					resultado = insertarSolicitud.executeUpdate() > 0 ? true : false;
+
+					conexion.commit();
+					insertarSolicitud.close();
+				} else {
+					rsVacas.close();
+					buscarVacas.close();
+					resumen.close();
+					rs.close();
+
+					throw new ExcepcionSolicitudCopada();
+				}
+
 			}
 
 			resumen.close();

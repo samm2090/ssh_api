@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.human.api.exception.ExcepcionContrasenaVacia;
+import pe.com.human.api.model.apirequest.EmpleadoCodigoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.model.apirequest.EmpleadoVacSolRequest;
 import pe.com.human.api.service.EmpleadoService;
@@ -30,7 +31,7 @@ public class EmpleadoController {
 
 	@Autowired
 	EmpleadoService empleadoService;
-	
+
 	/**
 	 * Metodo que lista todas las companias a las que pertenece un empleado por
 	 * Documento Identificacion .
@@ -354,17 +355,18 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "vacaciones/solicitudes/enviar", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> vacacionesSolicitudesEnviar(@RequestBody EmpleadoVacSolRequest empleado) {
-		
+	public ResponseEntity<Map<String, Object>> vacacionesSolicitudesEnviar(
+			@RequestBody EmpleadoVacSolRequest empleado) {
+
 		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.vacacionesSolicitudesEnviar(empleado), HttpStatus.OK);
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "prestamos/balance", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> prestamosBalance(@RequestBody EmpleadoRequest empleado) {
@@ -374,7 +376,7 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "prestamos/pagos", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> prestamosPagos(@RequestBody EmpleadoRequest empleado) {
@@ -384,7 +386,7 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "prestamos/actuales", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> prestamosActuales(@RequestBody EmpleadoRequest empleado) {
@@ -394,13 +396,23 @@ public class EmpleadoController {
 
 		return respuesta;
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "prestamos/pagados", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> prestamosPagados(@RequestBody EmpleadoRequest empleado) {
 
 		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
 				empleadoService.prestamosPagados(empleado), HttpStatus.OK);
+
+		return respuesta;
+	}
+
+	@CrossOrigin
+	@RequestMapping(value = "/enviarCodigo", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> enviarCodigo(@RequestBody EmpleadoCodigoRequest empleado) {
+
+		ResponseEntity<Map<String, Object>> respuesta = new ResponseEntity<Map<String, Object>>(
+				empleadoService.insertarCodigoFirebase(empleado), HttpStatus.OK);
 
 		return respuesta;
 	}

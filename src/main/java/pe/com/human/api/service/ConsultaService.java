@@ -14,6 +14,7 @@ import pe.com.human.api.model.Item;
 import pe.com.human.api.model.apirequest.EmpleadoConsultaRequest;
 import pe.com.human.api.model.apirequest.EmpleadoRequest;
 import pe.com.human.api.util.ConfiguracionDataSource;
+import pe.com.human.api.util.RequestValidator;
 
 @Service
 public class ConsultaService {
@@ -23,6 +24,9 @@ public class ConsultaService {
 
 	@Autowired
 	ConsultaDAO consultaDAO;
+
+	@Autowired
+	RequestValidator validador;
 
 	public Map<String, Object> listarRecientes(EmpleadoRequest empleado) {
 		Map<String, Object> respuesta = new HashMap<>();
@@ -37,7 +41,7 @@ public class ConsultaService {
 		int rows = 2;
 		Map<String, Object> recientes = new HashMap<>();
 		List<Item> items = consultaDAO.listarConsultas(codcia, codsuc, codtra, rows, configuracionDataSource);
-	
+
 		recientes.put("tipo", "SINGLE_LINE_ICON_RIGHT");
 		recientes.put("items", items);
 
@@ -81,7 +85,7 @@ public class ConsultaService {
 
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO.buscarConfiguracionXId(baseDatos);
 
-		String estado = "%";
+		String estado = "1";
 		Map<String, Object> historial = new HashMap<>();
 		List<Item> items = consultaDAO.listarConsultasEstado(codcia, codsuc, codtra, estado, configuracionDataSource);
 
@@ -142,6 +146,9 @@ public class ConsultaService {
 	}
 
 	public Map<String, Object> enviar(EmpleadoConsultaRequest empleado) {
+
+		validador.validarEmpleadoConsultaRequest(empleado);
+
 		boolean resultado = false;
 		Map<String, Object> respuesta = new HashMap<>();
 
