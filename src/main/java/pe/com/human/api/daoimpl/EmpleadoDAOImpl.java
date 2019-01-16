@@ -31,6 +31,7 @@ import pe.com.human.api.model.Default;
 import pe.com.human.api.model.DimensionRatio;
 import pe.com.human.api.model.Documento;
 import pe.com.human.api.model.Empleado;
+import pe.com.human.api.model.EmpleadoApp;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.EstiloTexto;
 import pe.com.human.api.model.Hex;
@@ -2132,8 +2133,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 	}
 
 	@Override
-	public boolean insertarCodigoFirebase(String codcia, String codsuc, int baseDatos, String documento,
-			String codigo) {
+	public boolean insertarCodigoFirebase(String codcia, String codsuc, int baseDatos, String documento, String token) {
 		boolean resultado = false;
 		Connection conexion = null;
 
@@ -2155,7 +2155,7 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 				int empId = rs.getInt("EMP_I_ID");
 
 				PreparedStatement insertarCodigo = conexion.prepareStatement(query);
-				insertarCodigo.setString(1, codigo);
+				insertarCodigo.setString(1, token);
 				insertarCodigo.setInt(2, empId);
 
 				resultado = insertarCodigo.executeUpdate() > 0 ? true : false;
@@ -2180,6 +2180,51 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 		}
 
 		return resultado;
+	}
+
+	@Override
+	public EmpleadoApp buscarEmpleadoApp(String codcia, String codsuc, String baseDatos, String documento) {
+		EmpleadoApp empleado = null;
+		Connection conexion = null;
+
+		try {
+			String query = lector.leerPropiedad("queries/empleado.query").getProperty("buscarEmpleadoAppMovil");
+
+			conexion = ConexionBaseDatos.obtenerConexion(new ConfiguracionDataSource());
+
+			PreparedStatement buscarEmpleadoApp = conexion.prepareStatement(query);
+			buscarEmpleadoApp.setString(1, codcia);
+			buscarEmpleadoApp.setString(2, codsuc);
+			buscarEmpleadoApp.setString(3, documento);
+			buscarEmpleadoApp.setString(4, baseDatos);
+
+			ResultSet rs = buscarEmpleadoApp.executeQuery();
+
+			if (rs.next()) {
+				empleado = new EmpleadoApp();
+				empleado.setId(rs.getString("EMP_I_ID"));
+				empleado.setIdSucursal(rs.getString("EMP_I_SUC"));
+				empleado.setIdBaseDatos(rs.getString("EMP_I_BD"));
+				empleado.setDocumento(rs.getString("EMP_N_DOC"));
+				empleado.setEstado(rs.getString("EMP_E_EST"));
+				empleado.setCodigoFirebase(rs.getString("EMP_C_FIRB"));
+			}
+
+			rs.close();
+			buscarEmpleadoApp.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExcepcionBDNoResponde();
+		} finally {
+			try {
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return empleado;
 	}
 
 }

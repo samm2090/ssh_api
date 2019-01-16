@@ -41,4 +41,4 @@ listarPrestamos = 	SELECT TO_CHAR(CTLPFECPRE, 'DD/MM/YYYY') AS CTLPFECPRE,      
 					FROM HR_CTLPREC                                                           \
 					WHERE CTLPCODCIA= ? AND CTLPCODSUC = ?                                    \
 					AND CTLPCODTRA = ? AND CTLPESTADO LIKE ?                                  \
-					ORDER BY CTLPFECVIG DESC
+					ORDER BY CTLPFECVIG DESC, CTLPESTADO ASC

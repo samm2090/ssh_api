@@ -1,14 +1,25 @@
 package pe.com.human.api.model.apirequest;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class EmpleadoCodigoRequest {
+public class NotificacionHumanRequest {
+
 	@JsonProperty("base")
 	private Base base;
+
 	@JsonProperty("empleado")
 	private Empleado empleado;
-	@JsonProperty("firebase")
-	private Firebase firebase;
+
+	@JsonProperty("titulo")
+	private String titulo;
+
+	@JsonProperty("mensaje")
+	private String mensaje;
+
+	@JsonProperty("extra")
+	private Map<String, String> extra;
 
 	public Base getBase() {
 		return base;
@@ -26,12 +37,28 @@ public class EmpleadoCodigoRequest {
 		this.empleado = empleado;
 	}
 
-	public Firebase getFirebase() {
-		return firebase;
+	public String getTitulo() {
+		return titulo;
 	}
 
-	public void setFirebase(Firebase firebase) {
-		this.firebase = firebase;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+
+	public Map<String, String> getExtra() {
+		return extra;
+	}
+
+	public void setExtra(Map<String, String> extra) {
+		this.extra = extra;
 	}
 
 	public static class Empleado {
@@ -45,20 +72,6 @@ public class EmpleadoCodigoRequest {
 		public void setDocumento(String documento) {
 			this.documento = documento;
 		}
-
 	}
 
-	public static class Firebase {
-		@JsonProperty("token")
-		private String token;
-
-		public String getToken() {
-			return token;
-		}
-
-		public void setToken(String token) {
-			this.token = token;
-		}
-
-	}
 }

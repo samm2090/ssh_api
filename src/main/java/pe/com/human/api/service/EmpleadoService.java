@@ -983,9 +983,9 @@ public class EmpleadoService {
 		String codsuc = empleado.getBase().getCompania().getSucursal().getId();
 		String documento = empleado.getEmpleado().getDocumento();
 		int baseDatos = Integer.parseInt(empleado.getBase().getBaseDatos());
-		String codigo = empleado.getEmpleado().getCodigo();
+		String token = empleado.getFirebase().getToken();
 
-		boolean exito = empleadoDAO.insertarCodigoFirebase(codcia, codsuc, baseDatos, documento, codigo);
+		boolean exito = empleadoDAO.insertarCodigoFirebase(codcia, codsuc, baseDatos, documento, token);
 		String mensaje = "Hubo un error al momento de grabar el código";
 
 		if (exito) {

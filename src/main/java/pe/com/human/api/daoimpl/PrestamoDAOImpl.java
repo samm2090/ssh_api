@@ -332,20 +332,24 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 
 			while (rs.next()) {
 				item = new Prestamo();
+				
+				String tipo = "CURRENT";
+				String colorEstilo = "PRIMARYDARK";
+				
+				if (rs.getString("CTLPESTADO").equals("1")) {
+					tipo = "PAID";
+					colorEstilo = "SECONDARYDARK";
+				}
 
 				Color color = new Color();
 				color.setTipo("TEXT");
 				color.setUso("DEFAULT");
-				color.setDefault1(new Default("PRIMARYDARK"));
+				color.setDefault1(new Default(colorEstilo));
 
 				EstiloTexto estilo = new EstiloTexto();
 				estilo.setColor(color);
 
 				Alerta alerta = new Alerta();
-				String tipo = "CURRENT";
-				if (rs.getString("CTLPESTADO").equals("1")) {
-					tipo = "PAID";
-				}
 
 				alerta.setTipo(tipo);
 				alerta.setEstilo(estilo);

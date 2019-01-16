@@ -252,11 +252,11 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 
 				if (("1").equals(flag)) {
 					alerta.setTipo("PENDING");
-					colorAlerta.setDefault1(new Default("PRIMARYDARK"));
+					colorAlerta.setDefault1(new Default("SECONDARYDARK"));
 					archivo.setLocal(new Local("ICON", "access_time", "xml"));
 				} else if (("4").equals(flag)) {
 					alerta.setTipo("APPROVED");
-					colorAlerta.setDefault1(new Default("SECONDARYDARK"));
+					colorAlerta.setDefault1(new Default("PRIMARYDARK"));
 					archivo.setLocal(new Local("ICON", "check_circle", "xml"));
 				} else {
 					alerta.setTipo("REJECTED");
@@ -361,11 +361,11 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 
 				if (("1").equals(flag)) {
 					alerta.setTipo("PENDING");
-					colorAlerta.setDefault1(new Default("PRIMARYDARK"));
+					colorAlerta.setDefault1(new Default("SECONDARYDARK"));
 					archivo.setLocal(new Local("ICON", "access_time", "xml"));
 				} else if (("4").equals(flag)) {
 					alerta.setTipo("APPROVED");
-					colorAlerta.setDefault1(new Default("SECONDARYDARK"));
+					colorAlerta.setDefault1(new Default("PRIMARYDARK"));
 					archivo.setLocal(new Local("ICON", "check_circle", "xml"));
 				} else {
 					alerta.setTipo("REJECTED");

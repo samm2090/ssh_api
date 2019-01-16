@@ -4,6 +4,7 @@ import java.util.List;
 
 import pe.com.human.api.model.Aprobador;
 import pe.com.human.api.model.Empleado;
+import pe.com.human.api.model.EmpleadoApp;
 import pe.com.human.api.model.EmpleadoResumen;
 import pe.com.human.api.model.Item;
 import pe.com.human.api.model.Widget;
@@ -68,5 +69,7 @@ public interface EmpleadoDAO {
 	public Aprobador buscarAprobador(String codcia, String codsuc, String codtra,
 			ConfiguracionDataSource configuracionDataSource);
 
-	public boolean insertarCodigoFirebase(String codcia, String codsuc, int baseDatos, String documento, String codigo);
+	public boolean insertarCodigoFirebase(String codcia, String codsuc, int baseDatos, String documento, String token);
+
+	public EmpleadoApp buscarEmpleadoApp(String codcia, String codsuc, String baseDatos, String documento);
 }

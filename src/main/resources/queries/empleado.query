@@ -136,7 +136,7 @@ buscarAprobador = 	SELECT EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN AS
 					FROM HR_EMPLEADO WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND            \
 					EMPCODTRA = ?)
 
-buscarEmpleadoAppMovil =	SELECT EMP_I_ID                                        \
+buscarEmpleadoAppMovil =	SELECT E.*                                        \
 							FROM SSMG_EMPLEADO E INNER JOIN SSMG_SUCURSAL S        \
 							ON E.EMP_I_SUC = S.SUC_I_ID INNER JOIN SSMG_COMPANIA C \
 							ON S.SUC_I_COMPANIA = C.COM_I_ID                       \
@@ -144,5 +144,3 @@ buscarEmpleadoAppMovil =	SELECT EMP_I_ID                                        
 							AND E.EMP_N_DOC = ? AND E.EMP_I_BD = ?
 
 insertarCodigoFirebase = UPDATE SSMG_EMPLEADO SET EMP_C_FIRB = ? WHERE EMP_I_ID = ?
-
-

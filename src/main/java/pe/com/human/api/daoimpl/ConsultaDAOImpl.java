@@ -64,25 +64,29 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 			while (rs.next()) {
 				item = new Item();
 
+				String envio = rs.getString("CON_F_CREA");
+				String respuesta = rs.getString("CON_F_MOD");
+				String icono = "check_circle";
+				String tipoAlerta = "APPROVED";
+				String tipoColor = "PRIMARYDARK";
+
+				if (respuesta == null) {
+					respuesta = "Pendiente";
+					icono = "access_time";
+					tipoAlerta = "PENDING";
+					tipoColor = "SECONDARYDARK";
+				}
+
 				Color colorAlerta = new Color();
 				colorAlerta.setTipo("TEXT");
 				colorAlerta.setUso("DEFAULT");
-				colorAlerta.setDefault1(new Default("PRIMARYDARK"));
+				colorAlerta.setDefault1(new Default(tipoColor));
 
 				EstiloTexto estiloAlerta = new EstiloTexto();
 				estiloAlerta.setColor(colorAlerta);
 
-				String envio = rs.getString("CON_F_CREA");
-				String respuesta = rs.getString("CON_F_MOD");
-				String tipo = "check_circle";
-
-				if (respuesta == null) {
-					respuesta = "Pendiente";
-					tipo = "access_time";
-				}
-
 				Alerta alerta = new Alerta();
-				alerta.setTipo(tipo);
+				alerta.setTipo(tipoAlerta);
 				alerta.setEstilo(estiloAlerta);
 
 				Linea primeraLinea = new Linea();
@@ -100,7 +104,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				Archivo archivo = new Archivo();
 				archivo.setAlmaTipo("LOCAL");
 				archivo.setTipo("VECTOR");
-				archivo.setLocal(new Local("ICON", tipo, "xml"));
+				archivo.setLocal(new Local("ICON", icono, "xml"));
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("ICON");
@@ -205,25 +209,29 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 			while (rs.next()) {
 				item = new Item();
 
+				String envio = rs.getString("CON_F_CREA");
+				String respuesta = rs.getString("CON_F_MOD");
+				String icono = "check_circle";
+				String alertaColor = "PRIMARYDARK";
+				String tipoAlerta = "APPROVED";
+
+				if (respuesta == null) {
+					respuesta = "Pendiente";
+					icono = "access_time";
+					alertaColor = "SECONDARYDARK";
+					tipoAlerta = "PENDING";
+				}
+
 				Color colorAlerta = new Color();
 				colorAlerta.setTipo("TEXT");
 				colorAlerta.setUso("DEFAULT");
-				colorAlerta.setDefault1(new Default("PRIMARYDARK"));
+				colorAlerta.setDefault1(new Default(alertaColor));
 
 				EstiloTexto estiloAlerta = new EstiloTexto();
 				estiloAlerta.setColor(colorAlerta);
 
-				String envio = rs.getString("CON_F_CREA");
-				String respuesta = rs.getString("CON_F_MOD");
-				String tipo = "check_circle";
-
-				if (respuesta == null) {
-					respuesta = "Pendiente";
-					tipo = "access_time";
-				}
-
 				Alerta alerta = new Alerta();
-				alerta.setTipo(tipo);
+				alerta.setTipo(tipoAlerta);
 				alerta.setEstilo(estiloAlerta);
 
 				Linea primeraLinea = new Linea();
@@ -241,7 +249,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				Archivo archivo = new Archivo();
 				archivo.setAlmaTipo("LOCAL");
 				archivo.setTipo("VECTOR");
-				archivo.setLocal(new Local("ICON", "tipo", "xml"));
+				archivo.setLocal(new Local("ICON", icono, "xml"));
 
 				ResItem resItem = new ResItem();
 				resItem.setTipo("ICON");
@@ -348,7 +356,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 
 				Map<String, Object> respuestaContenido = null;
 				if (!(respuesta == null || ("").equals(respuesta))) {
-					respuestaContenido = new HashMap<>();	
+					respuestaContenido = new HashMap<>();
 
 					respuestaContenido.put("content", rs.getString("CON_HR_RESPUESTA"));
 					respuestaContenido.put("created", rs.getString("CON_F_MOD"));
