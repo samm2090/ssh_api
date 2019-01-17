@@ -483,7 +483,6 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 		Connection conexion = null;
 
 		String query = lector.leerPropiedad("queries/compania.query").getProperty("listarDirectorioArea");
-		String area = "";
 
 		try {
 			conexion = ConexionBaseDatos.obtenerConexion(configuracionDataSource);
@@ -686,13 +685,14 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 				Extra extra = new Extra(rs.getString("EMPCODTRA"));
 				extra.setArea(rs.getString("AREA"));
+				extra.setEstatus("1");
 
 				valor.setResItem(resItem);
 				valor.setPrimeraLinea(primeraLinea);
 				valor.setSegundaLinea(segundaLinea);
 				valor.setAction(action);
 				valor.setExtra(extra);
-
+				
 				valores.add(valor);
 			}
 
@@ -1042,7 +1042,6 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 				ResultSet rs2 = listarDir.executeQuery();
 
-				valores = new ArrayList<>();
 				while (rs2.next()) {
 					Item valor = new Item();
 
@@ -1230,6 +1229,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 
 					Extra extra = new Extra(rs2.getString("EMPCODTRA"));
 					extra.setArea(area.get("area"));
+					extra.setEstatus("1");
 
 					valor.setResItem(resItem);
 					valor.setPrimeraLinea(primeraLinea);
@@ -1447,6 +1447,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				directorio.setResItem(resItem);
 				directorio.setNombre(new Texto(rs.getString("NOMBRE"), secondaryDark));
 				directorio.setPuesto(new Texto(rs.getString("PUESTO"), primaryDark));
+				directorio.setSede(new Texto(rs.getString("SEDE"), primaryDark));
 				directorio.setItems(items);
 			}
 

@@ -1,6 +1,6 @@
 cantidadCuotasPendientes = select 1 from dual where 1=0
 
-deudaTotal =	SELECT (SUM(NVL(CTLPMONTOP,0)) - SUM (NVL(CTLPAGADO,0))) AS BALANCE  \
+deudaTotal =	SELECT SUM(CTLPSALDOP) AS BALANCE  \
 				FROM HR_CTLPREC                                                      \
 				WHERE CTLPCODCIA= ? and CTLPCODSUC = ? and CTLPCODTRA = ?
 				

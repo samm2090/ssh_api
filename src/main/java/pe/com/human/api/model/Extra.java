@@ -6,6 +6,10 @@ public class Extra {
 	private int mes;
 	private int anio;
 	private String area;
+	private String estatus;
+
+	public Extra() {
+	}
 
 	public Extra(String id) {
 		this.id = id;
@@ -52,6 +56,14 @@ public class Extra {
 
 	public void setArea(String area) {
 		this.area = area;
+	}
+
+	public String getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(String estatus) {
+		this.estatus = estatus;
 	}
 
 }

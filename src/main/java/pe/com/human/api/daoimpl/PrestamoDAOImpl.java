@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -306,7 +307,7 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 		}
 		return items;
 	}
-	
+
 	@Override
 	public List<Prestamo> listarPrestamos(String codcia, String codsuc, String codtra, String estado,
 			ConfiguracionDataSource configuracionDataSource) {
@@ -332,10 +333,10 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 
 			while (rs.next()) {
 				item = new Prestamo();
-				
+
 				String tipo = "CURRENT";
 				String colorEstilo = "PRIMARYDARK";
-				
+
 				if (rs.getString("CTLPESTADO").equals("1")) {
 					tipo = "PAID";
 					colorEstilo = "SECONDARYDARK";
@@ -356,7 +357,7 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 
 				item.setAlerta(alerta);
 				item.setFecha(new FechaDeuda(rs.getString("CTLPFECPRE"), rs.getString("CTLPFECVIG")));
-				item.setTipo(rs.getString("TIPO"));
+				item.setTipo(StringUtils.capitalize(rs.getString("TIPO")));
 				item.setMonto(
 						new MontoDeuda(rs.getString("CTLDIASFR"), rs.getString("MONEDA"), rs.getString("CTLPMONTOP")));
 				item.setCuota(
