@@ -68,13 +68,13 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				String respuesta = rs.getString("CON_F_MOD");
 				String icono = "check_circle";
 				String tipoAlerta = "APPROVED";
-				String tipoColor = "PRIMARYDARK";
+				String tipoColor = "SECONDARYDARK";
 
 				if (respuesta == null) {
 					respuesta = "Pendiente";
 					icono = "access_time";
 					tipoAlerta = "PENDING";
-					tipoColor = "SECONDARYDARK";
+					tipoColor = "PRIMARYDARK";
 				}
 
 				Color colorAlerta = new Color();
@@ -212,13 +212,13 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 				String envio = rs.getString("CON_F_CREA");
 				String respuesta = rs.getString("CON_F_MOD");
 				String icono = "check_circle";
-				String alertaColor = "PRIMARYDARK";
+				String alertaColor = "SECONDARYDARK";
 				String tipoAlerta = "APPROVED";
 
 				if (respuesta == null) {
 					respuesta = "Pendiente";
 					icono = "access_time";
-					alertaColor = "SECONDARYDARK";
+					alertaColor = "PRIMARYDARK";
 					tipoAlerta = "PENDING";
 				}
 
@@ -369,6 +369,7 @@ public class ConsultaDAOImpl implements ConsultaDAO {
 
 				Map<String, Object> mensaje = new HashMap<>();
 				mensaje.put("idTipoConsulta", rs.getString("CON_C_TIP_CONS"));
+				mensaje.put("tipoConsulta", rs.getString("TIPO"));
 				mensaje.put("thread", thread);
 
 				info.setAlerta(alerta);

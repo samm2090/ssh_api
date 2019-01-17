@@ -19,9 +19,9 @@ import pe.com.human.api.model.Colores;
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.Default;
 import pe.com.human.api.model.DetalleDirectorio;
-import pe.com.human.api.model.Directorio;
 import pe.com.human.api.model.Estilo;
 import pe.com.human.api.model.EstiloTexto;
+import pe.com.human.api.model.Item;
 import pe.com.human.api.model.ResItem;
 import pe.com.human.api.model.Texto;
 import pe.com.human.api.model.apirequest.BaseRequest;
@@ -90,7 +90,7 @@ public class CompaniaService {
 		ConfiguracionDataSource configuracionDataSource = baseDatosDAO
 				.buscarConfiguracionXId(Integer.parseInt(empleado.getBase().getBaseDatos()));
 
-		List<Directorio> items = companiaDAO.buscarDirectorioXEmpleadoArea(codcia, codsuc, codtra,
+		List<Item> items = companiaDAO.buscarDirectorioXEmpleadoArea(codcia, codsuc, codtra,
 				configuracionDataSource);
 
 		Color color = new Color();
@@ -134,8 +134,7 @@ public class CompaniaService {
 			throw new ExcepcionCriterioBusqueda();
 		}
 
-		List<Directorio> items = companiaDAO.buscarDirectorioCriterio(codcia, codsuc, criterio,
-				configuracionDataSource);
+		List<Item> items = companiaDAO.buscarDirectorioCriterio(codcia, codsuc, criterio, configuracionDataSource);
 
 		Color color = new Color();
 		color.setTipo("TEXT");

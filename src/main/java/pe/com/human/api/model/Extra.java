@@ -5,6 +5,7 @@ public class Extra {
 	private String id;
 	private int mes;
 	private int anio;
+	private String area;
 
 	public Extra(String id) {
 		this.id = id;
@@ -43,6 +44,14 @@ public class Extra {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 }

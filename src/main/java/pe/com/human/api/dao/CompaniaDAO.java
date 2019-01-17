@@ -5,10 +5,9 @@ import java.util.Map;
 
 import pe.com.human.api.model.Compania;
 import pe.com.human.api.model.DetalleDirectorio;
-import pe.com.human.api.model.Directorio;
+import pe.com.human.api.model.Item;
 import pe.com.human.api.model.ResItem;
 import pe.com.human.api.util.ConfiguracionDataSource;
-
 
 /**
  * 
@@ -18,15 +17,15 @@ import pe.com.human.api.util.ConfiguracionDataSource;
 public interface CompaniaDAO {
 	public List<Map<String, Object>> listarCompaniasXDocumento(String documento);
 
-	public Compania buscarCompaniaXEmpleado(String idCompania, String idSucursal, String idEmpleado,
-			String contrasenia, ConfiguracionDataSource configuracionDataSource);
+	public Compania buscarCompaniaXEmpleado(String idCompania, String idSucursal, String idEmpleado, String contrasenia,
+			ConfiguracionDataSource configuracionDataSource);
 
 	public Compania buscarCompaniaXId(int id);
 
-	public List<Directorio> buscarDirectorioXEmpleadoArea(String codcia, String codsuc, String codtra,
+	public List<Item> buscarDirectorioXEmpleadoArea(String codcia, String codsuc, String codtra,
 			ConfiguracionDataSource configuracionDataSource);
 
-	public List<Directorio> buscarDirectorioCriterio(String codcia, String codsuc, String criterio,
+	public List<Item> buscarDirectorioCriterio(String codcia, String codsuc, String criterio,
 			ConfiguracionDataSource configuracionDataSource);
 
 	public DetalleDirectorio buscarDirectorioXEmpleado(String codcia, String codsuc, String codtra,

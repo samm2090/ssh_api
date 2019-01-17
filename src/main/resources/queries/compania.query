@@ -60,7 +60,7 @@ listarDirectorioCodArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' 
 							NVL(EMPEMAILORG,'No cuenta con dato') AS EMPEMAILORG                                                                                    \
 							FROM HR_EMPLEADO                                                                                                                        \
 							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODAREA = ? AND (EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN LIKE ?) \
-							ORDER BY EMPNOMBRE ASC
+							ORDER BY EMPNOMBRE, EMPCODAREA ASC
 							
 listarConvenios = 	SELECT * FROM SSMG_CONVENIOS \
 					WHERE COM_I_ID = ? AND SUC_I_ID = ? AND CONV_E_EST = '1'
