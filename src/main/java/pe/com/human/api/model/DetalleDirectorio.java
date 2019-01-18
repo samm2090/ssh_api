@@ -4,8 +4,17 @@ public class DetalleDirectorio {
 	private Texto nombre;
 	private Texto puesto;
 	private Texto sede;
+	private Extra extra;
 	private ItemDetalle items;
 	private ResItem resItem;
+
+	public Extra getExtra() {
+		return extra;
+	}
+
+	public void setExtra(Extra extra) {
+		this.extra = extra;
+	}
 
 	public ResItem getResItem() {
 		return resItem;

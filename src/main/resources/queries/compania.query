@@ -17,10 +17,23 @@ buscarCompaniaXId = SELECT *                                          \
 					ON C.COM_I_ID = S.SUC_I_COMPANIA                  \
 					WHERE COM_C_HUMAN = ?
 
-listarDirectorioArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN) AS NOMBRE, EMPFOTO,                                                       \
+listarDirectorioArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN) AS NOMBRE, EMPFOTO,                                                 \
 						(SELECT INITCAP(PUEDESPUE) FROM HR_PUESTO WHERE PUECODPUE = EMPCODPUEST AND PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC) AS PUESTO, \
 						(SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC) AS AREA,    \
 						EMPCODTRA,                                                                                                                              \
+						(SELECT                                                                                                                                         \
+						(SELECT COUNT(*) FROM HR_CTLVAC_SS                                                                                                              \
+						WHERE VACCODCIA = EMPCODCIA AND VACCODSUC = EMPCODSUC AND VACCODTRA = EMPCODTRA                                                                             \
+						AND SYSDATE BETWEEN VACFECINI AND VACFECFIN                                                                                                     \
+						AND VACFLGEST = '4')                                                                                                                            \
+						+                                                                                                                                               \
+						(SELECT COUNT(*) FROM HR_CTLEXC                                                                                                                 \
+						WHERE EXCCODCIA= EMPCODCIA AND                                                                                                                        \
+						EXCCODSUC=EMPCODSUC AND                                                                                                                              \
+						EXCCODTRA= EMPCODTRA AND                                                                                                                           \
+						SYSDATE BETWEEN EXCFECINI AND EXCFECFIN                                                                                                         \
+						AND EXCFLGEST = '1')                                                                                                                            \
+						FROM DUAL) AS AUSENTISMO,    \
 						NVL(EMPTELFMOV,'No cuenta con dato') AS EMPTELFMOV,                                                                                     \
 						NVL(EMPTELFFIJO,'No cuenta con dato') AS EMPTELFFIJO,                                                                                   \
 						NVL(EMPEMAIL,'No cuenta con dato') AS EMPEMAIL,                                                                                         \
@@ -33,11 +46,24 @@ listarDirectorioArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' || 
 						AND EMPCODCIA = ? AND EMPCODSUC = ? \
 						ORDER BY EMPNOMBRE ASC
 						
-listarDirectorioEmpleado = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN) AS NOMBRE, EMPFOTO,                                                         \
+listarDirectorioEmpleado = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN) AS NOMBRE, EMPFOTO,                                                                                     \
 							NVL((SELECT INITCAP(PUEDESPUE) FROM HR_PUESTO WHERE PUECODPUE = EMPCODPUEST AND PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC),'') AS PUESTO, \
 							NVL((SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC),'') AS AREA,    \
 							NVL((SELECT INITCAP(LOCDESLOC) FROM HR_LOCAL WHERE LOCCODLOC = EMPCODLOC AND LOCCODCIA = EMPCODCIA AND EMPCODSUC = EMPCODSUC),'') AS SEDE,      \
 							EMPCODTRA,                                                                                                                                      \
+							(SELECT                                                                                                                                         \
+							(SELECT COUNT(*) FROM HR_CTLVAC_SS                                                                                                              \
+							WHERE VACCODCIA = EMPCODCIA AND VACCODSUC = EMPCODSUC AND VACCODTRA = EMPCODTRA                                                                             \
+							AND SYSDATE BETWEEN VACFECINI AND VACFECFIN                                                                                                     \
+							AND VACFLGEST = '4')                                                                                                                            \
+							+                                                                                                                                               \
+							(SELECT COUNT(*) FROM HR_CTLEXC                                                                                                                 \
+							WHERE EXCCODCIA= EMPCODCIA AND                                                                                                                        \
+							EXCCODSUC=EMPCODSUC AND                                                                                                                              \
+							EXCCODTRA= EMPCODTRA AND                                                                                                                           \
+							SYSDATE BETWEEN EXCFECINI AND EXCFECFIN                                                                                                         \
+							AND EXCFLGEST = '1')                                                                                                                            \
+							FROM DUAL) AS AUSENTISMO,                                                                                                                       \
 							NVL(EMPTELFMOV,'No cuenta con dato') AS EMPTELFMOV,                                                                                             \
 							NVL(EMPTELFFIJO,'No cuenta con dato') AS EMPTELFFIJO,                                                                                           \
 							NVL(EMPEMAIL,'No cuenta con dato') AS EMPEMAIL,                                                                                                 \
@@ -45,8 +71,21 @@ listarDirectorioEmpleado = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' '
 							FROM HR_EMPLEADO                                                                                                                                \
 							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?
 						
-listarDirectorioCriterio = 	SELECT DISTINCT EMPCODAREA, EMPCODTRA, \
-							(SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC) AS AREA \
+listarDirectorioCriterio = 	SELECT DISTINCT EMPCODAREA, \
+							(SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC) AS AREA, \
+							(SELECT                                                                                                                                         \
+							(SELECT COUNT(*) FROM HR_CTLVAC_SS                                                                                                              \
+							WHERE VACCODCIA = EMPCODCIA AND VACCODSUC = EMPCODSUC AND VACCODTRA = EMPCODTRA                                                                             \
+							AND SYSDATE BETWEEN VACFECINI AND VACFECFIN                                                                                                     \
+							AND VACFLGEST = '4')                                                                                                                            \
+							+                                                                                                                                               \
+							(SELECT COUNT(*) FROM HR_CTLEXC                                                                                                                 \
+							WHERE EXCCODCIA= EMPCODCIA AND                                                                                                                        \
+							EXCCODSUC=EMPCODSUC AND                                                                                                                              \
+							EXCCODTRA= EMPCODTRA AND                                                                                                                           \
+							SYSDATE BETWEEN EXCFECINI AND EXCFECFIN                                                                                                         \
+							AND EXCFLGEST = '1')                                                                                                                            \
+							FROM DUAL) AS AUSENTISMO    \
 							FROM HR_EMPLEADO \
 							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND (EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN LIKE ?) AND EMPCODAREA IS NOT NULL AND EMPFLGEST = '1' \
 							ORDER BY EMPCODAREA ASC
@@ -55,12 +94,25 @@ listarDirectorioCodArea = 	SELECT INITCAP(EMPNOMBRE || ' ' || EMPAPATERN || ' ' 
 							(SELECT INITCAP(PUEDESPUE) FROM HR_PUESTO WHERE PUECODPUE = EMPCODPUEST AND PUECODCIA = EMPCODCIA AND PUECODSUC = EMPCODSUC) AS PUESTO, \
 							(SELECT INITCAP(AREDESAREA) FROM HR_AREA WHERE ARECODAREA = EMPCODAREA AND ARECODCIA = EMPCODCIA AND ARECODSUC = EMPCODSUC) AS AREA,    \
 							EMPCODTRA,                                                                                                                              \
+							(SELECT                                                                                                                                         \
+							(SELECT COUNT(*) FROM HR_CTLVAC_SS                                                                                                              \
+							WHERE VACCODCIA = EMPCODCIA AND VACCODSUC = EMPCODSUC AND VACCODTRA = EMPCODTRA                                                                             \
+							AND SYSDATE BETWEEN VACFECINI AND VACFECFIN                                                                                                     \
+							AND VACFLGEST = '4')                                                                                                                            \
+							+                                                                                                                                               \
+							(SELECT COUNT(*) FROM HR_CTLEXC                                                                                                                 \
+							WHERE EXCCODCIA= EMPCODCIA AND                                                                                                                        \
+							EXCCODSUC=EMPCODSUC AND                                                                                                                              \
+							EXCCODTRA= EMPCODTRA AND                                                                                                                           \
+							SYSDATE BETWEEN EXCFECINI AND EXCFECFIN                                                                                                         \
+							AND EXCFLGEST = '1')                                                                                                                            \
+							FROM DUAL) AS AUSENTISMO,    \
 							NVL(EMPTELFMOV,'No cuenta con dato') AS EMPTELFMOV,                                                                                     \
 							NVL(EMPTELFFIJO,'No cuenta con dato') AS EMPTELFFIJO,                                                                                   \
 							NVL(EMPEMAIL,'No cuenta con dato') AS EMPEMAIL,                                                                                         \
 							NVL(EMPEMAILORG,'No cuenta con dato') AS EMPEMAILORG                                                                                    \
 							FROM HR_EMPLEADO                                                                                                                        \
-							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODAREA = ? AND (EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN LIKE ?) \
+							WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODAREA = ? AND (EMPNOMBRE || ' ' || EMPAPATERN || ' ' || EMPAMATERN LIKE ?) AND EMPFLGEST = '1' \
 							ORDER BY EMPNOMBRE, EMPCODAREA ASC
 							
 listarConvenios = 	SELECT * FROM SSMG_CONVENIOS \

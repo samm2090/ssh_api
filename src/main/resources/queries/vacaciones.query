@@ -4,16 +4,16 @@ cantidadSaldo = SELECT TRUNC(SUM(SVASALDFI)) as SALDO \
 				
 resumenVacaciones = SELECT                                                                                                      \
 					NVL((SELECT                                                                                                 \
-					TRUNC(TRUNC(MONTHS_BETWEEN(SYSDATE, EMPFECING)) * 2.5)                                                      \
+					NVL(TRUNC(TRUNC(MONTHS_BETWEEN(SYSDATE, EMPFECING)) * 2.5),0)                                                      \
 					+ 1                                                                                                         \
 					FROM HR_EMPLEADO                                                                                            \
 					WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?)                                        \
 					-                                                                                                           \
 					(SELECT                                                                                                     \
-					 TRUNC(                                                                                                     \
-					SUM(CASE WHEN VACFECFIN < SYSDATE THEN VACDIASPRO ELSE 0 END)                                               \
+					TRUNC(                                                                                                     \
+					NVL(SUM(CASE WHEN VACFECFIN < SYSDATE THEN VACDIASPRO ELSE 0 END),0)                                               \
 					+                                                                                                           \
-					SUM(CASE WHEN SYSDATE BETWEEN VACFECINI AND VACFECFIN THEN VACDIASPRO-(VACFECFIN - SYSDATE + 1) ELSE 0 END) \
+					NVL(SUM(CASE WHEN SYSDATE BETWEEN VACFECINI AND VACFECFIN THEN VACDIASPRO-(VACFECFIN - SYSDATE + 1) ELSE 0 END),0) \
 					)                                                                                                           \
 					FROM HR_CTLVAC                                                                                              \
 					WHERE VACCODCIA = ?                                                                                     \

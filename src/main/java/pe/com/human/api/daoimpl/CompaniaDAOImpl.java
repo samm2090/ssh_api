@@ -683,16 +683,23 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				action.add(email);
 				action.add(emailOrg);
 
+				int austentismo = rs.getInt("AUSENTISMO");
+				String estatus = "1";
+
+				if (austentismo > 0) {
+					estatus = "0";
+				}
+
 				Extra extra = new Extra(rs.getString("EMPCODTRA"));
 				extra.setArea(rs.getString("AREA"));
-				extra.setEstatus("1");
+				extra.setEstatus(estatus);
 
 				valor.setResItem(resItem);
 				valor.setPrimeraLinea(primeraLinea);
 				valor.setSegundaLinea(segundaLinea);
 				valor.setAction(action);
 				valor.setExtra(extra);
-				
+
 				valores.add(valor);
 			}
 
@@ -1006,6 +1013,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 	public List<Item> buscarDirectorioCriterio(String codcia, String codsuc, String criterio,
 			ConfiguracionDataSource configuracionDataSource) {
 		List<Item> valores = null;
+		List<Item> valoresAgrupados = null;
 		Connection conexion = null;
 
 		List<Map<String, String>> areas;
@@ -1032,8 +1040,10 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				areas.add(area);
 			}
 
-			valores = new ArrayList<>();
+			valoresAgrupados = new ArrayList<>();
+
 			for (Map<String, String> area : areas) {
+
 				PreparedStatement listarDir = conexion.prepareStatement(query2);
 				listarDir.setString(1, codcia);
 				listarDir.setString(2, codsuc);
@@ -1041,6 +1051,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				listarDir.setString(4, criterio);
 
 				ResultSet rs2 = listarDir.executeQuery();
+				valores = new ArrayList<>();
 
 				while (rs2.next()) {
 					Item valor = new Item();
@@ -1227,9 +1238,16 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 					action.add(email);
 					action.add(emailOrg);
 
+					int austentismo = rs2.getInt("AUSENTISMO");
+					String estatus = "1";
+
+					if (austentismo > 0) {
+						estatus = "0";
+					}
+
 					Extra extra = new Extra(rs2.getString("EMPCODTRA"));
-					extra.setArea(area.get("area"));
-					extra.setEstatus("1");
+					extra.setArea(rs2.getString("AREA"));
+					extra.setEstatus(estatus);
 
 					valor.setResItem(resItem);
 					valor.setPrimeraLinea(primeraLinea);
@@ -1238,6 +1256,8 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 					valor.setExtra(extra);
 					valores.add(valor);
 				}
+
+				valoresAgrupados.addAll(valores);
 
 				rs2.close();
 				listarDir.close();
@@ -1258,7 +1278,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				}
 			}
 		}
-		return valores;
+		return valoresAgrupados;
 	}
 
 	@Override
@@ -1333,7 +1353,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				Color colorPhone = new Color();
 				colorPhone.setTipo("TINT");
 				colorPhone.setUso("DEFAULT");
-				colorPhone.setDefault1(new Default("DEFAULT"));
+				colorPhone.setDefault1(new Default("SECONDARYDARK"));
 
 				ResItem resItemPhone = new ResItem();
 				resItemPhone.setTipo("ICON");
@@ -1348,7 +1368,7 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				Color colorMail = new Color();
 				colorMail.setTipo("TINT");
 				colorMail.setUso("DEFAULT");
-				colorMail.setDefault1(new Default("DEFAULT"));
+				colorMail.setDefault1(new Default("SECONDARYDARK"));
 
 				ResItem resItemMail = new ResItem();
 				resItemMail.setTipo("ICON");
@@ -1444,10 +1464,22 @@ public class CompaniaDAOImpl implements CompaniaDAO {
 				items.setTipo("SINGLE_LINE_ICON");
 				items.setValores(valores);
 
+				int austentismo = rs.getInt("AUSENTISMO");
+				String estatus = "1";
+
+				if (austentismo > 0) {
+					estatus = "0";
+				}
+
+				Extra extra = new Extra(rs.getString("EMPCODTRA"));
+				extra.setArea(rs.getString("AREA"));
+				extra.setEstatus(estatus);
+
 				directorio.setResItem(resItem);
 				directorio.setNombre(new Texto(rs.getString("NOMBRE"), secondaryDark));
 				directorio.setPuesto(new Texto(rs.getString("PUESTO"), primaryDark));
 				directorio.setSede(new Texto(rs.getString("SEDE"), primaryDark));
+				directorio.setExtra(extra);
 				directorio.setItems(items);
 			}
 

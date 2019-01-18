@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -357,7 +357,7 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 
 				item.setAlerta(alerta);
 				item.setFecha(new FechaDeuda(rs.getString("CTLPFECPRE"), rs.getString("CTLPFECVIG")));
-				item.setTipo(StringUtils.capitalize(rs.getString("TIPO")));
+				item.setTipo(WordUtils.capitalize(rs.getString("TIPO")));
 				item.setMonto(
 						new MontoDeuda(rs.getString("CTLDIASFR"), rs.getString("MONEDA"), rs.getString("CTLPMONTOP")));
 				item.setCuota(
