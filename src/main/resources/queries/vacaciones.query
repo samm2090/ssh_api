@@ -1,4 +1,25 @@
-cantidadSaldo = SELECT TRUNC(SUM(SVASALDFI)) as SALDO \
+cantidadSaldo = SELECT                                                                                                      \
+				NVL((SELECT                                                                                                 \
+				NVL(TRUNC(TRUNC(MONTHS_BETWEEN(SYSDATE, EMPFECING)) * 2.5),0)                                                      \
+				+ 1                                                                                                         \
+				FROM HR_EMPLEADO                                                                                            \
+				WHERE EMPCODCIA = ? AND EMPCODSUC = ? AND EMPCODTRA = ?)                                        \
+				-                                                                                                           \
+				(SELECT                                                                                                     \
+				TRUNC(                                                                                                     \
+				NVL(SUM(CASE WHEN VACFECFIN < SYSDATE THEN VACDIASPRO ELSE 0 END),0)                                               \
+				+                                                                                                           \
+				NVL(SUM(CASE WHEN SYSDATE BETWEEN VACFECINI AND VACFECFIN THEN VACDIASPRO-(VACFECFIN - SYSDATE + 1) ELSE 0 END),0) \
+				)                                                                                                           \
+				FROM HR_CTLVAC                                                                                              \
+				WHERE VACCODCIA = ?                                                                                     \
+				AND VACCODSUC = ?                                                                                       \
+				AND VACCODTRA = ?                                                                                     \
+				AND VACFLGEST = '4'                                                                                         \
+				),0) AS SALDO                                                                                     \
+				FROM DUAL
+					
+cantidadSaldo2 = SELECT TRUNC(SUM(SVASALDFI)) as SALDO \
 				FROM HR_SALVAC \
 				WHERE SVACODCIA = ? AND SVACODSUC = ? AND SVACODTRA = ?
 				

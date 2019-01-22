@@ -41,6 +41,7 @@ public class NotificacionService {
 		Data dataNotificacion = new Data();
 		dataNotificacion.setConsultaId(notificacion.getExtra().get("idConsulta"));
 		dataNotificacion.setEmpleadoId(notificacion.getExtra().get("idEmpleado"));
+		dataNotificacion.setTipo(notificacion.getExtra().get("tipo"));
 		dataNotificacion.setTitle(titulo);
 		dataNotificacion.setBody(mensaje);
 

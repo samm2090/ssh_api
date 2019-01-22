@@ -64,6 +64,9 @@ public class VacacionesDAOImpl implements VacacionesDAO {
 			calcularCantidad.setString(1, idCompania);
 			calcularCantidad.setString(2, idSucursal);
 			calcularCantidad.setString(3, idEmpleado);
+			calcularCantidad.setString(4, idCompania);
+			calcularCantidad.setString(5, idSucursal);
+			calcularCantidad.setString(6, idEmpleado);
 
 			ResultSet rs = calcularCantidad.executeQuery();
 

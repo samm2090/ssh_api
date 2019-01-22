@@ -35,7 +35,7 @@ listarPrestamos = 	SELECT TO_CHAR(CTLPFECPRE, 'DD/MM/YYYY') AS CTLPFECPRE,      
 					(CASE WHEN CTLPMONEDA = 'S/.' THEN 'SOLES' ELSE 'DOLARES' END) AS MONEDA, \
 					CTLPNROCUO, CTLPMONTOP, CTLPESTADO,CTLPCUOTA,                             \
 					DECODE(CTLDIASFR,30,'Mensual',15,'Quincenal','7','Semanal') as CTLDIASFR, \
-					(SELECT TIPDESPRE FROM HR_TIPPRE                                          \
+					(SELECT INITCAP(TIPDESPRE) FROM HR_TIPPRE                                          \
 					WHERE TIPCODCIA = CTLPCODCIA AND TIPCODSUC = CTLPCODSUC                   \
 					AND TIPCODPRE = CTLPTIPPRE) AS TIPO                                       \
 					FROM HR_CTLPREC                                                           \

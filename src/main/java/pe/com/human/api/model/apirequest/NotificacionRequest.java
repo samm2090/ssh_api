@@ -44,11 +44,22 @@ public class NotificacionRequest {
 		@JsonProperty("empleadoId")
 		private String empleadoId;
 
+		@JsonProperty("tipo")
+		private String tipo;
+
 		@JsonProperty("title")
 		private String title;
 
 		@JsonProperty("body")
 		private String body;
+
+		public String getTipo() {
+			return tipo;
+		}
+
+		public void setTipo(String tipo) {
+			this.tipo = tipo;
+		}
 
 		public String getConsultaId() {
 			return consultaId;
